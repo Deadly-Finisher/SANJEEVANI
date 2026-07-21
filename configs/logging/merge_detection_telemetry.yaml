@@ -1,0 +1,13 @@
+input:
+  detection_csv_path: "outputs/live_yolo/detections.csv"
+  telemetry_csv_path: "outputs/telemetry/flight_telemetry.csv"
+
+output:
+  event_log_csv_path: "outputs/event_logs/telemetry_linked_detections.csv"
+
+merge:
+  max_time_difference_s: 2.0
+
+metadata:
+  mission_name: "battlefield_sar_world_v1_single_drone_yolo_test"
+  event_type: "visual_detection"

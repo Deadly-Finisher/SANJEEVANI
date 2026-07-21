@@ -1,0 +1,24 @@
+connection:
+  system_address: "udpin://0.0.0.0:14540"
+
+mission:
+  takeoff_altitude_m: 10.0
+  waypoint_hold_seconds: 8
+  landing_hold_seconds: 3
+
+waypoint:
+  north_m: 15.0
+  east_m: 0.0
+  altitude_m: 10.0
+  yaw_deg: 0.0
+  acceptance_radius_m: 2.0
+  goto_timeout_seconds: 45
+
+telemetry:
+  log_interval_seconds: 1.0
+  output_dir: "outputs/telemetry"
+
+safety:
+  require_global_position: true
+  require_home_position: true
+  allow_autonomous_engagement: false

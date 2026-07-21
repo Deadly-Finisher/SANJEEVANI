@@ -1,0 +1,28 @@
+[project]
+name = "swarm-drones"
+version = "0.1.0"
+description = "AI-driven cooperative multi-UAV intelligence platform for autonomous surveillance, anomaly detection, and human-in-the-loop reporting."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Roni" }
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "ruff"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

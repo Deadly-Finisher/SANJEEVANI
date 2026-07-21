@@ -1,0 +1,31 @@
+mission:
+  name: "bserc_cooperative_drone_swarm_demo"
+  description: "Simulation-first cooperative multi-UAV intelligence platform for surveillance, anomaly detection, and human-in-the-loop reporting."
+
+environment:
+  width: 300
+  height: 300
+  grid_rows: 3
+  grid_cols: 3
+
+restricted_zones:
+  - sector: "B2"
+    sensitivity: 1.5
+    description: "Central sensitive region requiring higher monitoring priority."
+
+  - sector: "C3"
+    sensitivity: 2.0
+    description: "High-priority restricted sector."
+
+objectives:
+  - maximize_area_coverage
+  - minimize_duplicate_coverage
+  - detect_objects
+  - generate_events
+  - recover_from_drone_failure
+  - produce_mission_report
+
+safety_boundary:
+  weaponization: false
+  autonomous_engagement: false
+  human_review_required: true

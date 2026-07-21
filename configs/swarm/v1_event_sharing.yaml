@@ -1,0 +1,58 @@
+input:
+  shared_detections_csv: "outputs/swarm/v1_three_drone_swarm/shared_detections.csv"
+  zone_assignment_json: "outputs/swarm/v1_three_drone_swarm/zone_assignment.json"
+
+output:
+  output_dir: "outputs/swarm/v1_three_drone_swarm"
+  shared_events_csv: "shared_events.csv"
+  shared_event_summary_json: "shared_event_summary.json"
+  shared_event_report_md: "shared_event_report.md"
+  swarm_event_inbox_csv: "swarm_event_inbox.csv"
+  per_drone_inbox_dir: "event_inboxes"
+
+event_rules:
+  confidence_threshold: 0.25
+
+  critical_labels:
+    - "fire"
+    - "smoke"
+    - "weapon"
+    - "military_tank"
+    - "military_artillery"
+    - "military_vehicle"
+    - "military_truck"
+    - "military_aircraft"
+
+  high_priority_labels:
+    - "person"
+    - "pedestrian"
+    - "people"
+    - "soldier"
+    - "camouflage_soldier"
+    - "civilian"
+
+  medium_priority_labels:
+    - "car"
+    - "truck"
+    - "bus"
+    - "boat"
+    - "airplane"
+    - "civilian_vehicle"
+    - "military_warship"
+
+  low_priority_labels:
+    - "bird"
+    - "kite"
+    - "sheep"
+    - "traffic light"
+
+  severity_scores:
+    critical: 5
+    high: 4
+    medium: 3
+    low: 2
+    unknown: 1
+
+sharing:
+  mode: "broadcast_to_other_drones"
+  include_source_drone_in_own_inbox: false

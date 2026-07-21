@@ -1,0 +1,42 @@
+camera:
+  ros_topic: "/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image"
+  queue_size: 10
+
+model:
+  path: "models/visdrone/yolov8n_visdrone_full_run_best.pt"
+  image_size: 640
+  confidence_threshold: 0.20
+  iou_threshold: 0.45
+  device: 0
+
+display:
+  show_window: true
+  window_name: "Live UAV Surveillance Feed"
+  display_width: 960
+
+output:
+  output_dir: "outputs/live_detection"
+  annotated_frames_dir: "annotated_frames"
+  latest_frame: "latest_frame.jpg"
+  detections_csv: "live_detections.csv"
+  summary_file: "live_detection_summary.txt"
+  save_annotated_frames: true
+  save_every_n_frames: 5
+
+safe_label_map:
+  pedestrian: "pedestrian"
+  people: "person"
+  bicycle: "vehicle"
+  car: "car"
+  van: "van"
+  truck: "truck"
+  tricycle: "vehicle"
+  awning-tricycle: "vehicle"
+  bus: "bus"
+  motor: "vehicle"
+
+safety:
+  allow_autonomous_targeting: false
+  allow_weapon_control: false
+  allow_engagement_decision: false
+  human_review_required: true

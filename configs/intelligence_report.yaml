@@ -1,0 +1,34 @@
+input:
+  detections_csv: "outputs/perception/detections.csv"
+  telemetry_summary_file: "outputs/analysis/latest_waypoint_summary.txt"
+  evidence_images_dir: "outputs/perception/annotated"
+
+output:
+  output_dir: "outputs/reports"
+  report_filename: "mission_event_report.md"
+  event_summary_csv: "event_summary.csv"
+
+mission:
+  mission_name: "Simulated UAV Surveillance Mission"
+  platform: "PX4 SITL + Gazebo + MAVSDK"
+  perception_mode: "Synthetic placeholder perception"
+  operator_note: "All detections are for human review only."
+
+event_classes:
+  person:
+    description: "Human-like object detected in simulated frame."
+    priority_weight: 2
+
+  vehicle:
+    description: "Vehicle-like object detected in simulated frame."
+    priority_weight: 3
+
+risk_scoring:
+  low_threshold: 1
+  medium_threshold: 4
+  high_threshold: 8
+
+safety:
+  allow_targeting: false
+  allow_autonomous_engagement: false
+  human_review_required: true

@@ -1,0 +1,93 @@
+# =========================
+# Python cache files
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# =========================
+# Python virtual environments
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Logs and generated outputs
+# =========================
+logs/
+outputs/
+*.log
+
+# =========================
+# Large data, models, and weights
+# =========================
+data/
+datasets/
+models/
+*.pt
+*.pth
+*.onnx
+*.engine
+*.weights
+
+# =========================
+# Jupyter Notebook checkpoints
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# ROS / colcon build artifacts
+# =========================
+build/
+install/
+log/
+
+# =========================
+# IDE and OS files
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment variables
+# =========================
+.env
+# Python
+.pytest_cache/
+.mypy_cache/
+# Secrets and local configuration
+.env.*
+!.env.example
+*credentials*.json
+*secret*.json
+# Private and heavy datasets
+data/raw/
+data/private/
+# Model weights and exported engines
+*.ckpt
+# Runtime logs and flight recordings
+*.ulg
+*.bag
+*.db3
+core
+core.*
+# Videos and temporary archives
+*.mp4
+*.avi
+*.mkv
+*.tar
+*.tar.gz
+*.zip
+# Local backups
+backups/
+# Runtime output
+outputs/*
+!outputs/reports/
+outputs/reports/*
+!outputs/reports/*.md
+!outputs/reports/*.json
+# IDE and OS

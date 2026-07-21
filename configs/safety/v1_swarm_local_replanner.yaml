@@ -1,0 +1,25 @@
+replanner:
+  mode: dry_run
+  poll_interval_s: 0.5
+  decision_cooldown_s: 3.0
+  maximum_attempts_per_waypoint: 3
+
+  trigger_states:
+    - critical
+    - emergency_stop
+
+  minimum_side_clearance_m: 8.0
+  side_preference_margin_m: 1.0
+
+  temporary_waypoint:
+    forward_offset_m: 2.0
+    lateral_offset_m: 5.0
+    altitude_offset_m: 0.0
+
+  blocked_sides_action: abort_replan
+
+  event_log_csv: outputs/swarm/v1_three_drone_swarm/safety/{drone_id}_local_replanning_events.csv
+
+geometry:
+  earth_radius_m: 6371000.0
+  minimum_target_vector_m: 0.25

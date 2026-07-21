@@ -1,0 +1,14 @@
+connection:
+  system_address: udpin://0.0.0.0:14540
+mission:
+  takeoff_altitude_m: 10.0
+  takeoff_wait_s: 8
+  forward_velocity_m_s: 0.8
+  forward_duration_s: 8
+  right_velocity_m_s: 0.8
+  right_duration_s: 6
+  hover_duration_s: 5
+  yaw_deg: 90.0
+logging:
+  telemetry_csv_path: outputs/telemetry/flight_telemetry.csv
+  sample_interval_s: 0.5

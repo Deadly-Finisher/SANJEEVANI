@@ -1,0 +1,36 @@
+connection:
+  system_address: udpin://0.0.0.0:14542
+mission:
+  mission_name: v1_swarm_drone_2_mission
+  takeoff_altitude_m: 10.0
+  takeoff_wait_s: 8.0
+  waypoint_command_interval_s: 0.2
+  landing_wait_s: 12.0
+logging:
+  telemetry_csv_path: outputs/swarm/v1_three_drone_swarm/drone_2_telemetry.csv
+  sample_interval_s: 0.5
+waypoints:
+- zone_name: drone_2_takeoff
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 10.0
+  yaw_deg: 0.0
+  hold_s: 3.0
+- zone_name: person_zone_1
+  north_m: 5.0
+  east_m: 25.0
+  altitude_m: 12.0
+  yaw_deg: 45.0
+  hold_s: 10.0
+- zone_name: central_review_zone
+  north_m: 0.0
+  east_m: 35.0
+  altitude_m: 12.0
+  yaw_deg: 180.0
+  hold_s: 8.0
+- zone_name: drone_2_return
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 10.0
+  yaw_deg: 0.0
+  hold_s: 3.0

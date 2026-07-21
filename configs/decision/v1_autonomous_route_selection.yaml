@@ -1,0 +1,38 @@
+input:
+  original_mission_yaml: "configs/missions/v1_qgis_parsed_mission.yaml"
+  optimized_mission_yaml: "configs/missions/v1_ga_optimized_mission.yaml"
+  route_comparison_json: "outputs/optimization/v1_ga_route_optimization/ga_route_comparison.json"
+  event_log_csv: "outputs/event_logs/v1_telemetry_linked_detections.csv"
+
+output:
+  output_dir: "outputs/decision/v1_route_selection"
+  selected_mission_yaml: "configs/missions/v1_ai_selected_mission.yaml"
+  decision_json: "v1_autonomous_route_decision.json"
+  decision_report: "v1_autonomous_route_decision.md"
+
+selection:
+  distance_weight: 0.65
+  event_priority_weight: 0.35
+  minimum_distance_improvement_percent: 3.0
+  use_event_log_if_available: true
+
+logging:
+  selected_mission_telemetry_csv: "outputs/telemetry/v1_ai_selected_mission_telemetry.csv"
+
+event_priority_weights:
+  fire: 5.0
+  smoke: 4.0
+  weapon: 4.0
+  person: 3.0
+  pedestrian: 3.0
+  people: 3.0
+  civilian: 3.0
+  soldier: 3.0
+  camouflage_soldier: 3.0
+  military_vehicle: 2.5
+  military_truck: 2.5
+  military_tank: 2.5
+  military_aircraft: 2.0
+  car: 1.5
+  truck: 1.5
+  default: 1.0

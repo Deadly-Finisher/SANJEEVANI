@@ -1,0 +1,337 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="battlefield_sar_world_v1">
+
+        <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+
+    <plugin filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu"/>
+
+    <plugin filename="gz-sim-air-pressure-system"
+            name="gz::sim::systems::AirPressure"/>
+
+    <plugin filename="gz-sim-magnetometer-system"
+            name="gz::sim::systems::Magnetometer"/>
+
+    <plugin filename="gz-sim-navsat-system"
+            name="gz::sim::systems::NavSat"/>
+
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <gravity>0 0 -9.8</gravity>
+
+        <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397742</latitude_deg>
+      <longitude_deg>8.545594</longitude_deg>
+      <elevation>488.0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <scene>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.65 0.75 0.85 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <light name="sun" type="directional">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>0.9 0.85 0.75 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.3 -1</direction>
+    </light>
+
+    <!-- Ground -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>250 250 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>250 250 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.28 0.33 0.22 1</ambient>
+            <diffuse>0.28 0.33 0.22 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Main road -->
+    <model name="main_road">
+      <static>true</static>
+      <pose>0 0 0.06 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>180 8 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.08 0.08 0.08 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Cross road -->
+    <model name="cross_road">
+      <static>true</static>
+      <pose>20 0 0.07 0 0 1.5708</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>120 6 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.08 0.08 0.08 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <!-- Improved field building for UAV camera testing -->
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/field_building/model.sdf</uri>
+      <name>field_building_01</name>
+      <pose>35 25 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/field_building/model.sdf</uri>
+      <name>field_building_02</name>
+      <pose>55 5 0 0 0 0.35</pose>
+    </include>
+    <!-- Damaged structure for situational-awareness scenario -->
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/damaged_building/model.sdf</uri>
+      <name>damaged_building_01</name>
+      <pose>-30 -25 0 0 0 0.4</pose>
+    </include>
+
+
+
+    <!-- Realistic low-poly reconnaissance vehicle -->
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/vehicles/recon_vehicle/model.sdf</uri>
+      <name>recon_vehicle_01</name>
+      <pose>10 8 0 0 0 0.3</pose>
+    </include>
+
+        <!-- Low-poly standing person for UAV camera detection testing -->
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <name>field_person_01</name>
+      <pose>5 -10 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <name>field_person_02</name>
+      <pose>18 -12 0 0 0 0.4</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <name>field_person_03</name>
+      <pose>-18 18 0 0 0 -0.8</pose>
+    </include>
+    
+
+        <!-- Vegetation cluster for occlusion and realistic UAV camera testing -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_01</name>
+      <pose>-20 30 0 0 0 0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_02</name>
+      <pose>-35 32 0 0 0 -0.4</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_03</name>
+      <pose>-42 18 0 0 0 1.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_04</name>
+      <pose>-12 42 0 0 0 0.7</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_05</name>
+      <pose>25 -28 0 0 0 -0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_06</name>
+      <pose>36 -34 0 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_07</name>
+      <pose>48 -20 0 0 0 1.0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/field_tree/model.sdf</uri>
+      <name>field_tree_08</name>
+      <pose>55 -42 0 0 0 -1.0</pose>
+    </include>
+
+    
+
+    <!-- Landing zone -->
+    <model name="landing_zone">
+      <static>true</static>
+      <pose>0 -35 0.11 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>5</radius>
+              <length>0.03</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.1 1</ambient>
+            <diffuse>0.8 0.8 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  
+    <!-- Checkpoint barriers and debris for situational-awareness testing -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_01</name>
+      <pose>12 3 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_02</name>
+      <pose>12 -3 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_03</name>
+      <pose>18 3 0 0 0 0.15</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_04</name>
+      <pose>18 -3 0 0 0 -0.15</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>debris_pile_01</name>
+      <pose>-22 -18 0 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>debris_pile_02</name>
+      <pose>-38 -30 0 0 0 -0.4</pose>
+    </include>
+
+
+  
+    <!-- Additional debris piles placed directly on the roads -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_01</name>
+      <pose>-15 0 0 0 0 0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_02</name>
+      <pose>0 5 0 0 0 -0.35</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_03</name>
+      <pose>22 0 0 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_04</name>
+      <pose>20 10 0 0 0 0.25</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_05</name>
+      <pose>20 -10 0 0 0 -0.4</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_06</name>
+      <pose>35 0 0 0 0 0.15</pose>
+    </include>
+
+
+  
+    <!-- Smoke and fire-like visual effects for event detection testing -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <name>smoke_fire_effect_01</name>
+      <pose>-28 -20 0 0 0 0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <name>smoke_fire_effect_02</name>
+      <pose>22 0 0 0 0 -0.4</pose>
+    </include>
+
+
+  </world>
+</sdf>

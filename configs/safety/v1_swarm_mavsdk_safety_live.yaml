@@ -1,0 +1,54 @@
+controller:
+  node_name: v1_swarm_mavsdk_safety_controller
+  mode: live
+  command_cooldown_s: 3.0
+  status_timeout_s: 12.0
+  connection_timeout_s: 30.0
+  require_in_air_for_action: true
+  decision_log_csv: outputs/swarm/v1_three_drone_swarm/safety/mavsdk_safety_decisions_live.csv
+  startup_grace_period_s: 15.0
+  telemetry_timeout_s: 10.0
+  require_initial_status: true
+  initial_status_timeout_s: 30.0
+  safety_poll_interval_s: 0.5
+  normal_speed_m_s: 0.3
+  mission_event_log_template: outputs/swarm/v1_three_drone_swarm/safety/{drone_id}_mission_safety_events_live.csv
+  status_source: csv
+  obstacle_status_csv: outputs/swarm/v1_three_drone_swarm/safety/obstacle_distance_log.csv
+policy:
+  allowed_takeoff_states:
+  - clear
+  enforce_takeoff_gate_in_dry_run: true
+  takeoff_wait_timeout_s: 45.0
+  takeoff_poll_interval_s: 0.5
+  maximum_hold_duration_s: 30.0
+  resume_clear_delay_s: 2.0
+  fail_on_hold_timeout: true
+actions:
+  clear:
+    command: none
+  warning:
+    command: set_current_speed
+    speed_m_s: 0.15
+  critical:
+    command: hold
+  emergency_stop:
+    command: hold
+  no_data:
+    command: hold
+drones:
+- drone_id: drone_1
+  status_topic: /drone_1/obstacle_status
+  system_address: udpin://0.0.0.0:14541
+  grpc_port: 50101
+  mavsdk_server_address: 127.0.0.1
+- drone_id: drone_2
+  status_topic: /drone_2/obstacle_status
+  system_address: udpin://0.0.0.0:14542
+  grpc_port: 50102
+  mavsdk_server_address: 127.0.0.1
+- drone_id: drone_3
+  status_topic: /drone_3/obstacle_status
+  system_address: udpin://0.0.0.0:14543
+  grpc_port: 50103
+  mavsdk_server_address: 127.0.0.1

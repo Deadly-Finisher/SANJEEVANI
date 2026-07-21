@@ -1,0 +1,30 @@
+perception:
+  enabled: true
+  detector_name: "placeholder_detector"
+  model_path: "models/placeholder_model.pt"
+  device: "auto"
+  confidence_threshold: 0.5
+  image_size: 640
+
+classes:
+  - person
+  - vehicle
+  - truck
+  - object
+
+tracking:
+  enabled: true
+  tracker_name: "placeholder_tracker"
+  max_lost_frames: 30
+  iou_threshold: 0.3
+
+input:
+  source_type: "simulation_camera"
+  frame_topic: "camera_frame_placeholder"
+  sample_video_path: "data/sample_videos/demo.mp4"
+
+output:
+  save_detections: true
+  detections_output_path: "outputs/detections.json"
+  save_annotated_frames: true
+  annotated_frames_dir: "outputs/annotated_frames"

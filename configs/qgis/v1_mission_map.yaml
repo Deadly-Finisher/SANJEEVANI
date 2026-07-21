@@ -1,0 +1,81 @@
+mission:
+  name: "v1_single_drone_multi_zone_surveillance"
+  world_name: "battlefield_sar_world_v1"
+  source_mission_config: "configs/missions/v1_single_drone_zone_mission.yaml"
+
+coordinate_system:
+  description: "Local Gazebo meter coordinate system"
+  spawn_gazebo_x: 0.0
+  spawn_gazebo_y: -35.0
+  conversion:
+    north_to_gazebo_x: true
+    east_to_gazebo_y_offset_from_spawn: true
+
+output:
+  output_dir: "outputs/qgis/v1_mission_map"
+  zones_geojson: "zones.geojson"
+  waypoints_csv: "waypoints.csv"
+  route_geojson: "route.geojson"
+  mission_objects_geojson: "mission_objects.geojson"
+
+zones:
+  - zone_name: "takeoff_landing_zone"
+    center_gazebo_x: 0.0
+    center_gazebo_y: -35.0
+    width_m: 12.0
+    height_m: 8.0
+    zone_type: "landing"
+
+  - zone_name: "person_zone_1"
+    center_gazebo_x: 5.0
+    center_gazebo_y: -10.0
+    width_m: 14.0
+    height_m: 10.0
+    zone_type: "person_observation"
+
+  - zone_name: "person_vehicle_zone"
+    center_gazebo_x: 18.0
+    center_gazebo_y: -12.0
+    width_m: 16.0
+    height_m: 10.0
+    zone_type: "person_vehicle_observation"
+
+  - zone_name: "structure_debris_zone"
+    center_gazebo_x: -18.0
+    center_gazebo_y: 18.0
+    width_m: 16.0
+    height_m: 12.0
+    zone_type: "structure_debris_observation"
+
+  - zone_name: "central_review_zone"
+    center_gazebo_x: 0.0
+    center_gazebo_y: 0.0
+    width_m: 12.0
+    height_m: 12.0
+    zone_type: "central_review"
+
+mission_objects:
+  - object_name: "field_person_01"
+    object_type: "person"
+    gazebo_x: 5.0
+    gazebo_y: -10.0
+
+  - object_name: "field_person_02"
+    object_type: "person"
+    gazebo_x: 18.0
+    gazebo_y: -12.0
+
+  - object_name: "field_person_03"
+    object_type: "person"
+    gazebo_x: -18.0
+    gazebo_y: 18.0
+
+  - object_name: "landing_zone"
+    object_type: "landing_reference"
+    gazebo_x: 0.0
+    gazebo_y: -35.0
+
+  - object_name: "central_crossroad"
+    object_type: "review_area"
+    gazebo_x: 0.0
+    gazebo_y: 0.0

@@ -1,0 +1,40 @@
+input:
+  ros_image_topic: /world/battlefield_sar_world_v1_realistic/model/x500_mono_cam_2/link/camera_link/sensor/camera/image
+mjpeg:
+  host: 0.0.0.0
+  port: 5012
+models:
+- confidence_threshold: 0.25
+  enabled: true
+  image_size: 640
+  model_name: general_coco
+  weights_path: yolo11n.pt
+- confidence_threshold: 0.25
+  enabled: true
+  image_size: 640
+  model_name: aerial_safe_objects
+  weights_path: models/aerial_safe_objects/best_aerial_safe_objects.pt
+- confidence_threshold: 0.25
+  enabled: true
+  image_size: 640
+  model_name: fire_smoke
+  weights_path: models/fire_smoke/best_fire_smoke.pt
+- confidence_threshold: 0.25
+  enabled: true
+  image_size: 640
+  model_name: drone_view_general
+  weights_path: models/drone_view_general/best_drone_view_general.pt
+output:
+  annotated_frame_dir: outputs/swarm/camera_tests/drone_2/annotated_frames
+  csv_path: outputs/swarm/camera_tests/drone_2/detections.csv
+  save_annotated_frames: false
+  save_every_n_frames: 5
+runtime:
+  inference_every_n_frames: 6
+server:
+  host: 0.0.0.0
+  port: 5012
+stream:
+  host: 0.0.0.0
+  jpeg_quality: 75
+  port: 5012

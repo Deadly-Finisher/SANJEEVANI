@@ -1,0 +1,11 @@
+input:
+  event_log_csv_path: "outputs/event_logs/telemetry_linked_detections.csv"
+
+output:
+  report_path: "outputs/reports/mission_event_report.md"
+
+metadata:
+  mission_name: "battlefield_sar_world_v1_single_drone_yolo_test"
+  drone_model: "PX4 x500_mono_cam"
+  world_name: "battlefield_sar_world_v1"
+  detector_model: "yolo11n.pt"

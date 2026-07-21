@@ -1,0 +1,9 @@
+telemetry:
+  input_dir: "outputs/telemetry"
+  file_pattern: "waypoint_navigation_*.csv"
+
+analysis:
+  output_dir: "outputs/analysis"
+  altitude_column: "mission_altitude_m"
+  distance_column: "distance_to_waypoint_m"
+  time_column: "timestamp_utc"

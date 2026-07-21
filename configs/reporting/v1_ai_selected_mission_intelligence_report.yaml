@@ -1,0 +1,14 @@
+input:
+  event_log_csv_path: "outputs/event_logs/v1_ai_selected_telemetry_linked_detections.csv"
+  telemetry_csv_path: "outputs/telemetry/v1_zone_mission_telemetry.csv"
+  detection_csv_path: "outputs/live_ai_selected/detections.csv"
+
+output:
+  report_path: "outputs/reports/v1_ai_selected_mission_intelligence_report.md"
+
+metadata:
+  mission_name: "v1_ai_selected_optimized_mission"
+  world_name: "battlefield_sar_world_v1"
+  drone_model: "PX4 x500_mono_cam"
+  detector_pipeline: "multi_model_yolo"
+  note: "Raw simulation detections require human review because synthetic Gazebo visuals can cause false positives."

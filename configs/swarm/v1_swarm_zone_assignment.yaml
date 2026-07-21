@@ -1,0 +1,48 @@
+input:
+  parsed_mission_json: "outputs/qgis/v1_mission_map/parsed_mission_map.json"
+
+output:
+  output_dir: "outputs/swarm/v1_three_drone_swarm"
+  assignment_json: "zone_assignment.json"
+  assignment_csv: "zone_assignment.csv"
+  assignment_report: "zone_assignment.md"
+  mission_yaml_dir: "configs/missions/swarm"
+
+swarm:
+  world_name: "battlefield_sar_world_v1_realistic"
+  drones:
+    - drone_id: "drone_1"
+      px4_instance: 1
+      mavsdk_port: 14541
+      spawn_gazebo_x: -20.0
+      spawn_gazebo_y: -35.0
+
+    - drone_id: "drone_2"
+      px4_instance: 2
+      mavsdk_port: 14542
+      spawn_gazebo_x: 0.0
+      spawn_gazebo_y: -35.0
+
+    - drone_id: "drone_3"
+      px4_instance: 3
+      mavsdk_port: 14543
+      spawn_gazebo_x: 20.0
+      spawn_gazebo_y: -35.0
+
+assignment:
+  strategy: "nearest_spawn_balanced"
+  load_penalty_m: 20.0
+  target_zone_names:
+    - "person_zone_1"
+    - "person_vehicle_zone"
+    - "structure_debris_zone"
+    - "central_review_zone"
+
+mission_defaults:
+  takeoff_altitude_m: 10.0
+  takeoff_wait_s: 8
+  waypoint_command_interval_s: 0.2
+  landing_wait_s: 12
+  default_altitude_m: 12.0
+  default_hold_s: 10.0
+  sample_interval_s: 0.5

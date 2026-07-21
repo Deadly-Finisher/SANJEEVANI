@@ -1,0 +1,49 @@
+swarm:
+  name: v1_three_drone_swarm
+execution:
+  connection_timeout_s: 60
+  health_timeout_s: 30
+  position_timeout_s: 90
+  command_retries: 1
+  command_retry_delay_s: 1
+  arrival_timeout_s: 240
+  horizontal_tolerance_m: 3.0
+  altitude_tolerance_m: 2.0
+  arrival_check_interval_s: 0.5
+  auto_land: true
+  wait_for_health: true
+  connection_stabilization_s: 3.0
+  set_takeoff_altitude_before_arm: false
+  arm_verification_timeout_s: 30
+  minimum_takeoff_altitude_m: 1.0
+  takeoff_verification_timeout_s: 60
+  landed_altitude_threshold_m: 0.5
+  landing_verification_timeout_s: 90
+  transport: direct_pymavlink
+  force_arm_in_simulation: true
+  arm_timeout_s: 30
+  takeoff_timeout_s: 90
+  takeoff_confirmation_fraction: 0.7
+  command_resend_interval_s: 5
+  reposition_resend_interval_s: 5
+  arrival_report_interval_s: 2
+  landing_timeout_s: 120
+  emergency_landing_timeout_s: 45
+  force_disarm_after_landing_timeout: true
+  gcs_source_system_base: 240
+  gcs_source_component: 190
+output:
+  run_log_dir: outputs/swarm/v1_three_drone_swarm/mission_runs
+drones:
+- drone_id: drone_1
+  mission_config: configs/missions/swarm/drone_1_mission.yaml
+  grpc_port: 50101
+  startup_delay_s: 0
+- drone_id: drone_2
+  mission_config: configs/missions/swarm/drone_2_mission.yaml
+  grpc_port: 50102
+  startup_delay_s: 3
+- drone_id: drone_3
+  mission_config: configs/missions/swarm/drone_3_mission.yaml
+  grpc_port: 50103
+  startup_delay_s: 6

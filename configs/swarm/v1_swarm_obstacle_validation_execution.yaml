@@ -1,0 +1,23 @@
+swarm:
+  name: v1_three_drone_swarm
+execution:
+  connection_timeout_s: 40
+  health_timeout_s: 60
+  position_timeout_s: 90
+  command_retries: 3
+  command_retry_delay_s: 2
+  arrival_timeout_s: 240
+  horizontal_tolerance_m: 1.5
+  altitude_tolerance_m: 1.0
+  arrival_check_interval_s: 1.0
+  auto_land: true
+  wait_for_health: false
+  connection_stabilization_s: 2.0
+  set_takeoff_altitude_before_arm: false
+output:
+  run_log_dir: outputs/swarm/v1_three_drone_swarm/validation_runs
+drones:
+- drone_id: drone_1
+  mission_config: configs/missions/swarm/drone_1_obstacle_validation.yaml
+  grpc_port: 50101
+  startup_delay_s: 0

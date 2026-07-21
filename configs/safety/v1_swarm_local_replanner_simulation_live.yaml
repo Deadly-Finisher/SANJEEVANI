@@ -1,0 +1,44 @@
+replanner:
+  mode: simulation_live
+  environment: simulation
+  allow_flight_commands: true
+  required_safety_guard_mode: dry_run
+  poll_interval_s: 0.5
+  decision_cooldown_s: 5.0
+  maximum_attempts_per_waypoint: 3
+  trigger_states:
+  - critical
+  - emergency_stop
+  minimum_side_clearance_m: 8.0
+  side_preference_margin_m: 1.0
+  temporary_waypoint:
+    forward_offset_m: 2.0
+    lateral_offset_m: 5.0
+    altitude_offset_m: 0.0
+    minimum_altitude_m: 2.5
+  blocked_sides_action: hold_and_abort_replan
+  live_execution:
+    hold_before_replan_s: 2.0
+    command_timeout_s: 12.0
+    command_retries: 3
+    command_retry_delay_s: 2.0
+    temporary_arrival_timeout_s: 120.0
+    arrival_check_interval_s: 0.5
+    horizontal_tolerance_m: 1.5
+    altitude_tolerance_m: 1.0
+    clearance_verification_timeout_s: 30.0
+    clearance_required_consecutive_checks: 2
+    resume_states:
+    - clear
+    - warning
+    avoidance_speed_m_s: 0.5
+    resume_original_waypoint: true
+    set_speed_before_replan: false
+  event_log_csv: outputs/swarm/v1_three_drone_swarm/safety/{drone_id}_local_replanning_events_live.csv
+  activation:
+    excluded_zone_names:
+    - validation_takeoff
+    minimum_altitude_m: 2.0
+geometry:
+  earth_radius_m: 6371000.0
+  minimum_target_vector_m: 0.25

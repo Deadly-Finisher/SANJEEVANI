@@ -1,0 +1,20 @@
+dataset:
+  yaml_path: "data/raw/visdrone_yolo/VisDrone_Dataset/visdrone.yaml"
+
+model:
+  base_model: "yolo11n.pt"
+
+training:
+  epochs: 30
+  image_size: 640
+  batch_size: 4
+  workers: 2
+  device: "auto"
+  project: "outputs/ultralytics_runs/drone_view_general"
+  run_name: "visdrone_yolo_finetune"
+  patience: 5
+
+output:
+  model_dir: "models/drone_view_general"
+  best_model_name: "best_drone_view_general.pt"
+  last_model_name: "last_drone_view_general.pt"

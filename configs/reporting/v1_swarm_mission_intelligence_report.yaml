@@ -1,0 +1,43 @@
+report:
+  title: "V1 Three-Drone Swarm Mission Intelligence Report"
+  swarm_name: "v1_three_drone_swarm"
+  generated_report_path: "outputs/reports/v1_swarm_mission_intelligence_report.md"
+  generated_summary_path: "outputs/reports/v1_swarm_mission_intelligence_summary.json"
+
+inputs:
+  zone_assignment_json: "outputs/swarm/v1_three_drone_swarm/zone_assignment.json"
+
+  mission_summaries:
+    - drone_id: "drone_1"
+      path: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_1_mission_summary.json"
+    - drone_id: "drone_2"
+      path: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_2_mission_summary.json"
+    - drone_id: "drone_3"
+      path: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_3_mission_summary.json"
+
+  telemetry_logs:
+    - drone_id: "drone_1"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_1_telemetry.csv"
+    - drone_id: "drone_2"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_2_telemetry.csv"
+    - drone_id: "drone_3"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_3_telemetry.csv"
+
+  shared_detection_summary_json: "outputs/swarm/v1_three_drone_swarm/shared_detection_summary.json"
+  shared_event_summary_json: "outputs/swarm/v1_three_drone_swarm/shared_event_summary.json"
+  merge_summary_json: "outputs/swarm/v1_three_drone_swarm/merged/swarm_merge_summary.json"
+
+telemetry:
+  timestamp_column: "timestamp_utc"
+  north_column: "local_north_m"
+  east_column: "local_east_m"
+  relative_altitude_column: "relative_altitude_m"
+  zone_column: "current_zone"
+
+assessment:
+  successful_statuses:
+    - "completed"
+    - "completed_with_errors"
+
+  minimum_linked_detection_count: 1
+  minimum_linked_event_count: 1

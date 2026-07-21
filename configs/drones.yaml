@@ -1,0 +1,29 @@
+drones:
+  - id: "drone_1"
+    start_position: [0, 0, 20]
+    battery: 100
+    status: "idle"
+    role: "surveillance"
+
+  - id: "drone_2"
+    start_position: [20, 0, 20]
+    battery: 100
+    status: "idle"
+    role: "surveillance"
+
+  - id: "drone_3"
+    start_position: [40, 0, 20]
+    battery: 100
+    status: "idle"
+    role: "surveillance"
+
+communication:
+  enabled: true
+  packet_loss_probability: 0.0
+  max_range: 150
+  simulate_dropout: true
+
+failure_simulation:
+  enabled: true
+  failure_step: 120
+  failed_drone_id: "drone_2"

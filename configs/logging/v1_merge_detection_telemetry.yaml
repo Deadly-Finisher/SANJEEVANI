@@ -1,0 +1,13 @@
+input:
+  detection_csv_path: outputs/live_multi_model/detections.csv
+  telemetry_csv_path: outputs/telemetry/v1_zone_mission_telemetry.csv
+output:
+  event_log_csv_path: outputs/event_logs/v1_telemetry_linked_detections.csv
+merge:
+  max_time_difference_s: 2.0
+metadata:
+  mission_name: v1_single_drone_multi_zone_surveillance
+  event_type: visual_detection
+time:
+  detection_timezone_if_naive: Asia/Kolkata
+  telemetry_timezone_if_naive: UTC

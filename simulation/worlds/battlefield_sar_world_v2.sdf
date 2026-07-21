@@ -1,0 +1,1324 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="battlefield_sar_world_v2">
+
+        <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+
+    <plugin filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu"/>
+
+    <plugin filename="gz-sim-air-pressure-system"
+            name="gz::sim::systems::AirPressure"/>
+
+    <plugin filename="gz-sim-magnetometer-system"
+            name="gz::sim::systems::Magnetometer"/>
+
+    <plugin filename="gz-sim-navsat-system"
+            name="gz::sim::systems::NavSat"/>
+
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <gravity>0 0 -9.8</gravity>
+
+        <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397742</latitude_deg>
+      <longitude_deg>8.545594</longitude_deg>
+      <elevation>488.0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <scene>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.65 0.75 0.85 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <light name="sun" type="directional">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <diffuse>0.9 0.85 0.75 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.3 -1</direction>
+    </light>
+
+    <!-- Ground -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>250 250 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>250 250 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.28 0.33 0.22 1</ambient>
+            <diffuse>0.28 0.33 0.22 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Main road -->
+    <model name="main_road">
+      <static>true</static>
+      <pose>0 0 0.06 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>180 8 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.08 0.08 0.08 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Cross road -->
+    <model name="cross_road">
+      <static>true</static>
+      <pose>20 0 0.07 0 0 1.5708</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>120 6 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.08 0.08 0.08 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <!-- Improved field building for UAV camera testing -->
+
+    
+
+    <!-- Landing zone -->
+    <model name="landing_zone">
+      <static>true</static>
+      <pose>0 -35 0.11 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>5</radius>
+              <length>0.03</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.1 1</ambient>
+            <diffuse>0.8 0.8 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  
+    <!-- Checkpoint barriers and debris for situational-awareness testing -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_01</name>
+      <pose>12 3 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_02</name>
+      <pose>12 -3 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_03</name>
+      <pose>18 3 0 0 0 0.15</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/concrete_barrier/model.sdf</uri>
+      <name>checkpoint_barrier_04</name>
+      <pose>18 -3 0 0 0 -0.15</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>debris_pile_01</name>
+      <pose>-22 -18 0 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>debris_pile_02</name>
+      <pose>-38 -30 0 0 0 -0.4</pose>
+    </include>
+
+
+  
+    <!-- Additional debris piles placed directly on the roads -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_01</name>
+      <pose>-15 0 0 0 0 0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_02</name>
+      <pose>0 5 0 0 0 -0.35</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_03</name>
+      <pose>22 0 0 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_04</name>
+      <pose>20 10 0 0 0 0.25</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_05</name>
+      <pose>20 -10 0 0 0 -0.4</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <name>road_debris_06</name>
+      <pose>35 0 0 0 0 0.15</pose>
+    </include>
+
+
+  
+    <!-- Smoke and fire-like visual effects for event detection testing -->
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <name>smoke_fire_effect_01</name>
+      <pose>-28 -20 0 0 0 0.2</pose>
+    </include>
+
+    <include>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <name>smoke_fire_effect_02</name>
+      <pose>22 0 0 0 0 -0.4</pose>
+    </include>
+
+
+  
+    <model name="large_realistic_terrain_v2">
+      <static>true</static>
+      <pose>0.00 0.00 -0.04 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>420.00 420.00 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.24 0.30 0.18 1</ambient>
+            <diffuse>0.24 0.30 0.18 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>420.00 420.00 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="north_south_asphalt_road_v2">
+      <static>true</static>
+      <pose>0.00 0.00 0.01 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>7.00 360.00 0.03</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.04 0.04 1</ambient>
+            <diffuse>0.04 0.04 0.04 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>7.00 360.00 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="east_west_asphalt_road_v2">
+      <static>true</static>
+      <pose>0.00 0.00 0.02 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>360.00 7.00 0.03</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.04 0.04 1</ambient>
+            <diffuse>0.04 0.04 0.04 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>360.00 7.00 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="diagonal_dirt_track_v2">
+      <static>true</static>
+      <pose>-55.00 42.00 0.02 0 0 0.550</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>95.00 4.50 0.03</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.20 0.13 1</ambient>
+            <diffuse>0.25 0.20 0.13 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>95.00 4.50 0.03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="person_vehicle_zone_ground_v2">
+      <static>true</static>
+      <pose>45.00 -35.00 0.01 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>45.00 38.00 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.18 0.22 0.16 1</ambient>
+            <diffuse>0.18 0.22 0.16 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>45.00 38.00 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="fire_smoke_zone_ground_v2">
+      <static>true</static>
+      <pose>-45.00 38.00 0.01 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>42.00 36.00 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.23 0.18 0.14 1</ambient>
+            <diffuse>0.23 0.18 0.14 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>42.00 36.00 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="debris_structure_zone_ground_v2">
+      <static>true</static>
+      <pose>55.00 45.00 0.01 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>48.00 42.00 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.20 0.20 0.18 1</ambient>
+            <diffuse>0.20 0.20 0.18 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>48.00 42.00 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <model name="landing_return_zone_ground_v2">
+      <static>true</static>
+      <pose>0.00 -60.00 0.01 0 0 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>28.00 28.00 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.12 0.22 0.12 1</ambient>
+            <diffuse>0.12 0.22 0.12 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>28.00 28.00 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <include>
+      <name>realistic_broadleaf_001</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-90.05 34.16 0.00 0 0 0.796</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_002</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-75.95 -3.76 0.00 0 0 1.624</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_003</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-88.52 52.67 0.00 0 0 1.055</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_004</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-70.76 2.24 0.00 0 0 2.254</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_005</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-79.85 -47.51 0.00 0 0 1.250</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_006</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-94.90 -23.21 0.00 0 0 1.149</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_007</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-77.44 -77.53 0.00 0 0 -1.599</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_008</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-71.19 -48.19 0.00 0 0 2.617</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_009</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-88.02 -82.38 0.00 0 0 -0.716</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_010</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-65.07 42.96 0.00 0 0 0.720</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_011</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-68.75 20.86 0.00 0 0 2.040</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_012</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-93.98 -30.79 0.00 0 0 2.912</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_013</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-80.07 -69.15 0.00 0 0 3.072</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_014</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-66.44 -23.68 0.00 0 0 -3.100</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_015</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-90.36 57.15 0.00 0 0 -1.177</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_016</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-91.25 77.03 0.00 0 0 -1.182</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_017</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-81.41 9.36 0.00 0 0 -0.683</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_018</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-84.71 -2.75 0.00 0 0 -2.227</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_019</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-89.39 -83.31 0.00 0 0 0.334</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_020</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-69.02 -47.72 0.00 0 0 -2.641</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_021</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-71.59 -52.46 0.00 0 0 -1.240</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_022</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-65.94 70.91 0.00 0 0 2.785</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_023</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-72.36 47.30 0.00 0 0 1.522</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_024</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-77.58 41.36 0.00 0 0 -0.236</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_025</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-91.33 -4.26 0.00 0 0 -2.460</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_026</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-70.19 -53.81 0.00 0 0 2.864</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_027</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-67.30 69.76 0.00 0 0 1.281</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_028</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-82.71 -24.26 0.00 0 0 -1.847</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_029</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-81.46 -20.56 0.00 0 0 -1.034</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_030</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-65.15 -20.41 0.00 0 0 0.889</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_031</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-94.19 -73.21 0.00 0 0 1.141</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_032</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-73.46 88.71 0.00 0 0 -1.502</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_033</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-80.12 -1.52 0.00 0 0 2.834</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_034</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-78.49 44.67 0.00 0 0 -1.117</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_035</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-88.34 19.60 0.00 0 0 -1.543</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_036</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>84.48 23.30 0.00 0 0 2.169</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_037</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>71.32 -62.68 0.00 0 0 -2.177</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_038</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>77.19 81.14 0.00 0 0 1.138</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_039</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>77.13 18.47 0.00 0 0 -1.885</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_040</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>75.73 -75.38 0.00 0 0 0.615</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_041</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>67.30 59.60 0.00 0 0 -1.398</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_042</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>92.20 -23.77 0.00 0 0 -0.760</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_043</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>88.92 33.42 0.00 0 0 2.768</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_044</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>96.45 87.07 0.00 0 0 -0.207</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_045</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>79.25 92.93 0.00 0 0 -0.396</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_046</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>98.65 17.20 0.00 0 0 0.735</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_047</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>95.91 -1.73 0.00 0 0 -1.378</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_048</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>78.14 -48.03 0.00 0 0 -2.045</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_049</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>95.67 -64.16 0.00 0 0 -0.724</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_050</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>67.43 58.00 0.00 0 0 -1.429</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_051</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>92.09 -3.20 0.00 0 0 -1.956</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_052</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>94.29 -85.09 0.00 0 0 2.894</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_053</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>74.03 -39.92 0.00 0 0 -2.924</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_054</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>79.68 -62.58 0.00 0 0 1.950</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_055</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>67.43 -30.76 0.00 0 0 2.730</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_056</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>96.47 91.85 0.00 0 0 1.285</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_057</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>91.10 -4.00 0.00 0 0 -3.021</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_058</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>73.83 87.19 0.00 0 0 0.008</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_059</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>83.40 43.44 0.00 0 0 -2.893</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_060</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>65.99 -54.70 0.00 0 0 0.677</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_061</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>94.34 56.09 0.00 0 0 1.259</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_062</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>95.85 19.26 0.00 0 0 -1.631</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_063</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>79.91 15.42 0.00 0 0 -3.092</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_064</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>94.73 -36.48 0.00 0 0 0.279</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_065</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>83.70 -42.56 0.00 0 0 -2.546</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_066</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>91.89 -93.06 0.00 0 0 -1.200</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_067</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>88.99 86.26 0.00 0 0 -0.288</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_068</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>65.82 17.80 0.00 0 0 2.477</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_069</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>87.54 66.82 0.00 0 0 -0.816</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_070</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>85.45 -46.13 0.00 0 0 -2.292</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_071</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-16.99 82.57 0.00 0 0 1.832</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_072</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>73.01 -65.96 0.00 0 0 2.024</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_073</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-72.93 -73.09 0.00 0 0 0.185</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_074</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-85.44 -9.57 0.00 0 0 -2.831</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_075</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-64.65 66.12 0.00 0 0 -1.962</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_076</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>27.96 -67.22 0.00 0 0 -0.609</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_077</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-60.11 -56.89 0.00 0 0 0.326</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_078</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-21.99 37.80 0.00 0 0 -1.726</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_079</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>9.01 -81.69 0.00 0 0 1.899</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_080</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>37.96 67.30 0.00 0 0 2.157</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_081</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>49.36 52.33 0.00 0 0 2.670</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_082</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-78.57 47.51 0.00 0 0 2.409</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_083</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-58.45 38.07 0.00 0 0 -3.029</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_084</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-44.48 35.41 0.00 0 0 0.515</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_085</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-33.55 -82.46 0.00 0 0 -2.635</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_086</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-20.00 -34.31 0.00 0 0 2.510</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_087</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>72.14 -36.90 0.00 0 0 1.551</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_088</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>80.68 -72.26 0.00 0 0 1.628</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_089</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>42.22 84.08 0.00 0 0 -1.958</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_090</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-34.17 35.90 0.00 0 0 -2.765</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_091</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-78.53 56.64 0.00 0 0 1.979</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_092</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>85.83 -26.06 0.00 0 0 0.669</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_093</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-32.74 88.78 0.00 0 0 0.755</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_094</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-70.63 -76.30 0.00 0 0 -0.181</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_095</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-76.80 56.58 0.00 0 0 1.885</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_096</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>46.78 -9.35 0.00 0 0 -1.017</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_097</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>21.85 -86.44 0.00 0 0 -1.446</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_098</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>26.04 -10.33 0.00 0 0 -0.922</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_099</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-17.73 -49.41 0.00 0 0 -1.269</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_100</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>-81.21 -11.90 0.00 0 0 0.798</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_101</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>-45.53 36.75 0.00 0 0 2.450</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_102</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>57.11 40.28 0.00 0 0 -2.694</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_broadleaf_103</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_broadleaf/model.sdf</uri>
+      <pose>23.73 83.36 0.00 0 0 -2.715</pose>
+    </include>
+
+
+    <include>
+      <name>realistic_pine_104</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/trees/realistic_pine/model.sdf</uri>
+      <pose>70.29 50.31 0.00 0 0 0.074</pose>
+    </include>
+
+
+    <include>
+      <name>v2_field_building_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/field_building/model.sdf</uri>
+      <pose>55.00 48.00 0.00 0 0 0.200</pose>
+    </include>
+
+
+    <include>
+      <name>v2_field_building_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/field_building/model.sdf</uri>
+      <pose>74.00 42.00 0.00 0 0 -0.300</pose>
+    </include>
+
+
+    <include>
+      <name>v2_field_building_03</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/field_building/model.sdf</uri>
+      <pose>-42.00 -48.00 0.00 0 0 0.100</pose>
+    </include>
+
+
+    <include>
+      <name>v2_damaged_building_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/damaged_building/model.sdf</uri>
+      <pose>42.00 62.00 0.00 0 0 -0.400</pose>
+    </include>
+
+
+    <include>
+      <name>v2_damaged_building_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/buildings/damaged_building/model.sdf</uri>
+      <pose>-58.00 42.00 0.00 0 0 0.500</pose>
+    </include>
+
+
+    <include>
+      <name>v2_vehicle_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/vehicles/recon_vehicle/model.sdf</uri>
+      <pose>36.00 -32.00 0.00 0 0 0.200</pose>
+    </include>
+
+
+    <include>
+      <name>v2_vehicle_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/vehicles/recon_vehicle/model.sdf</uri>
+      <pose>51.00 -28.00 0.00 0 0 -0.500</pose>
+    </include>
+
+
+    <include>
+      <name>v2_vehicle_03</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/vehicles/recon_vehicle/model.sdf</uri>
+      <pose>-15.00 12.00 0.00 0 0 1.500</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>38.00 -38.00 0.00 0 0 1.118</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>42.00 -32.00 0.00 0 0 -1.948</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_03</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>50.00 -42.00 0.00 0 0 -1.445</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_04</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>18.00 -18.00 0.00 0 0 -2.771</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_05</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>-22.00 24.00 0.00 0 0 -2.907</pose>
+    </include>
+
+
+    <include>
+      <name>v2_person_06</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/humans/field_person/model.sdf</uri>
+      <pose>62.00 50.00 0.00 0 0 -0.031</pose>
+    </include>
+
+
+    <include>
+      <name>v2_smoke_fire_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <pose>-48.00 40.00 0.00 0 0 0.000</pose>
+    </include>
+
+
+    <include>
+      <name>v2_smoke_fire_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/effects/smoke_fire_effect/model.sdf</uri>
+      <pose>-58.00 50.00 0.00 0 0 0.000</pose>
+    </include>
+
+
+    <include>
+      <name>v2_debris_01</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <pose>54.00 52.00 0.00 0 0 0.362</pose>
+    </include>
+
+
+    <include>
+      <name>v2_debris_02</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <pose>60.00 46.00 0.00 0 0 0.306</pose>
+    </include>
+
+
+    <include>
+      <name>v2_debris_03</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <pose>48.00 40.00 0.00 0 0 -0.684</pose>
+    </include>
+
+
+    <include>
+      <name>v2_debris_04</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <pose>-45.00 35.00 0.00 0 0 -0.792</pose>
+    </include>
+
+
+    <include>
+      <name>v2_debris_05</name>
+      <uri>file:///home/ronie/Programs/SWARM_DRONES/simulation/models/barriers/debris_pile/model.sdf</uri>
+      <pose>-52.00 44.00 0.00 0 0 0.862</pose>
+    </include>
+
+  </world>
+</sdf>

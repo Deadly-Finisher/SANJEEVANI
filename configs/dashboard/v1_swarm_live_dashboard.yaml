@@ -1,0 +1,82 @@
+dashboard:
+  page_title: "AI Swarm Battlefield Intelligence"
+  page_icon: "🛡️"
+  refresh_seconds: 2
+  streamlit_port: 8502
+  maximum_table_rows: 100
+
+mission:
+  swarm_name: "v1_three_drone_swarm"
+  world_name: "battlefield_sar_world_v1_realistic"
+
+drones:
+  - drone_id: "drone_1"
+    display_name: "Drone 1 — Structure and Debris Reconnaissance"
+    assigned_zone: "structure_debris_zone"
+    stream_base_url: "http://127.0.0.1:5011"
+    video_feed_url: "http://127.0.0.1:5011/video_feed"
+    detection_csv: "outputs/swarm/camera_tests/drone_1/detections.csv"
+    telemetry_csv: "outputs/swarm/v1_three_drone_swarm/drone_1_telemetry.csv"
+    mission_summary_json: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_1_mission_summary.json"
+
+  - drone_id: "drone_2"
+    display_name: "Drone 2 — Personnel and Central Review"
+    assigned_zone: "person_zone_1 → central_review_zone"
+    stream_base_url: "http://127.0.0.1:5012"
+    video_feed_url: "http://127.0.0.1:5012/video_feed"
+    detection_csv: "outputs/swarm/camera_tests/drone_2/detections.csv"
+    telemetry_csv: "outputs/swarm/v1_three_drone_swarm/drone_2_telemetry.csv"
+    mission_summary_json: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_2_mission_summary.json"
+
+  - drone_id: "drone_3"
+    display_name: "Drone 3 — Person and Vehicle Surveillance"
+    assigned_zone: "person_vehicle_zone"
+    stream_base_url: "http://127.0.0.1:5013"
+    video_feed_url: "http://127.0.0.1:5013/video_feed"
+    detection_csv: "outputs/swarm/camera_tests/drone_3/detections.csv"
+    telemetry_csv: "outputs/swarm/v1_three_drone_swarm/drone_3_telemetry.csv"
+    mission_summary_json: "outputs/swarm/v1_three_drone_swarm/mission_runs/drone_3_mission_summary.json"
+
+intelligence:
+  shared_detections_csv: "outputs/swarm/v1_three_drone_swarm/shared_detections.csv"
+  shared_events_csv: "outputs/swarm/v1_three_drone_swarm/shared_events.csv"
+  event_inbox_csv: "outputs/swarm/v1_three_drone_swarm/swarm_event_inbox.csv"
+  detection_summary_json: "outputs/swarm/v1_three_drone_swarm/shared_detection_summary.json"
+  event_summary_json: "outputs/swarm/v1_three_drone_swarm/shared_event_summary.json"
+  merge_summary_json: "outputs/swarm/v1_three_drone_swarm/merged/swarm_merge_summary.json"
+  mission_report_summary_json: "outputs/reports/v1_swarm_mission_intelligence_summary.json"
+  zone_assignment_json: "outputs/swarm/v1_three_drone_swarm/zone_assignment.json"
+
+severity:
+  critical:
+    - "fire"
+    - "smoke"
+    - "weapon"
+    - "military_tank"
+    - "military_artillery"
+    - "military_vehicle"
+    - "military_truck"
+    - "military_aircraft"
+
+  high:
+    - "person"
+    - "pedestrian"
+    - "people"
+    - "soldier"
+    - "camouflage_soldier"
+    - "civilian"
+
+  medium:
+    - "car"
+    - "truck"
+    - "bus"
+    - "boat"
+    - "airplane"
+    - "civilian_vehicle"
+    - "military_warship"
+
+  low:
+    - "bird"
+    - "kite"
+    - "sheep"
+    - "traffic light"

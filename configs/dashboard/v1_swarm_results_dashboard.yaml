@@ -1,0 +1,38 @@
+dashboard:
+  page_title: Three-Drone Swarm Intelligence Dashboard
+  page_icon: "\U0001F6F0\uFE0F"
+  streamlit_port: 8503
+  maximum_table_rows: 150
+project:
+  title: AI-Driven Battlefield Intelligence Using a Three-Drone Swarm
+  swarm_name: v1_three_drone_swarm
+  world_name: battlefield_sar_world_v1_realistic
+paths:
+  mission_summary_json: outputs/reports/v1_swarm_mission_intelligence_summary.json
+  mission_report_md: outputs/reports/v1_swarm_mission_intelligence_report.md
+  zone_assignment_csv: outputs/swarm/v1_three_drone_swarm/zone_assignment.csv
+  zone_assignment_json: outputs/swarm/v1_three_drone_swarm/zone_assignment.json
+  shared_detections_csv: outputs/swarm/v1_three_drone_swarm/shared_detections.csv
+  shared_detection_summary_json: outputs/swarm/v1_three_drone_swarm/shared_detection_summary.json
+  shared_events_csv: outputs/swarm/v1_three_drone_swarm/shared_events.csv
+  shared_event_summary_json: outputs/swarm/v1_three_drone_swarm/shared_event_summary.json
+  swarm_event_inbox_csv: outputs/swarm/v1_three_drone_swarm/swarm_event_inbox.csv
+drones:
+- drone_id: drone_1
+  display_name: "Drone 1 \u2014 Structure and Debris Reconnaissance"
+  telemetry_csv: outputs/swarm/v1_three_drone_swarm/drone_1_telemetry.csv
+  stream_base_url: http://127.0.0.1:5011
+  video_feed_url: http://127.0.0.1:5011/video_feed
+  detection_csv: outputs/swarm/camera_tests/drone_1/detections.csv
+- drone_id: drone_2
+  display_name: "Drone 2 \u2014 Personnel and Central Review"
+  telemetry_csv: outputs/swarm/v1_three_drone_swarm/drone_2_telemetry.csv
+  stream_base_url: http://127.0.0.1:5012
+  video_feed_url: http://127.0.0.1:5012/video_feed
+  detection_csv: outputs/swarm/camera_tests/drone_2/detections.csv
+- drone_id: drone_3
+  display_name: "Drone 3 \u2014 Person and Vehicle Surveillance"
+  telemetry_csv: outputs/swarm/v1_three_drone_swarm/drone_3_telemetry.csv
+  stream_base_url: http://127.0.0.1:5013
+  video_feed_url: http://127.0.0.1:5013/video_feed
+  detection_csv: outputs/swarm/camera_tests/drone_3/detections.csv

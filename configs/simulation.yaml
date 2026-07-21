@@ -1,0 +1,42 @@
+simulation:
+  backend: "python_swarm_simulator"
+  timestep_seconds: 1.0
+  max_steps: 300
+  random_seed: 42
+
+movement:
+  default_altitude: 20
+  max_speed: 10
+  waypoint_reach_threshold: 2.0
+
+coverage:
+  path_pattern: "lawnmower"
+  sector_overlap_allowed: 0.1
+  mark_sector_covered_after_visit: true
+
+battery:
+  enabled: true
+  initial_battery_percent: 100
+  drain_per_step: 0.05
+  return_to_base_threshold: 20
+
+communication:
+  enabled: true
+  simulate_packet_loss: true
+  packet_loss_probability: 0.0
+  simulate_delay: false
+  delay_steps: 0
+
+failure:
+  enabled: true
+  failure_step: 120
+  failed_drone_id: "drone_2"
+  reassign_failed_drone_tasks: true
+
+logging:
+  save_logs: true
+  log_dir: "logs"
+  save_outputs: true
+  output_dir: "outputs"
+  mission_report_path: "outputs/mission_report.json"
+  coverage_report_path: "outputs/coverage_report.json"

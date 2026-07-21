@@ -1,0 +1,536 @@
+from pathlib import Path
+from datetime import datetime, timezone
+import argparse
+import asyncio
+import csv
+import json
+import math
+import time
+
+import yaml
+from mavsdk import System
+
+
+EARTH_RADIUS_M = 6378137.0
+
+
+def load_yaml(path):
+    return yaml.safe_load(Path(path).read_text())
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def offset_lat_lon(latitude_deg, longitude_deg, north_m, east_m):
+    latitude_rad = math.radians(latitude_deg)
+
+    new_latitude = latitude_deg + math.degrees(
+        float(north_m) / EARTH_RADIUS_M
+    )
+
+    new_longitude = longitude_deg + math.degrees(
+        float(east_m) /
+        (EARTH_RADIUS_M * max(math.cos(latitude_rad), 0.000001))
+    )
+
+    return new_latitude, new_longitude
+
+
+def horizontal_distance_m(lat1, lon1, lat2, lon2):
+    lat1_rad = math.radians(lat1)
+    lat2_rad = math.radians(lat2)
+
+    delta_lat = lat2_rad - lat1_rad
+    delta_lon = math.radians(lon2 - lon1)
+
+    a = (
+        math.sin(delta_lat / 2.0) ** 2
+        + math.cos(lat1_rad)
+        * math.cos(lat2_rad)
+        * math.sin(delta_lon / 2.0) ** 2
+    )
+
+    return 2.0 * EARTH_RADIUS_M * math.asin(min(1.0, math.sqrt(a)))
+
+
+def position_to_local(home_lat, home_lon, current_lat, current_lon):
+    north_m = math.radians(current_lat - home_lat) * EARTH_RADIUS_M
+
+    east_m = (
+        math.radians(current_lon - home_lon)
+        * EARTH_RADIUS_M
+        * math.cos(math.radians(home_lat))
+    )
+
+    return north_m, east_m
+
+
+async def wait_connected(drone, drone_id, timeout_s):
+    async def wait():
+        async for state in drone.core.connection_state():
+            if state.is_connected:
+                print(f"[{drone_id}] connected")
+                return
+
+    await asyncio.wait_for(wait(), timeout=timeout_s)
+
+
+async def wait_health(drone, drone_id, timeout_s):
+    async def wait():
+        async for health in drone.telemetry.health():
+            if health.is_global_position_ok and health.is_home_position_ok:
+                print(f"[{drone_id}] global position and home ready")
+                return
+
+    try:
+        await asyncio.wait_for(wait(), timeout=timeout_s)
+    except asyncio.TimeoutError:
+        print(
+            f"[{drone_id}] WARNING: health timeout reached; "
+            "continuing with available position data"
+        )
+
+
+async def position_listener(drone, state):
+    async for position in drone.telemetry.position():
+        state["position"] = position
+
+
+async def wait_for_position(state, timeout_s):
+    start = time.monotonic()
+
+    while state.get("position") is None:
+        if time.monotonic() - start > timeout_s:
+            raise TimeoutError("No telemetry position received")
+
+        await asyncio.sleep(0.2)
+
+
+async def execute_with_retry(
+    label,
+    command_factory,
+    retries,
+    retry_delay_s,
+    drone_id,
+):
+    last_error = None
+
+    for attempt in range(1, retries + 1):
+        try:
+            await command_factory()
+            return
+        except Exception as error:
+            last_error = error
+            print(
+                f"[{drone_id}] {label} failed "
+                f"attempt {attempt}/{retries}: {error}"
+            )
+
+            if attempt < retries:
+                await asyncio.sleep(retry_delay_s)
+
+    raise RuntimeError(f"{label} failed after {retries} attempts: {last_error}")
+
+
+async def wait_for_arrival(
+    state,
+    target_lat,
+    target_lon,
+    target_abs_alt,
+    horizontal_tolerance_m,
+    altitude_tolerance_m,
+    timeout_s,
+    check_interval_s,
+    drone_id,
+):
+    start = time.monotonic()
+
+    while True:
+        position = state.get("position")
+
+        if position is not None:
+            horizontal_error = horizontal_distance_m(
+                position.latitude_deg,
+                position.longitude_deg,
+                target_lat,
+                target_lon,
+            )
+
+            altitude_error = abs(
+                position.absolute_altitude_m - target_abs_alt
+            )
+
+            print(
+                f"[{drone_id}] target error: "
+                f"horizontal={horizontal_error:.2f} m, "
+                f"altitude={altitude_error:.2f} m"
+            )
+
+            if (
+                horizontal_error <= horizontal_tolerance_m
+                and altitude_error <= altitude_tolerance_m
+            ):
+                return True
+
+        if time.monotonic() - start > timeout_s:
+            print(f"[{drone_id}] arrival timeout; continuing mission")
+            return False
+
+        await asyncio.sleep(check_interval_s)
+
+
+async def telemetry_logger(
+    telemetry_path,
+    drone_id,
+    state,
+    home_lat,
+    home_lon,
+    sample_interval_s,
+    stop_event,
+):
+    telemetry_path = Path(telemetry_path)
+    telemetry_path.parent.mkdir(parents=True, exist_ok=True)
+
+    fields = [
+        "timestamp_utc",
+        "drone_id",
+        "mission_status",
+        "current_zone",
+        "latitude_deg",
+        "longitude_deg",
+        "absolute_altitude_m",
+        "relative_altitude_m",
+        "local_north_m",
+        "local_east_m",
+    ]
+
+    with telemetry_path.open("w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fields)
+        writer.writeheader()
+
+        while not stop_event.is_set():
+            position = state.get("position")
+
+            if position is not None:
+                north_m, east_m = position_to_local(
+                    home_lat,
+                    home_lon,
+                    position.latitude_deg,
+                    position.longitude_deg,
+                )
+
+                writer.writerow({
+                    "timestamp_utc": utc_now(),
+                    "drone_id": drone_id,
+                    "mission_status": state.get(
+                        "mission_status", "unknown"
+                    ),
+                    "current_zone": state.get("current_zone", ""),
+                    "latitude_deg": position.latitude_deg,
+                    "longitude_deg": position.longitude_deg,
+                    "absolute_altitude_m":
+                        position.absolute_altitude_m,
+                    "relative_altitude_m":
+                        position.relative_altitude_m,
+                    "local_north_m": round(north_m, 3),
+                    "local_east_m": round(east_m, 3),
+                })
+
+                file.flush()
+
+            await asyncio.sleep(sample_interval_s)
+
+
+async def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--execution-config",
+        default="configs/swarm/v1_swarm_mission_execution.yaml",
+    )
+
+    parser.add_argument("--drone-id", required=True)
+
+    args = parser.parse_args()
+
+    execution_config = load_yaml(args.execution_config)
+
+    drone_entry = next(
+        (
+            drone
+            for drone in execution_config["drones"]
+            if drone["drone_id"] == args.drone_id
+        ),
+        None,
+    )
+
+    if drone_entry is None:
+        raise RuntimeError(f"Unknown drone ID: {args.drone_id}")
+
+    drone_id = drone_entry["drone_id"]
+    grpc_port = int(drone_entry["grpc_port"])
+    startup_delay_s = float(drone_entry["startup_delay_s"])
+
+    mission_config = load_yaml(drone_entry["mission_config"])
+    execution = execution_config["execution"]
+
+    system_address = mission_config["connection"]["system_address"]
+    mission = mission_config["mission"]
+    waypoints = mission_config["waypoints"]
+    logging_config = mission_config["logging"]
+
+    output_dir = Path(execution_config["output"]["run_log_dir"])
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    summary_path = output_dir / f"{drone_id}_mission_summary.json"
+
+    print(f"[{drone_id}] startup delay: {startup_delay_s} seconds")
+    await asyncio.sleep(startup_delay_s)
+
+    print(f"[{drone_id}] MAVSDK address: {system_address}")
+    print(f"[{drone_id}] gRPC port: {grpc_port}")
+
+    drone = System(mavsdk_server_address="127.0.0.1", port=grpc_port)
+    state = {
+        "position": None,
+        "mission_status": "connecting",
+        "current_zone": "",
+    }
+
+    stop_event = asyncio.Event()
+    position_task = None
+    logger_task = None
+
+    summary = {
+        "drone_id": drone_id,
+        "mission_name": mission["mission_name"],
+        "status": "started",
+        "started_at_utc": utc_now(),
+        "completed_at_utc": None,
+        "completed_waypoints": [],
+        "error": None,
+    }
+
+    try:
+        await drone.connect()
+
+        await wait_connected(
+            drone,
+            drone_id,
+            float(execution["connection_timeout_s"]),
+        )
+
+        position_task = asyncio.create_task(
+            position_listener(drone, state)
+        )
+
+        await wait_health(
+            drone,
+            drone_id,
+            float(execution["health_timeout_s"]),
+        )
+
+        await wait_for_position(
+            state,
+            float(execution["position_timeout_s"]),
+        )
+
+        start_position = state["position"]
+
+        home_lat = start_position.latitude_deg
+        home_lon = start_position.longitude_deg
+
+        ground_absolute_altitude = (
+            start_position.absolute_altitude_m
+            - start_position.relative_altitude_m
+        )
+
+        logger_task = asyncio.create_task(
+            telemetry_logger(
+                logging_config["telemetry_csv_path"],
+                drone_id,
+                state,
+                home_lat,
+                home_lon,
+                float(logging_config["sample_interval_s"]),
+                stop_event,
+            )
+        )
+
+        retries = int(execution["command_retries"])
+        retry_delay_s = float(
+            execution["command_retry_delay_s"]
+        )
+
+        state["mission_status"] = "preparing_takeoff"
+
+        await execute_with_retry(
+            "set takeoff altitude",
+            lambda: drone.action.set_takeoff_altitude(
+                float(mission["takeoff_altitude_m"])
+            ),
+            retries,
+            retry_delay_s,
+            drone_id,
+        )
+
+        await execute_with_retry(
+            "arm",
+            lambda: drone.action.arm(),
+            retries,
+            retry_delay_s,
+            drone_id,
+        )
+
+        state["mission_status"] = "taking_off"
+
+        await execute_with_retry(
+            "takeoff",
+            lambda: drone.action.takeoff(),
+            retries,
+            retry_delay_s,
+            drone_id,
+        )
+
+        await asyncio.sleep(float(mission["takeoff_wait_s"]))
+
+        state["mission_status"] = "executing_waypoints"
+
+        for sequence_id, waypoint in enumerate(waypoints, start=1):
+            zone_name = waypoint["zone_name"]
+
+            state["current_zone"] = zone_name
+
+            target_lat, target_lon = offset_lat_lon(
+                home_lat,
+                home_lon,
+                float(waypoint["north_m"]),
+                float(waypoint["east_m"]),
+            )
+
+            target_absolute_altitude = (
+                ground_absolute_altitude
+                + float(waypoint["altitude_m"])
+            )
+
+            print(
+                f"[{drone_id}] waypoint {sequence_id}: {zone_name} | "
+                f"N={waypoint['north_m']} "
+                f"E={waypoint['east_m']} "
+                f"ALT={waypoint['altitude_m']}"
+            )
+
+            await execute_with_retry(
+                f"goto {zone_name}",
+                lambda lat=target_lat,
+                       lon=target_lon,
+                       alt=target_absolute_altitude,
+                       yaw=float(waypoint["yaw_deg"]):
+                    drone.action.goto_location(lat, lon, alt, yaw),
+                retries,
+                retry_delay_s,
+                drone_id,
+            )
+
+            arrived = await wait_for_arrival(
+                state,
+                target_lat,
+                target_lon,
+                target_absolute_altitude,
+                float(execution["horizontal_tolerance_m"]),
+                float(execution["altitude_tolerance_m"]),
+                float(execution["arrival_timeout_s"]),
+                float(execution["arrival_check_interval_s"]),
+                drone_id,
+            )
+
+            summary["completed_waypoints"].append({
+                "sequence_id": sequence_id,
+                "zone_name": zone_name,
+                "arrived_within_tolerance": arrived,
+            })
+
+            await asyncio.sleep(float(waypoint["hold_s"]))
+
+        if bool(execution["auto_land"]):
+            state["mission_status"] = "landing"
+            state["current_zone"] = "landing"
+
+            await execute_with_retry(
+                "land",
+                lambda: drone.action.land(),
+                retries,
+                retry_delay_s,
+                drone_id,
+            )
+
+            await asyncio.sleep(float(mission["landing_wait_s"]))
+
+        state["mission_status"] = "completed"
+
+        summary["status"] = "completed"
+        summary["completed_at_utc"] = utc_now()
+
+        print(f"[{drone_id}] mission completed")
+
+    except Exception as error:
+        state["mission_status"] = "emergency_landing"
+
+        summary["status"] = "completed_with_errors"
+        summary["completed_at_utc"] = utc_now()
+        summary["error"] = str(error)
+        summary["landing_error"] = None
+
+        print(f"[{drone_id}] ERROR: {error}")
+        print(f"[{drone_id}] attempting emergency landing")
+
+        try:
+            await execute_with_retry(
+                "emergency land",
+                lambda: drone.action.land(),
+                int(execution["command_retries"]),
+                float(execution["command_retry_delay_s"]),
+                drone_id,
+            )
+
+            await asyncio.sleep(
+                float(mission["landing_wait_s"])
+            )
+
+            state["mission_status"] = "landed_after_error"
+            print(f"[{drone_id}] emergency landing completed")
+
+        except Exception as land_error:
+            state["mission_status"] = "landing_failed"
+            summary["landing_error"] = str(land_error)
+
+            print(
+                f"[{drone_id}] emergency landing failed: "
+                f"{land_error}"
+            )
+
+    finally:
+        stop_event.set()
+
+        if logger_task is not None:
+            await asyncio.gather(
+                logger_task,
+                return_exceptions=True,
+            )
+
+        if position_task is not None:
+            position_task.cancel()
+
+            await asyncio.gather(
+                position_task,
+                return_exceptions=True,
+            )
+
+        summary_path.write_text(json.dumps(summary, indent=2))
+
+        print(f"[{drone_id}] summary: {summary_path}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

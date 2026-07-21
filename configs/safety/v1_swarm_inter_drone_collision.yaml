@@ -1,0 +1,39 @@
+monitor:
+  mode: dry_run
+  node_name: v1_inter_drone_collision_monitor
+  gazebo_pose_topic: /world/battlefield_sar_world_v1_realistic/dynamic_pose/info
+  poll_timeout_s: 10.0
+  stale_pose_timeout_s: 5.0
+  minimum_update_interval_s: 0.1
+  log_every_evaluation: true
+
+prediction:
+  horizon_s: 10.0
+  minimum_closing_speed_m_s: 0.1
+
+thresholds:
+  emergency_distance_m: 3.0
+  critical_distance_m: 5.0
+  warning_distance_m: 8.0
+
+actions:
+  clear: continue_mission
+  warning: reduce_speed
+  critical: hold_and_replan
+  emergency_stop: immediate_hold_and_replan
+  no_data: hold_position
+
+drones:
+  - drone_id: drone_1
+    model_name: x500_mono_cam_1
+    priority: 1
+  - drone_id: drone_2
+    model_name: x500_mono_cam_2
+    priority: 2
+  - drone_id: drone_3
+    model_name: x500_mono_cam_3
+    priority: 3
+
+outputs:
+  event_log_csv: outputs/swarm/v1_three_drone_swarm/safety/inter_drone_collision_events.csv
+  status_json: outputs/swarm/v1_three_drone_swarm/safety/inter_drone_collision_status.json

@@ -1,0 +1,11 @@
+frame_id,timestamp_utc,ros_topic,height,width,encoding,step,saved_path
+camera_frame_0000,2026-06-27T12:36:04.911862+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0000.png
+camera_frame_0001,2026-06-27T12:36:05.074206+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0001.png
+camera_frame_0002,2026-06-27T12:36:05.245405+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0002.png
+camera_frame_0003,2026-06-27T12:36:05.426015+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0003.png
+camera_frame_0004,2026-06-27T12:36:05.588592+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0004.png
+camera_frame_0005,2026-06-27T12:36:05.764272+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0005.png
+camera_frame_0006,2026-06-27T12:36:05.933294+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0006.png
+camera_frame_0007,2026-06-27T12:36:06.080111+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0007.png
+camera_frame_0008,2026-06-27T12:36:06.250682+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0008.png
+camera_frame_0009,2026-06-27T12:36:06.436906+00:00,/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image,960,1280,rgb8,3840,outputs/camera_frames/raw/camera_frame_0009.png

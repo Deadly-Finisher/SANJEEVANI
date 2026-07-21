@@ -1,0 +1,20 @@
+dataset:
+  yaml_path: "data/raw/military_assets_yolo8/military_dataset.yaml"
+
+model:
+  base_model: "yolo11n.pt"
+
+training:
+  epochs: 30
+  image_size: 640
+  batch_size: 4
+  workers: 2
+  device: "auto"
+  project: "runs/aerial_safe_objects"
+  run_name: "military_assets_safe_yolo_test"
+  patience: 5
+
+output:
+  model_dir: "models/aerial_safe_objects"
+  best_model_name: "best_aerial_safe_objects.pt"
+  last_model_name: "last_aerial_safe_objects.pt"

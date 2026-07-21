@@ -1,0 +1,34 @@
+input:
+  parsed_mission_json: "outputs/qgis/v1_mission_map/parsed_mission_map.json"
+
+output:
+  output_dir: "outputs/optimization/v1_ga_route_optimization"
+  optimized_waypoints_csv: "ga_optimized_waypoints.csv"
+  optimized_route_geojson: "ga_optimized_route.geojson"
+  comparison_json: "ga_route_comparison.json"
+  comparison_markdown: "ga_route_comparison.md"
+  optimized_mission_yaml: "configs/missions/v1_ga_optimized_mission.yaml"
+
+genetic_algorithm:
+  random_seed: 42
+  population_size: 80
+  generations: 150
+  elite_count: 8
+  tournament_size: 5
+  crossover_rate: 0.90
+  mutation_rate: 0.20
+
+mission:
+  mission_name: "v1_ga_optimized_single_drone_mission"
+  start_zone_name: "takeoff_landing_zone"
+  end_zone_name: "return_landing_zone"
+  connection:
+    system_address: "udpin://0.0.0.0:14540"
+  flight:
+    takeoff_altitude_m: 10.0
+    takeoff_wait_s: 8
+    waypoint_command_interval_s: 0.2
+    landing_wait_s: 12
+  logging:
+    telemetry_csv_path: "outputs/telemetry/v1_ga_optimized_mission_telemetry.csv"
+    sample_interval_s: 0.5

@@ -1,0 +1,15 @@
+connection:
+  system_address: "udpin://0.0.0.0:14540"
+
+mission:
+  takeoff_altitude_m: 10.0
+  hold_seconds: 15
+
+telemetry:
+  log_interval_seconds: 1.0
+  output_dir: "outputs/telemetry"
+
+safety:
+  require_global_position: true
+  require_home_position: true
+  allow_autonomous_engagement: false  #this is for engagement purpose for armed engagement

@@ -1,0 +1,9 @@
+config_files:
+  mission: "configs/mission.yaml"
+  drones: "configs/drones.yaml"
+  perception: "configs/perception.yaml"
+  simulation: "configs/simulation.yaml"
+
+project:
+  name: "SWARM_DRONES"
+  package_name: "swarm_drones"

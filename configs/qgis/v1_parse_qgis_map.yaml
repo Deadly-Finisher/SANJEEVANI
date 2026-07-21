@@ -1,0 +1,32 @@
+input:
+  qgis_map_dir: "outputs/qgis/v1_mission_map"
+  zones_geojson: "zones.geojson"
+  route_geojson: "route.geojson"
+  mission_objects_geojson: "mission_objects.geojson"
+  waypoints_csv: "waypoints.csv"
+
+coordinate_system:
+  spawn_gazebo_x: 0.0
+  spawn_gazebo_y: -35.0
+  description: "Gazebo local XY to PX4 local NED conversion"
+  conversion:
+    gazebo_x_to_north_m: "north_m = gazebo_x - spawn_gazebo_x"
+    gazebo_y_to_east_m: "east_m = gazebo_y - spawn_gazebo_y"
+
+output:
+  parsed_mission_json: "outputs/qgis/v1_mission_map/parsed_mission_map.json"
+  parsed_waypoints_csv: "outputs/qgis/v1_mission_map/parsed_waypoints.csv"
+  mission_yaml: "configs/missions/v1_qgis_parsed_mission.yaml"
+
+mission_defaults:
+  connection:
+    system_address: "udpin://0.0.0.0:14540"
+  mission:
+    mission_name: "v1_qgis_parsed_single_drone_mission"
+    takeoff_altitude_m: 10.0
+    takeoff_wait_s: 8
+    waypoint_command_interval_s: 0.2
+    landing_wait_s: 12
+  logging:
+    telemetry_csv_path: "outputs/telemetry/v1_qgis_parsed_mission_telemetry.csv"
+    sample_interval_s: 0.5

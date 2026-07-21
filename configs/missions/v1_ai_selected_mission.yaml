@@ -1,0 +1,48 @@
+connection:
+  system_address: udpin://0.0.0.0:14540
+mission:
+  mission_name: v1_ai_selected_optimized_mission
+  takeoff_altitude_m: 10.0
+  takeoff_wait_s: 8.0
+  waypoint_command_interval_s: 0.2
+  landing_wait_s: 12.0
+logging:
+  telemetry_csv_path: outputs/telemetry/v1_ai_selected_mission_telemetry.csv
+  sample_interval_s: 0.5
+waypoints:
+- zone_name: takeoff_landing_zone
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 10.0
+  yaw_deg: 0.0
+  hold_s: 5.0
+- zone_name: person_vehicle_zone
+  north_m: 18.0
+  east_m: 23.0
+  altitude_m: 12.0
+  yaw_deg: 90.0
+  hold_s: 10.0
+- zone_name: person_zone_1
+  north_m: 5.0
+  east_m: 25.0
+  altitude_m: 12.0
+  yaw_deg: 45.0
+  hold_s: 10.0
+- zone_name: central_review_zone
+  north_m: 0.0
+  east_m: 35.0
+  altitude_m: 12.0
+  yaw_deg: 180.0
+  hold_s: 8.0
+- zone_name: structure_debris_zone
+  north_m: -18.0
+  east_m: 53.0
+  altitude_m: 13.0
+  yaw_deg: 135.0
+  hold_s: 10.0
+- zone_name: return_landing_zone
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 10.0
+  yaw_deg: 0.0
+  hold_s: 5.0

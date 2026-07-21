@@ -1,0 +1,26 @@
+servers:
+  mavsdk_server_binary: auto
+  bind_host: 127.0.0.1
+  startup_timeout_s: 120.0
+  shutdown_timeout_s: 5.0
+  health_check_timeout_s: 2.0
+  px4_connection_timeout_s: 120.0
+  pid_dir: outputs/swarm/v1_three_drone_swarm/server_pids
+  log_dir: outputs/swarm/v1_three_drone_swarm/server_logs
+  state_file: outputs/swarm/v1_three_drone_swarm/server_pids/server_state.json
+drones:
+- drone_id: drone_1
+  grpc_port: 50101
+  mavlink_endpoint: udpin://127.0.0.1:14541
+  server_system_id: 245
+  server_component_id: 190
+- drone_id: drone_2
+  grpc_port: 50102
+  mavlink_endpoint: udpin://127.0.0.1:14542
+  server_system_id: 246
+  server_component_id: 190
+- drone_id: drone_3
+  grpc_port: 50103
+  mavlink_endpoint: udpin://127.0.0.1:14543
+  server_system_id: 247
+  server_component_id: 190

@@ -1,0 +1,39 @@
+input:
+  source_type: "synthetic"
+  frame_count: 5
+  image_width: 640
+  image_height: 480
+  background_color_bgr: [35, 35, 35]
+
+classes:
+  person:
+    bgr_color: [0, 0, 255]
+  vehicle:
+    bgr_color: [255, 0, 0]
+
+synthetic_objects:
+  - label: "person"
+    shape: "circle"
+    center_px: [160, 240]
+    radius_px: 25
+    velocity_px_per_frame: [8, 0]
+
+  - label: "vehicle"
+    shape: "rectangle"
+    top_left_px: [360, 200]
+    bottom_right_px: [500, 300]
+    velocity_px_per_frame: [-6, 0]
+
+detection:
+  min_area_px: 300
+
+output:
+  output_dir: "outputs/perception"
+  frames_dir: "frames"
+  annotated_dir: "annotated"
+  detections_csv: "detections.csv"
+  summary_file: "summary.txt"
+
+safety:
+  allow_targeting: false
+  human_review_required: true

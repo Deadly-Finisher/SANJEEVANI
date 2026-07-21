@@ -1,0 +1,17 @@
+- ros_topic_name: "/drone_1/scan"
+  gz_topic_name: "/world/battlefield_sar_world_v1_realistic/model/x500_mono_cam_1/link/link/sensor/lidar_2d_v2/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: "GZ_TO_ROS"
+
+- ros_topic_name: "/drone_2/scan"
+  gz_topic_name: "/world/battlefield_sar_world_v1_realistic/model/x500_mono_cam_2/link/link/sensor/lidar_2d_v2/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: "GZ_TO_ROS"
+
+- ros_topic_name: "/drone_3/scan"
+  gz_topic_name: "/world/battlefield_sar_world_v1_realistic/model/x500_mono_cam_3/link/link/sensor/lidar_2d_v2/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: "GZ_TO_ROS"

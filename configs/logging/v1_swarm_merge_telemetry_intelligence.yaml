@@ -1,0 +1,34 @@
+input:
+  telemetry_logs:
+    - drone_id: "drone_1"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_1_telemetry.csv"
+
+    - drone_id: "drone_2"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_2_telemetry.csv"
+
+    - drone_id: "drone_3"
+      path: "outputs/swarm/v1_three_drone_swarm/drone_3_telemetry.csv"
+
+  shared_detections_csv: "outputs/swarm/v1_three_drone_swarm/shared_detections.csv"
+  shared_events_csv: "outputs/swarm/v1_three_drone_swarm/shared_events.csv"
+
+columns:
+  telemetry_timestamp: "timestamp_utc"
+  detection_timestamp: "timestamp"
+  detection_drone_id: "drone_id"
+  event_timestamp: "timestamp"
+  event_drone_id: "source_drone_id"
+
+time:
+  telemetry_timezone_if_naive: "UTC"
+  detection_timezone_if_naive: "Asia/Kolkata"
+  event_timezone_if_naive: "Asia/Kolkata"
+  nearest_match_tolerance_s: 2.0
+
+output:
+  output_dir: "outputs/swarm/v1_three_drone_swarm/merged"
+  combined_telemetry_csv: "swarm_telemetry_combined.csv"
+  linked_detections_csv: "swarm_telemetry_linked_detections.csv"
+  linked_events_csv: "swarm_telemetry_linked_events.csv"
+  summary_json: "swarm_merge_summary.json"
+  report_md: "swarm_merge_report.md"

@@ -1,0 +1,30 @@
+project:
+  title: "Simulation-Based UAV Swarm Intelligence Dashboard"
+  subtitle: "PX4 SITL, Gazebo, MAVSDK, Telemetry, Perception, and Human-Review Event Reporting"
+
+paths:
+  telemetry_dir: "outputs/telemetry"
+  analysis_dir: "outputs/analysis"
+  perception_dir: "outputs/perception"
+  reports_dir: "outputs/reports"
+
+files:
+  altitude_plot: "latest_waypoint_altitude_plot.png"
+  distance_plot: "latest_waypoint_distance_plot.png"
+  telemetry_summary: "latest_waypoint_summary.txt"
+  detections_csv: "detections.csv"
+  perception_summary: "summary.txt"
+  event_summary_csv: "event_summary.csv"
+  mission_event_report: "mission_event_report.md"
+
+patterns:
+  waypoint_telemetry_csv: "waypoint_navigation_*.csv"
+
+dashboard:
+  max_rows_preview: 20
+  max_annotated_images: 5
+
+safety:
+  allow_targeting: false
+  allow_autonomous_engagement: false
+  human_review_required: true

@@ -1,0 +1,22 @@
+ROS Camera Frame Capture Summary
+
+Camera topic:
+/world/default/model/x500_mono_cam_0/link/camera_link/sensor/camera/image
+
+Received frames:
+10
+
+Saved frames:
+10
+
+Output directory:
+outputs/camera_frames/raw
+
+Metadata CSV:
+outputs/camera_frames/camera_frame_metadata.csv
+
+Result:
+Real simulated drone-camera frames were captured from the Gazebo x500_mono_cam model through ROS 2 and saved as image files.
+
+Safety boundary:
+This module only captures simulated camera frames for perception and human-review analysis. It does not perform targeting or autonomous engagement.

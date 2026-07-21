@@ -1,0 +1,25 @@
+world:
+  sdf_path: "simulation/worlds/battlefield_sar_world_v1_realistic.sdf"
+  pose_topic: "/world/battlefield_sar_world_v1_realistic/dynamic_pose/info"
+  command:
+    - "stdbuf"
+    - "-oL"
+    - "gz"
+    - "topic"
+    - "-e"
+    - "-t"
+  restart_delay_s: 1.0
+
+coordinates:
+  earth_radius_m: 6378137.0
+  use_sdf_spherical_coordinates: true
+
+drones:
+  - drone_id: "drone_1"
+    gazebo_model_name: "x500_mono_cam_1"
+
+  - drone_id: "drone_2"
+    gazebo_model_name: "x500_mono_cam_2"
+
+  - drone_id: "drone_3"
+    gazebo_model_name: "x500_mono_cam_3"

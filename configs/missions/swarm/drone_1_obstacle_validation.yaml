@@ -1,0 +1,37 @@
+connection:
+  system_address: udpin://0.0.0.0:14541
+  mavsdk_server_address: 127.0.0.1
+mission:
+  mission_name: v1_drone_1_obstacle_validation
+  takeoff_altitude_m: 2.5
+  takeoff_wait_s: 5.0
+  waypoint_command_interval_s: 0.2
+  landing_wait_s: 10.0
+logging:
+  telemetry_csv_path: outputs/swarm/v1_three_drone_swarm/validation/drone_1_telemetry.csv
+  sample_interval_s: 0.5
+waypoints:
+- zone_name: validation_takeoff
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 2.5
+  yaw_deg: 0.0
+  hold_s: 2.0
+- zone_name: forward_clearance_check
+  north_m: 3.0
+  east_m: 0.0
+  altitude_m: 3.0
+  yaw_deg: 0.0
+  hold_s: 3.0
+- zone_name: lateral_clearance_check
+  north_m: 3.0
+  east_m: 3.0
+  altitude_m: 3.0
+  yaw_deg: 90.0
+  hold_s: 3.0
+- zone_name: validation_return
+  north_m: 0.0
+  east_m: 0.0
+  altitude_m: 2.5
+  yaw_deg: 180.0
+  hold_s: 2.0

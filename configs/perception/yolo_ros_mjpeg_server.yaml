@@ -1,0 +1,19 @@
+model:
+  name: yolo11n.pt
+  confidence_threshold: 0.3
+  image_size: 640
+  device: cpu
+input:
+  ros_image_topic: /world/battlefield_sar_world_v1/model/x500_mono_cam_0/link/camera_link/sensor/camera/image
+stream:
+  host: 0.0.0.0
+  port: 5001
+  jpeg_quality: 80
+output:
+  csv_path: outputs/live_yolo/detections.csv
+  annotated_frame_dir: outputs/live_yolo/annotated_frames
+  save_annotated_frames: false
+  save_every_n_frames: 10
+runtime:
+  inference_every_n_frames: 1
+  window_display: false

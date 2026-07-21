@@ -1,0 +1,16 @@
+model:
+  name: "yolo11n.pt"
+  confidence_threshold: 0.30
+
+input:
+  image_dir: "outputs/camera_frames"
+
+output:
+  output_dir: "outputs/yolo_saved_frames"
+  csv_path: "outputs/yolo_saved_frames/detections.csv"
+
+runtime:
+  image_extensions:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"

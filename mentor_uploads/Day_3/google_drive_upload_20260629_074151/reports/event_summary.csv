@@ -1,0 +1,3 @@
+label,description,count,unique_frames,average_confidence,max_area_px,priority_weight,class_event_score
+person,Human-like object detected in simulated frame.,5,5,1.0,1890.0,2.0,10.0
+vehicle,Vehicle-like object detected in simulated frame.,5,5,1.0,14000.0,3.0,15.0

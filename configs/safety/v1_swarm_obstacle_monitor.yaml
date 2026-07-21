@@ -1,0 +1,57 @@
+monitor:
+  node_name: v1_swarm_obstacle_monitor
+  publish_rate_hz: 2.0
+  stale_scan_timeout_s: 12.0
+  log_every_publish: true
+  log_csv: outputs/swarm/v1_three_drone_swarm/safety/obstacle_distance_log.csv
+
+sectors:
+  front:
+    minimum_angle_deg: -35.0
+    maximum_angle_deg: 35.0
+  left:
+    minimum_angle_deg: 35.0
+    maximum_angle_deg: 135.0
+  right:
+    minimum_angle_deg: -135.0
+    maximum_angle_deg: -35.0
+
+thresholds:
+  emergency_stop_m: 5.0
+  critical_m: 8.0
+  warning_m: 12.0
+
+filtering:
+  minimum_cluster_points: 2
+  startup_consecutive_scans: 2
+  enter_consecutive_scans: 2
+  clear_consecutive_scans: 2
+  hysteresis_m:
+    emergency_stop: 0.75
+    critical: 1.0
+    warning: 1.0
+
+state_actions:
+  clear: continue_mission
+  warning: reduce_speed
+  critical: hover_and_replan
+  emergency_stop: immediate_hover
+  no_data: hold_position
+
+drones:
+  - drone_id: drone_1
+    scan_topic: /drone_1/scan
+    status_topic: /drone_1/obstacle_status
+  - drone_id: drone_2
+    scan_topic: /drone_2/scan
+    status_topic: /drone_2/obstacle_status
+  - drone_id: drone_3
+    scan_topic: /drone_3/scan
+    status_topic: /drone_3/obstacle_status
+
+control_limits:
+  maximum_test_speed_m_s: 0.3
+  reduced_speed_m_s: 0.15
+  hover_duration_s: 5.0
+  minimum_clearance_m: 5.0
+  command_cooldown_s: 3.0
