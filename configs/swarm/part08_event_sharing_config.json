@@ -1,0 +1,40 @@
+{
+  "mission_name": "part08_swarm_event_sharing",
+  "world": "battlefield_sar_world_v1_realistic",
+  "event_bus": {
+    "mode": "simulated_shared_event_bus",
+    "deduplication_distance_m": 12.0,
+    "deduplication_time_window_s": 20.0,
+    "minimum_confidence": 0.25
+  },
+  "drones": {
+    "drone_1": {
+      "model": "x500_mono_cam_1",
+      "zone": "LEFT_FLANK_SURVEILLANCE",
+      "role": "left flank observer",
+      "altitude_m": 12,
+      "broadcast_to": ["drone_2", "drone_3", "operator_dashboard"]
+    },
+    "drone_2": {
+      "model": "x500_mono_cam_2",
+      "zone": "CENTER_ROAD_SURVEILLANCE",
+      "role": "central road observer",
+      "altitude_m": 16,
+      "broadcast_to": ["drone_1", "drone_3", "operator_dashboard"]
+    },
+    "drone_3": {
+      "model": "x500_mono_cam_3",
+      "zone": "RIGHT_OVERWATCH_SURVEILLANCE",
+      "role": "right overwatch observer",
+      "altitude_m": 20,
+      "broadcast_to": ["drone_1", "drone_2", "operator_dashboard"]
+    }
+  },
+  "event_types": {
+    "person": "possible human activity",
+    "truck": "possible vehicle movement",
+    "car": "possible vehicle movement",
+    "smoke": "possible fire or battlefield disturbance",
+    "military_vehicle": "possible hostile or strategic asset"
+  }
+}

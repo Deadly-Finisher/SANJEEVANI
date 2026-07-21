@@ -1,0 +1,118 @@
+[
+  {
+    "event_id": "100c2c7b-3a2d-499e-a334-177cc46118aa",
+    "timestamp_utc": "2026-07-21T23:16:58.599504+00:00",
+    "source_drone": "drone_1",
+    "source_model": "x500_mono_cam_1",
+    "source_zone": "LEFT_FLANK_SURVEILLANCE",
+    "source_role": "left flank observer",
+    "class_name": "person",
+    "event_type": "possible human activity",
+    "confidence": 0.73,
+    "position": {
+      "x": -27.0,
+      "y": -34.0,
+      "z": 1.0
+    },
+    "priority": "MEDIUM",
+    "shared": true,
+    "recipients": [
+      "drone_2",
+      "drone_3",
+      "operator_dashboard"
+    ],
+    "acknowledgements": {
+      "drone_2": "ACK",
+      "drone_3": "ACK",
+      "operator_dashboard": "ACK"
+    },
+    "shared_at_utc": "2026-07-21T23:16:58.604271+00:00"
+  },
+  {
+    "event_id": "8966bbae-6f20-458b-a44f-b87df1b8014f",
+    "timestamp_utc": "2026-07-21T23:16:58.604236+00:00",
+    "source_drone": "drone_2",
+    "source_model": "x500_mono_cam_2",
+    "source_zone": "CENTER_ROAD_SURVEILLANCE",
+    "source_role": "central road observer",
+    "class_name": "truck",
+    "event_type": "possible vehicle movement",
+    "confidence": 0.81,
+    "position": {
+      "x": 2.0,
+      "y": -40.0,
+      "z": 1.0
+    },
+    "priority": "HIGH",
+    "shared": true,
+    "recipients": [
+      "drone_1",
+      "drone_3",
+      "operator_dashboard"
+    ],
+    "acknowledgements": {
+      "drone_1": "ACK",
+      "drone_3": "ACK",
+      "operator_dashboard": "ACK"
+    },
+    "shared_at_utc": "2026-07-21T23:16:58.604274+00:00"
+  },
+  {
+    "event_id": "e6db48c6-8a75-4263-b4eb-3913a5bb8541",
+    "timestamp_utc": "2026-07-21T23:16:58.604253+00:00",
+    "source_drone": "drone_2",
+    "source_model": "x500_mono_cam_2",
+    "source_zone": "CENTER_ROAD_SURVEILLANCE",
+    "source_role": "central road observer",
+    "class_name": "smoke",
+    "event_type": "possible fire or battlefield disturbance",
+    "confidence": 0.64,
+    "position": {
+      "x": -4.0,
+      "y": -33.0,
+      "z": 1.0
+    },
+    "priority": "HIGH",
+    "shared": true,
+    "recipients": [
+      "drone_1",
+      "drone_3",
+      "operator_dashboard"
+    ],
+    "acknowledgements": {
+      "drone_1": "ACK",
+      "drone_3": "ACK",
+      "operator_dashboard": "ACK"
+    },
+    "shared_at_utc": "2026-07-21T23:16:58.604276+00:00"
+  },
+  {
+    "event_id": "6b341065-300b-4e07-8270-e49f95dbb87b",
+    "timestamp_utc": "2026-07-21T23:16:58.604261+00:00",
+    "source_drone": "drone_3",
+    "source_model": "x500_mono_cam_3",
+    "source_zone": "RIGHT_OVERWATCH_SURVEILLANCE",
+    "source_role": "right overwatch observer",
+    "class_name": "truck",
+    "event_type": "possible vehicle movement",
+    "confidence": 0.76,
+    "position": {
+      "x": 22.0,
+      "y": -37.0,
+      "z": 1.0
+    },
+    "priority": "HIGH",
+    "shared": true,
+    "recipients": [
+      "drone_1",
+      "drone_2",
+      "operator_dashboard"
+    ],
+    "acknowledgements": {
+      "drone_1": "ACK",
+      "drone_2": "ACK",
+      "operator_dashboard": "ACK"
+    },
+    "shared_at_utc": "2026-07-21T23:16:58.604279+00:00"
+  }
+]

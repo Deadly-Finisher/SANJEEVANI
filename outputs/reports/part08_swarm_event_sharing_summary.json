@@ -1,0 +1,17 @@
+{
+  "part": "part-08",
+  "status": "completed",
+  "result": "PASS",
+  "task": "swarm communication and event sharing",
+  "config": "configs/swarm/part08_event_sharing_config.json",
+  "raw_event_count": 4,
+  "shared_event_count": 4,
+  "deduplicated_event_count": 4,
+  "communication_mode": "simulated_shared_event_bus",
+  "outputs": {
+    "raw_events": "outputs/swarm_events/part08/part08_raw_drone_events.json",
+    "shared_event_bus": "outputs/swarm_events/part08/part08_shared_event_bus.json",
+    "deduplicated_events": "outputs/swarm_events/part08/part08_deduplicated_swarm_events.json"
+  },
+  "completed_at_utc": "2026-07-21T23:16:58.605087+00:00"
+}
