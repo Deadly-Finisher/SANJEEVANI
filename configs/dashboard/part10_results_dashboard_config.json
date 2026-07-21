@@ -7,7 +7,9 @@
     "part08_summary": "outputs/reports/part08_swarm_event_sharing_summary.json",
     "part09_summary": "outputs/reports/part09_battlefield_intelligence_fusion_summary.json",
     "part09_fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
+    "part09_threat_table": "outputs/intelligence/part09/part09_operator_threatpart09_fused_battlefield_intelligence.json",
     "part09_threat_table": "outputs/intelligence/part09/part09_operator_threat_table.csv",
+    "main_comparison": "outputs/reports/main_project_till_now_comparison.json",
     "live_state": "outputs/live/swarm_live_state.json"
   }
 }
