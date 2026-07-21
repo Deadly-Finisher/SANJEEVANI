@@ -1,0 +1,18 @@
+connection:
+  endpoint: "udpin:0.0.0.0:14540"
+  source_system: 250
+  source_component: 190
+
+mission:
+  name: "submission_single_drone_patrol"
+  expected_waypoint_sequences:
+    - 1
+    - 2
+    - 3
+  land_sequence: 4
+  timeout_s: 420
+
+output:
+  sample_interval_s: 0.5
+  telemetry_csv: "outputs/single_drone/part01_telemetry.csv"
+  summary_json: "outputs/reports/part01_single_drone_summary.json"
