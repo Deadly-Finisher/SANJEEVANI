@@ -1,0 +1,128 @@
+{
+  "part": "part-09",
+  "status": "completed",
+  "result": "PASS",
+  "task": "battlefield intelligence fusion",
+  "world": "battlefield_sar_world_v1_realistic",
+  "generated_at_utc": "2026-07-21T23:19:37.497031+00:00",
+  "mission_state": {
+    "part": "part-05",
+    "name": "altitude_separated_surveillance_patrol",
+    "status": "COMPLETED",
+    "phase": "landed",
+    "loop": 1,
+    "total_loops": 1,
+    "segment": 7,
+    "step": 18,
+    "elapsed_s": 281.87,
+    "updated_at_utc": "2026-07-21T23:12:29.212343+00:00"
+  },
+  "fusion_inputs": {
+    "event_count": 4,
+    "threat_table_count": 4,
+    "patrol_telemetry_samples": 126,
+    "zone_count": 3
+  },
+  "overall_risk_level": "HIGH",
+  "risk_counts": {
+    "high": 3,
+    "medium": 1,
+    "low": 0
+  },
+  "zone_summary": {
+    "zone_left_flank": {
+      "assigned_drone": "drone_1",
+      "model": "x500_mono_cam_1",
+      "role": "left flank surveillance",
+      "altitude_m": 12,
+      "priority": "medium",
+      "detected_threats": 1,
+      "highest_risk": "MEDIUM"
+    },
+    "zone_center_road": {
+      "assigned_drone": "drone_2",
+      "model": "x500_mono_cam_2",
+      "role": "center road and asset surveillance",
+      "altitude_m": 16,
+      "priority": "high",
+      "detected_threats": 2,
+      "highest_risk": "HIGH"
+    },
+    "zone_right_overwatch": {
+      "assigned_drone": "drone_3",
+      "model": "x500_mono_cam_3",
+      "role": "right flank overwatch",
+      "altitude_m": 20,
+      "priority": "medium",
+      "detected_threats": 1,
+      "highest_risk": "HIGH"
+    }
+  },
+  "threat_table": [
+    {
+      "threat_id": "THREAT-001",
+      "class_name": "person",
+      "event_type": "possible human activity",
+      "risk_level": "MEDIUM",
+      "risk_score": 60,
+      "confidence": 0.73,
+      "source_drones": "drone_1",
+      "x": -27.0,
+      "y": -34.0,
+      "z": 1.0,
+      "fusion_status": "unique_event",
+      "human_review_required": true,
+      "operator_action": "review_and_confirm"
+    },
+    {
+      "threat_id": "THREAT-002",
+      "class_name": "truck",
+      "event_type": "possible vehicle movement",
+      "risk_level": "HIGH",
+      "risk_score": 90,
+      "confidence": 0.81,
+      "source_drones": "drone_2",
+      "x": 2.0,
+      "y": -40.0,
+      "z": 1.0,
+      "fusion_status": "unique_event",
+      "human_review_required": true,
+      "operator_action": "review_and_confirm"
+    },
+    {
+      "threat_id": "THREAT-003",
+      "class_name": "smoke",
+      "event_type": "possible fire or battlefield disturbance",
+      "risk_level": "HIGH",
+      "risk_score": 90,
+      "confidence": 0.64,
+      "source_drones": "drone_2",
+      "x": -4.0,
+      "y": -33.0,
+      "z": 1.0,
+      "fusion_status": "unique_event",
+      "human_review_required": true,
+      "operator_action": "review_and_confirm"
+    },
+    {
+      "threat_id": "THREAT-004",
+      "class_name": "truck",
+      "event_type": "possible vehicle movement",
+      "risk_level": "HIGH",
+      "risk_score": 90,
+      "confidence": 0.76,
+      "source_drones": "drone_3",
+      "x": 22.0,
+      "y": -37.0,
+      "z": 1.0,
+      "fusion_status": "unique_event",
+      "human_review_required": true,
+      "operator_action": "review_and_confirm"
+    }
+  ],
+  "human_in_loop": {
+    "enabled": true,
+    "required": true,
+    "note": "All threat outputs are for operator review. No autonomous engagement decision is made."
+  }
+}

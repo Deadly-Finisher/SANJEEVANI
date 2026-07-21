@@ -1,0 +1,20 @@
+{
+  "mission_name": "part09_battlefield_intelligence_fusion",
+  "world": "battlefield_sar_world_v1_realistic",
+  "fusion_inputs": {
+    "live_state": "outputs/live/swarm_live_state.json",
+    "swarm_events": "outputs/swarm_events/part08/part08_deduplicated_swarm_events.json",
+    "zone_assignment": "outputs/reports/part06_zone_assignment_summary.json",
+    "patrol_telemetry": "outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv"
+  },
+  "risk_scoring": {
+    "HIGH": 90,
+    "MEDIUM": 60,
+    "LOW": 30
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "required_for_high_priority": true,
+    "note": "The system supports operator review only. It does not make autonomous engagement decisions."
+  }
+}

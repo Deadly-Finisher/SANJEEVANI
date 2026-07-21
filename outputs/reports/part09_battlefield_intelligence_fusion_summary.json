@@ -1,0 +1,16 @@
+{
+  "part": "part-09",
+  "status": "completed",
+  "result": "PASS",
+  "task": "battlefield intelligence fusion",
+  "overall_risk_level": "HIGH",
+  "event_count": 4,
+  "threat_count": 4,
+  "patrol_telemetry_samples": 126,
+  "outputs": {
+    "fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
+    "operator_threat_table": "outputs/intelligence/part09/part09_operator_threat_table.csv",
+    "report": "outputs/reports/part09_battlefield_intelligence_fusion_report.md"
+  },
+  "completed_at_utc": "2026-07-21T23:19:37.497552+00:00"
+}

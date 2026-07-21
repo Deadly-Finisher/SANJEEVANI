@@ -1,0 +1,5 @@
+threat_id,class_name,event_type,risk_level,risk_score,confidence,source_drones,x,y,z,fusion_status,human_review_required,operator_action
+THREAT-001,person,possible human activity,MEDIUM,60,0.73,drone_1,-27.0,-34.0,1.0,unique_event,True,review_and_confirm
+THREAT-002,truck,possible vehicle movement,HIGH,90,0.81,drone_2,2.0,-40.0,1.0,unique_event,True,review_and_confirm
+THREAT-003,smoke,possible fire or battlefield disturbance,HIGH,90,0.64,drone_2,-4.0,-33.0,1.0,unique_event,True,review_and_confirm
+THREAT-004,truck,possible vehicle movement,HIGH,90,0.76,drone_3,22.0,-37.0,1.0,unique_event,True,review_and_confirm
