@@ -31,7 +31,6 @@ FEEDS = {
     },
 }
 
-
 st.set_page_config(
     page_title="V1 Swarm Operator Dashboard",
     page_icon="🛰️",
@@ -40,16 +39,30 @@ st.set_page_config(
 
 st.title("🛰️ V1 Three-Drone Swarm Operator Dashboard")
 
+st.sidebar.header("Dashboard Controls")
+st.sidebar.info(
+    "Live video feeds update continuously. "
+    "Telemetry updates when you press refresh, so the page will not jump to the top."
+)
+
+if st.sidebar.button("Refresh telemetry now"):
+    st.rerun()
+
+st.sidebar.markdown("---")
+st.sidebar.write("Camera feeds:")
+st.sidebar.write("Drone 1 → 5011")
+st.sidebar.write("Drone 2 → 5012")
+st.sidebar.write("Drone 3 → 5013")
+
+
 
 def check_feed(port: int) -> str:
     try:
-        response = requests.get(
+        r = requests.get(
             f"http://127.0.0.1:{port}/",
             timeout=2,
         )
-        if response.status_code == 200:
-            return "READY"
-        return f"HTTP {response.status_code}"
+        return "READY" if r.status_code == 200 else f"HTTP {r.status_code}"
     except Exception:
         return "OFFLINE"
 
@@ -61,6 +74,8 @@ def load_state() -> dict:
                 "status": "WAITING",
                 "phase": "no_live_state_yet",
                 "elapsed_s": 0,
+                "loop": 0,
+                "total_loops": 0,
                 "updated_at_utc": None,
             },
             "drones": {},
@@ -78,6 +93,8 @@ def load_state() -> dict:
                 "status": "ERROR",
                 "phase": f"state_read_error: {exc}",
                 "elapsed_s": 0,
+                "loop": 0,
+                "total_loops": 0,
                 "updated_at_utc": None,
             },
             "drones": {},
@@ -86,18 +103,42 @@ def load_state() -> dict:
         }
 
 
+def card(title: str, value: str, sub: str = "") -> None:
+    components.html(
+        f"""
+        <div style="
+            border:1px solid #333;
+            border-radius:12px;
+            padding:14px;
+            background:#111827;
+            color:white;
+            min-height:92px;
+        ">
+            <div style="font-size:13px;color:#9ca3af;">{title}</div>
+            <div style="font-size:26px;font-weight:700;margin-top:6px;">{value}</div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:6px;">{sub}</div>
+        </div>
+        """,
+        height=110,
+    )
+
+
 state = load_state()
 mission = state.get("mission", {})
 drones = state.get("drones", {})
 safety = state.get("safety", {})
 
-top = st.columns(5)
-
-top[0].metric("Mission Status", mission.get("status", "UNKNOWN"))
-top[1].metric("Phase", mission.get("phase", "UNKNOWN"))
-top[2].metric("Elapsed", f"{mission.get('elapsed_s', 0)} s")
-top[3].metric("Loop", f"{mission.get('loop', 0)}/{mission.get('total_loops', 0)}")
-top[4].metric("Safety", safety.get("status", "UNKNOWN"))
+cols = st.columns(5)
+with cols[0]:
+    card("Mission Status", str(mission.get("status", "UNKNOWN")))
+with cols[1]:
+    card("Phase", str(mission.get("phase", "UNKNOWN")))
+with cols[2]:
+    card("Elapsed", f"{mission.get('elapsed_s', 0)} s")
+with cols[3]:
+    card("Loop", f"{mission.get('loop', 0)}/{mission.get('total_loops', 0)}")
+with cols[4]:
+    card("Safety", str(safety.get("status", "UNKNOWN")))
 
 st.caption(f"Last update UTC: {mission.get('updated_at_utc')}")
 
@@ -108,6 +149,7 @@ st.subheader("📷 Live YOLO Camera Feeds")
 feed_statuses = {}
 
 status_cols = st.columns(3)
+
 for col, (drone_id, feed) in zip(status_cols, FEEDS.items()):
     status = check_feed(feed["port"])
     feed_statuses[drone_id] = status
@@ -121,31 +163,30 @@ for col, (drone_id, feed) in zip(status_cols, FEEDS.items()):
         st.caption(f"{feed['model']} | port {feed['port']}")
 
 feed_cols = st.columns(3)
+
 for col, (drone_id, feed) in zip(feed_cols, FEEDS.items()):
     with col:
         st.markdown(f"### {feed['name']}")
         components.html(
             f"""
             <div style="
-                border: 2px solid #444;
-                border-radius: 10px;
-                padding: 6px;
-                background: #111;
-                text-align: center;
+                border:2px solid #444;
+                border-radius:10px;
+                padding:6px;
+                background:#000;
+                text-align:center;
             ">
-                <img
-                    src="{feed['url']}?t={int(time.time())}"
-                    style="
-                        width: 100%;
-                        height: 330px;
-                        object-fit: contain;
-                        background: black;
-                    "
-                />
+                <img src="{feed['url']}"
+                     style="
+                        width:100%;
+                        height:320px;
+                        object-fit:contain;
+                        background:black;
+                     " />
             </div>
-            <p style="font-size: 12px;">{feed['url']}</p>
+            <p style="font-size:12px;">{feed['url']}</p>
             """,
-            height=400,
+            height=390,
         )
 
 st.divider()
@@ -164,7 +205,7 @@ for drone_id, data in drones.items():
             "phase": data.get("phase"),
             "x": data.get("x"),
             "y": data.get("y"),
-            "z_altitude_m": data.get("z"),
+            "altitude_m": data.get("z"),
             "assigned_altitude_m": data.get("assigned_altitude_m"),
             "current_waypoint": data.get("current_waypoint"),
             "next_waypoint": data.get("next_waypoint"),
@@ -174,27 +215,22 @@ for drone_id, data in drones.items():
     )
 
 if rows:
-    st.dataframe(rows, use_container_width=True)
+    st.table(rows)
 else:
     st.warning("No live drone telemetry yet. Start the patrol script.")
 
 st.subheader("🛡️ Swarm Separation Safety")
 
-safety_cols = st.columns(3)
-safety_cols[0].metric(
-    "Minimum 3D Separation",
-    f"{safety.get('minimum_3d_separation_m', 'NA')} m",
-)
-safety_cols[1].metric(
-    "Closest Pair",
-    safety.get("closest_pair", "NA"),
-)
-safety_cols[2].metric(
-    "Altitude Separation",
-    "ENABLED"
-    if safety.get("altitude_separation_enabled")
-    else "UNKNOWN",
-)
+safety_rows = [
+    {
+        "minimum_3d_separation_m": safety.get("minimum_3d_separation_m", "NA"),
+        "closest_pair": safety.get("closest_pair", "NA"),
+        "altitude_separation_enabled": safety.get("altitude_separation_enabled", "NA"),
+        "status": safety.get("status", "UNKNOWN"),
+    }
+]
+
+st.table(safety_rows)
 
 pairwise = safety.get("pairwise_distances_m", {})
 if pairwise:
@@ -203,6 +239,7 @@ if pairwise:
 st.subheader("🗺️ Mission Map Data")
 
 map_rows = []
+
 for drone_id, data in drones.items():
     map_rows.append(
         {
@@ -215,18 +252,14 @@ for drone_id, data in drones.items():
     )
 
 if map_rows:
-    st.dataframe(map_rows, use_container_width=True)
+    st.table(map_rows)
 
 st.subheader("🧠 Operator Notes")
 
 for note in state.get("operator_notes", []):
     st.info(note)
 
-st.divider()
-
-st.subheader("Raw Live State JSON")
-with st.expander("Show full live state"):
+with st.expander("Raw Live State JSON"):
     st.json(state)
 
-time.sleep(1)
-st.rerun()
+
