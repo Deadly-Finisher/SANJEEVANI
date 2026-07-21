@@ -1,0 +1,156 @@
+{
+  "part": "part-05",
+  "status": "completed",
+  "result": "PASS",
+  "task": "low-load altitude-separated surveillance patrol",
+  "world": "battlefield_sar_world_v1_realistic",
+  "loops": 1,
+  "steps_per_segment": 18,
+  "step_delay_s": 0.45,
+  "drones": {
+    "drone_1": {
+      "model": "x500_mono_cam_1",
+      "zone": "LEFT_FLANK_SURVEILLANCE",
+      "altitude_m": 12.0,
+      "waypoints": [
+        [
+          -30,
+          -38,
+          1.0
+        ],
+        [
+          -30,
+          -38,
+          12.0
+        ],
+        [
+          -48,
+          -25,
+          12.0
+        ],
+        [
+          -48,
+          0,
+          12.0
+        ],
+        [
+          -28,
+          0,
+          12.0
+        ],
+        [
+          -28,
+          -25,
+          12.0
+        ],
+        [
+          -30,
+          -38,
+          12.0
+        ],
+        [
+          -30,
+          -38,
+          1.0
+        ]
+      ]
+    },
+    "drone_2": {
+      "model": "x500_mono_cam_2",
+      "zone": "CENTER_ROAD_SURVEILLANCE",
+      "altitude_m": 16.0,
+      "waypoints": [
+        [
+          0,
+          -38,
+          1.0
+        ],
+        [
+          0,
+          -38,
+          16.0
+        ],
+        [
+          -10,
+          -22,
+          16.0
+        ],
+        [
+          -10,
+          8,
+          16.0
+        ],
+        [
+          14,
+          8,
+          16.0
+        ],
+        [
+          14,
+          -22,
+          16.0
+        ],
+        [
+          0,
+          -38,
+          16.0
+        ],
+        [
+          0,
+          -38,
+          1.0
+        ]
+      ]
+    },
+    "drone_3": {
+      "model": "x500_mono_cam_3",
+      "zone": "RIGHT_OVERWATCH_SURVEILLANCE",
+      "altitude_m": 20.0,
+      "waypoints": [
+        [
+          30,
+          -38,
+          1.0
+        ],
+        [
+          30,
+          -38,
+          20.0
+        ],
+        [
+          36,
+          -22,
+          20.0
+        ],
+        [
+          36,
+          8,
+          20.0
+        ],
+        [
+          58,
+          8,
+          20.0
+        ],
+        [
+          58,
+          -22,
+          20.0
+        ],
+        [
+          30,
+          -38,
+          20.0
+        ],
+        [
+          30,
+          -38,
+          1.0
+        ]
+      ]
+    }
+  },
+  "telemetry_csv": "outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv",
+  "live_state_json": "outputs/live/swarm_live_state.json",
+  "completed_at_utc": "2026-07-21T23:12:29.214095+00:00"
+}

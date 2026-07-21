@@ -1,0 +1,83 @@
+{
+  "project": "Battlefield Intelligence using Drone Swarms",
+  "world": "battlefield_sar_world_v1_realistic",
+  "mission": {
+    "part": "part-05",
+    "name": "altitude_separated_surveillance_patrol",
+    "status": "COMPLETED",
+    "phase": "landed",
+    "loop": 1,
+    "total_loops": 1,
+    "segment": 7,
+    "step": 18,
+    "elapsed_s": 281.87,
+    "updated_at_utc": "2026-07-21T23:12:29.212343+00:00"
+  },
+  "feeds": {
+    "drone_1": "http://127.0.0.1:5011/video_feed",
+    "drone_2": "http://127.0.0.1:5012/video_feed",
+    "drone_3": "http://127.0.0.1:5013/video_feed",
+    "dashboard": "http://127.0.0.1:8502"
+  },
+  "drones": {
+    "drone_1": {
+      "id": "drone_1",
+      "model": "x500_mono_cam_1",
+      "zone": "LEFT_FLANK_SURVEILLANCE",
+      "assigned_altitude_m": 12.0,
+      "x": -30,
+      "y": -38,
+      "z": 1.0,
+      "yaw_rad": 0,
+      "current_waypoint": 8,
+      "next_waypoint": null,
+      "phase": "landed",
+      "status": "LANDED"
+    },
+    "drone_2": {
+      "id": "drone_2",
+      "model": "x500_mono_cam_2",
+      "zone": "CENTER_ROAD_SURVEILLANCE",
+      "assigned_altitude_m": 16.0,
+      "x": 0,
+      "y": -38,
+      "z": 1.0,
+      "yaw_rad": 0,
+      "current_waypoint": 8,
+      "next_waypoint": null,
+      "phase": "landed",
+      "status": "LANDED"
+    },
+    "drone_3": {
+      "id": "drone_3",
+      "model": "x500_mono_cam_3",
+      "zone": "RIGHT_OVERWATCH_SURVEILLANCE",
+      "assigned_altitude_m": 20.0,
+      "x": 30,
+      "y": -38,
+      "z": 1.0,
+      "yaw_rad": 0,
+      "current_waypoint": 8,
+      "next_waypoint": null,
+      "phase": "landed",
+      "status": "LANDED"
+    }
+  },
+  "safety": {
+    "status": "SAFE",
+    "altitude_separation_enabled": true,
+    "minimum_3d_separation_m": 30.0,
+    "closest_pair": "drone_1-drone_2",
+    "pairwise_distances_m": {
+      "drone_1_to_drone_2_m": 30.0,
+      "drone_1_to_drone_3_m": 60.0,
+      "drone_2_to_drone_3_m": 30.0
+    }
+  },
+  "operator_notes": [
+    "Drone 1 patrols left flank at 12m.",
+    "Drone 2 patrols center road/assets at 16m.",
+    "Drone 3 patrols right overwatch lane at 20m.",
+    "Obstacle avoidance and live replanning are paused future-scope modules."
+  ]
+}
