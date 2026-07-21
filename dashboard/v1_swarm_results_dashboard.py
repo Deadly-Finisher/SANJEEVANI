@@ -1,946 +1,323 @@
-#!/usr/bin/env python3
-from __future__ import annotations
-
-import json
 from pathlib import Path
-from typing import Any
+import csv
+import json
 
-import pandas as pd
 import streamlit as st
-import yaml
+import streamlit.components.v1 as components
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path.home() / "Programs" / "SWARM_DRONES"
 
-CONFIG_PATH = (
-    PROJECT_ROOT
-    / "configs"
-    / "dashboard"
-    / "v1_swarm_results_dashboard.yaml"
-)
+CONFIG_PATH = ROOT / "configs/dashboard/part10_results_dashboard_config.json"
 
-
-def project_path(path_value: str) -> Path:
-    path = Path(path_value)
-
-    if path.is_absolute():
-        return path
-
-    return PROJECT_ROOT / path
-
-
-def load_yaml(path: Path) -> dict[str, Any]:
-    with path.open(
-        "r",
-        encoding="utf-8",
-    ) as file:
-        data = yaml.safe_load(file)
-
-    if not isinstance(data, dict):
-        raise ValueError(
-            f"Invalid dashboard configuration: {path}"
-        )
-
-    return data
-
-
-def read_json(path_value: str) -> dict[str, Any]:
-    path = project_path(path_value)
-
-    if not path.exists():
-        return {}
-
-    try:
-        with path.open(
-            "r",
-            encoding="utf-8",
-        ) as file:
-            data = json.load(file)
-
-        return data if isinstance(data, dict) else {}
-    except (OSError, json.JSONDecodeError):
-        return {}
-
-
-def read_csv(path_value: str) -> pd.DataFrame:
-    path = project_path(path_value)
-
-    if not path.exists():
-        return pd.DataFrame()
-
-    try:
-        return pd.read_csv(path)
-    except Exception:
-        return pd.DataFrame()
-
-
-def read_text(path_value: str) -> str:
-    path = project_path(path_value)
-
-    if not path.exists():
-        return ""
-
-    try:
-        return path.read_text(
-            encoding="utf-8",
-            errors="replace",
-        )
-    except OSError:
-        return ""
-
-
-def last_non_empty(
-    dataframe: pd.DataFrame,
-    column: str,
-    default: str = "Unknown",
-) -> str:
-    if column not in dataframe.columns:
-        return default
-
-    values = dataframe[column].dropna()
-
-    if values.empty:
-        return default
-
-    return str(values.iloc[-1])
-
-
-def maximum_numeric(
-    dataframe: pd.DataFrame,
-    column: str,
-) -> float | None:
-    if column not in dataframe.columns:
-        return None
-
-    values = pd.to_numeric(
-        dataframe[column],
-        errors="coerce",
-    ).dropna()
-
-    if values.empty:
-        return None
-
-    return float(values.max())
-
-
-def metric_number(value: Any) -> str:
-    if value is None:
-        return "—"
-
-    try:
-        number = float(value)
-
-        if number.is_integer():
-            return f"{int(number):,}"
-
-        return f"{number:,.2f}"
-    except (TypeError, ValueError):
-        return str(value)
-
-
-def file_health(
-    label: str,
-    path_value: str,
-) -> dict[str, Any]:
-    path = project_path(path_value)
-
-    return {
-        "resource": label,
-        "available": path.exists(),
-        "size_kb": (
-            round(path.stat().st_size / 1024, 2)
-            if path.exists()
-            else None
-        ),
-        "path": str(
-            path.relative_to(PROJECT_ROOT)
-        ),
-    }
-
-
-config = load_yaml(CONFIG_PATH)
-
-dashboard_config = config["dashboard"]
-project_config = config["project"]
-paths = config["paths"]
-drone_config = config["drones"]
 
 st.set_page_config(
-    page_title=dashboard_config["page_title"],
-    page_icon=dashboard_config["page_icon"],
+    page_title="V1 Swarm Final Results Dashboard",
+    page_icon="📊",
     layout="wide",
 )
 
-st.title("🛰️ Three-Drone Swarm Intelligence Dashboard")
+st.title("📊 V1 Swarm Final Results Dashboard")
+st.caption("Battlefield Intelligence using Drone Swarms")
 
-st.caption(
-    f"{project_config['title']} · "
-    f"{project_config['swarm_name']} · "
-    f"{project_config['world_name']}"
-)
 
-with st.sidebar:
-    st.header("Dashboard controls")
+def load_json(path: Path, fallback):
+    if not path.exists():
+        return fallback
 
-    if st.button(
-        "Refresh results",
-        width="stretch",
-    ):
-        st.rerun()
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return {"error": str(exc), "path": str(path)}
 
-    st.info(
-        "This dashboard displays stable swarm "
-        "mission outputs. Obstacle-avoidance "
-        "experiments are excluded."
+
+def load_csv(path: Path):
+    if not path.exists():
+        return []
+
+    try:
+        with path.open(encoding="utf-8") as f:
+            return list(csv.DictReader(f))
+    except Exception:
+        return []
+
+
+def card(title: str, value: str, sub: str = ""):
+    components.html(
+        f"""
+        <div style="
+            background:#111827;
+            color:#ffffff;
+            border:1px solid #374151;
+            border-radius:14px;
+            padding:16px;
+            min-height:105px;
+        ">
+            <div style="font-size:13px;color:#9ca3af;">{title}</div>
+            <div style="font-size:28px;font-weight:800;margin-top:8px;">{value}</div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:8px;">{sub}</div>
+        </div>
+        """,
+        height=120,
     )
 
-mission_summary = read_json(
-    paths["mission_summary_json"]
-)
-mission_report = read_text(
-    paths["mission_report_md"]
-)
-zone_assignment = read_csv(
-    paths["zone_assignment_csv"]
-)
-shared_detections = read_csv(
-    paths["shared_detections_csv"]
-)
-shared_events = read_csv(
-    paths["shared_events_csv"]
-)
-event_inbox = read_csv(
-    paths["swarm_event_inbox_csv"]
-)
 
-detection_summary = read_json(
-    paths["shared_detection_summary_json"]
-)
-event_summary = read_json(
-    paths["shared_event_summary_json"]
-)
+config = load_json(CONFIG_PATH, {"inputs": {}})
+inputs = config.get("inputs", {})
 
-telemetry = {
-    drone["drone_id"]: read_csv(
-        drone["telemetry_csv"]
+part05 = load_json(ROOT / inputs.get("part05_summary", ""), {})
+part06 = load_json(ROOT / inputs.get("part06_summary", ""), {})
+part08 = load_json(ROOT / inputs.get("part08_summary", ""), {})
+part09 = load_json(ROOT / inputs.get("part09_summary", ""), {})
+fused = load_json(ROOT / inputs.get("part09_fused_intelligence", ""), {})
+live_state = load_json(ROOT / inputs.get("live_state", ""), {})
+threat_table = load_csv(ROOT / inputs.get("part09_threat_table", ""))
+
+
+st.subheader("✅ Completion Overview")
+
+overview_rows = [
+    {
+        "part": "Part 5",
+        "module": "Altitude-separated surveillance patrol",
+        "status": part05.get("status", "missing"),
+        "result": part05.get("result", "unknown"),
+    },
+    {
+        "part": "Part 6",
+        "module": "Swarm zone assignment",
+        "status": part06.get("status", "missing"),
+        "result": part06.get("result", "unknown"),
+    },
+    {
+        "part": "Part 8",
+        "module": "Swarm communication and event sharing",
+        "status": part08.get("status", "missing"),
+        "result": part08.get("result", "unknown"),
+    },
+    {
+        "part": "Part 9",
+        "module": "Battlefield intelligence fusion",
+        "status": part09.get("status", "missing"),
+        "result": part09.get("result", "unknown"),
+    },
+]
+
+st.table(overview_rows)
+
+cols = st.columns(4)
+with cols[0]:
+    card(
+        "Overall Risk",
+        str(fused.get("overall_risk_level", "NA")),
+        "From fused swarm intelligence",
     )
-    for drone in drone_config
-}
-
-mission = mission_summary.get(
-    "mission",
-    {},
-)
-intelligence = mission_summary.get(
-    "intelligence",
-    {},
-)
-drone_summaries = mission_summary.get(
-    "drones",
-    [],
-)
-
-actual_telemetry_rows = sum(
-    len(dataframe)
-    for dataframe in telemetry.values()
-)
-
-metric_columns = st.columns(7)
-
-metric_columns[0].metric(
-    "Drones",
-    metric_number(
-        mission.get(
-            "total_drones",
-            len(telemetry),
-        )
-    ),
-)
-
-metric_columns[1].metric(
-    "Successful drones",
-    metric_number(
-        mission.get(
-            "successful_drones"
-        )
-    ),
-)
-
-mission_success_rate = metric_number(
-    mission.get(
-        "mission_success_rate_percent"
+with cols[1]:
+    card(
+        "Threat Count",
+        str(part09.get("threat_count", len(threat_table))),
+        "Operator threat rows",
     )
-)
-
-metric_columns[2].metric(
-    "Mission success",
-    f"{mission_success_rate}%",
-)
-
-metric_columns[3].metric(
-    "Telemetry records",
-    metric_number(
-        actual_telemetry_rows
-    ),
-)
-
-metric_columns[4].metric(
-    "Shared detections",
-    metric_number(
-        len(shared_detections)
-    ),
-)
-
-metric_columns[5].metric(
-    "Shared events",
-    metric_number(
-        len(shared_events)
-    ),
-)
-
-estimated_distance = metric_number(
-    mission.get(
-        "estimated_total_distance_m"
+with cols[2]:
+    card(
+        "Shared Events",
+        str(part08.get("shared_event_count", "NA")),
+        "Drone-to-drone shared events",
     )
-)
-
-metric_columns[6].metric(
-    "Estimated distance",
-    f"{estimated_distance} m",
-)
-
-(
-    live_camera_tab,
-    overview_tab,
-    drones_tab,
-    detections_tab,
-    events_tab,
-    report_tab,
-    health_tab,
-) = st.tabs([
-    "Live camera feeds",
-    "Mission overview",
-    "Per-drone telemetry",
-    "Shared detections",
-    "Shared events",
-    "Mission report",
-    "File health",
-])
-
-
-
-with live_camera_tab:
-    st.subheader(
-        "Live annotated three-drone surveillance"
+with cols[3]:
+    card(
+        "Telemetry Samples",
+        str(part09.get("patrol_telemetry_samples", "NA")),
+        "Patrol telemetry records",
     )
 
-    st.caption(
-        "The video panels become active when Gazebo, "
-        "the ROS camera bridge and all three YOLO/MJPEG "
-        "servers are running."
-    )
+st.divider()
 
-    camera_columns = st.columns(3)
+st.subheader("🛰️ Drone Mission State")
 
-    for column, drone in zip(
-        camera_columns,
-        drone_config,
-    ):
-        with column:
-            st.markdown(
-                f"### {drone['display_name']}"
-            )
+mission = live_state.get("mission", {})
+drones = live_state.get("drones", {})
+safety = live_state.get("safety", {})
 
-            feed_url = drone.get(
-                "video_feed_url",
-                "",
-            )
-
-            if feed_url:
-                st.markdown(
-                    f"""
-                    <div style="
-                        border:1px solid #374151;
-                        border-radius:12px;
-                        padding:6px;
-                        background:#05080e;
-                    ">
-                        <img
-                            src="{feed_url}"
-                            style="
-                                width:100%;
-                                min-height:260px;
-                                object-fit:contain;
-                                border-radius:8px;
-                            "
-                        />
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-
-                st.code(
-                    feed_url,
-                    language=None,
-                )
-            else:
-                st.warning(
-                    "No video-feed URL configured."
-                )
-
-
-with overview_tab:
-    st.subheader("Mission intelligence")
-
-    overview_columns = st.columns(4)
-
-    overview_columns[0].metric(
-        "Broadcast messages",
-        metric_number(
-            intelligence.get(
-                "total_broadcast_messages"
-            )
-        ),
-    )
-
-    overview_columns[1].metric(
-        "Matched detections",
-        metric_number(
-            intelligence.get(
-                "matched_detections"
-            )
-        ),
-    )
-
-    detection_link_rate = metric_number(
-        intelligence.get(
-            "detection_link_rate_percent"
-        )
-    )
-
-    overview_columns[2].metric(
-        "Detection link rate",
-        f"{detection_link_rate}%",
-    )
-
-    event_link_rate = metric_number(
-        intelligence.get(
-            "event_link_rate_percent"
-        )
-    )
-
-    overview_columns[3].metric(
-        "Event link rate",
-        f"{event_link_rate}%",
-    )
-
-    left_column, right_column = st.columns(2)
-
-    with left_column:
-        st.subheader("Zone assignments")
-
-        if zone_assignment.empty:
-            st.warning(
-                "Zone-assignment CSV is unavailable."
-            )
-        else:
-            st.dataframe(
-                zone_assignment,
-                width="stretch",
-                hide_index=True,
-            )
-
-    with right_column:
-        st.subheader("Drone mission summaries")
-
-        if drone_summaries:
-            summary_rows = []
-
-            for item in drone_summaries:
-                telemetry_summary = item.get(
-                    "telemetry",
-                    {},
-                )
-
-                summary_rows.append({
-                    "drone_id":
-                        item.get("drone_id"),
-                    "mission_status":
-                        item.get("mission_status"),
-                    "mission_successful":
-                        item.get(
-                            "mission_successful"
-                        ),
-                    "assigned_zones":
-                        ", ".join(
-                            item.get(
-                                "assigned_zones",
-                                [],
-                            )
-                        ),
-                    "completed_waypoints":
-                        item.get(
-                            "completed_waypoint_count"
-                        ),
-                    "telemetry_samples":
-                        telemetry_summary.get(
-                            "samples"
-                        ),
-                    "distance_m":
-                        telemetry_summary.get(
-                            "estimated_distance_m"
-                        ),
-                    "maximum_altitude_m":
-                        telemetry_summary.get(
-                            "maximum_relative_altitude_m"
-                        ),
-                    "detections":
-                        item.get(
-                            "detection_count"
-                        ),
-                    "events":
-                        item.get(
-                            "source_event_count"
-                        ),
-                })
-
-            st.dataframe(
-                pd.DataFrame(summary_rows),
-                width="stretch",
-                hide_index=True,
-            )
-        else:
-            st.warning(
-                "Drone mission summaries are unavailable."
-            )
-
-
-with drones_tab:
-    display_names = {
-        drone["drone_id"]:
-            drone["display_name"]
-        for drone in drone_config
+mission_rows = [
+    {
+        "mission_status": mission.get("status"),
+        "phase": mission.get("phase"),
+        "elapsed_s": mission.get("elapsed_s"),
+        "loop": mission.get("loop"),
+        "updated_at_utc": mission.get("updated_at_utc"),
     }
+]
 
-    selected_drone = st.selectbox(
-        "Select drone",
-        options=list(telemetry.keys()),
-        format_func=lambda value:
-            display_names.get(
-                value,
-                value,
-            ),
+st.table(mission_rows)
+
+drone_rows = []
+for drone_id, data in drones.items():
+    drone_rows.append(
+        {
+            "drone": drone_id,
+            "model": data.get("model"),
+            "zone": data.get("zone"),
+            "status": data.get("status"),
+            "phase": data.get("phase"),
+            "x": data.get("x"),
+            "y": data.get("y"),
+            "altitude_m": data.get("z"),
+            "assigned_altitude_m": data.get("assigned_altitude_m"),
+            "current_waypoint": data.get("current_waypoint"),
+        }
     )
 
-    selected_telemetry = telemetry[
-        selected_drone
+if drone_rows:
+    st.table(drone_rows)
+else:
+    st.warning("No live-state drone rows found. Run the patrol once to populate live telemetry.")
+
+st.subheader("🛡️ Separation Safety")
+
+st.table(
+    [
+        {
+            "status": safety.get("status", "NA"),
+            "minimum_3d_separation_m": safety.get("minimum_3d_separation_m", "NA"),
+            "closest_pair": safety.get("closest_pair", "NA"),
+            "altitude_separation_enabled": safety.get("altitude_separation_enabled", "NA"),
+        }
     ]
+)
 
-    if selected_telemetry.empty:
-        st.warning(
-            f"No telemetry available for "
-            f"{selected_drone}."
-        )
-    else:
-        drone_metrics = st.columns(4)
+if safety.get("pairwise_distances_m"):
+    st.json(safety["pairwise_distances_m"])
 
-        drone_metrics[0].metric(
-            "Telemetry samples",
-            metric_number(
-                len(selected_telemetry)
-            ),
-        )
+st.divider()
 
-        drone_metrics[1].metric(
-            "Latest mission status",
-            last_non_empty(
-                selected_telemetry,
-                "mission_status",
-            ),
-        )
+st.subheader("🧭 Zone Assignment")
 
-        drone_metrics[2].metric(
-            "Latest zone",
-            last_non_empty(
-                selected_telemetry,
-                "current_zone",
-                "Not assigned",
-            ),
-        )
+zones = part06.get("zones", {})
+zone_rows = []
 
-        maximum_altitude = maximum_numeric(
-            selected_telemetry,
-            "relative_altitude_m",
-        )
+for zone_name, zone in zones.items():
+    zone_rows.append(
+        {
+            "zone": zone_name,
+            "assigned_drone": zone.get("assigned_drone"),
+            "model": zone.get("model"),
+            "role": zone.get("role"),
+            "altitude_m": zone.get("altitude_m"),
+            "priority": zone.get("priority"),
+            "coverage": zone.get("coverage_type"),
+        }
+    )
 
-        maximum_altitude_text = metric_number(
-            maximum_altitude
-        )
+if zone_rows:
+    st.table(zone_rows)
+else:
+    st.warning("Zone assignment output not found.")
 
-        drone_metrics[3].metric(
-            "Maximum altitude",
-            f"{maximum_altitude_text} m",
-        )
+st.divider()
 
-        chart_column, route_column = st.columns(2)
+st.subheader("📡 Event Sharing Summary")
 
-        with chart_column:
-            st.subheader("Altitude profile")
+event_rows = [
+    {
+        "raw_events": part08.get("raw_event_count"),
+        "shared_events": part08.get("shared_event_count"),
+        "deduplicated_events": part08.get("deduplicated_event_count"),
+        "communication_mode": part08.get("communication_mode"),
+    }
+]
 
-            if (
-                "relative_altitude_m"
-                in selected_telemetry.columns
-            ):
-                altitude_data = pd.to_numeric(
-                    selected_telemetry[
-                        "relative_altitude_m"
-                    ],
-                    errors="coerce",
-                )
+st.table(event_rows)
 
-                st.line_chart(
-                    altitude_data,
-                    height=350,
-                )
+st.divider()
 
-        with route_column:
-            st.subheader("Local mission route")
+st.subheader("🎯 Operator Threat Table")
 
-            route_columns = {
-                "local_east_m",
-                "local_north_m",
-            }
+if threat_table:
+    st.table(threat_table)
+else:
+    st.warning("No threat table rows found.")
 
-            if route_columns.issubset(
-                selected_telemetry.columns
-            ):
-                route = selected_telemetry[
-                    [
-                        "local_east_m",
-                        "local_north_m",
-                    ]
-                ].copy()
+st.divider()
 
-                route["local_east_m"] = (
-                    pd.to_numeric(
-                        route["local_east_m"],
-                        errors="coerce",
-                    )
-                )
-                route["local_north_m"] = (
-                    pd.to_numeric(
-                        route["local_north_m"],
-                        errors="coerce",
-                    )
-                )
-                route = route.dropna()
+st.subheader("🧠 Fused Battlefield Intelligence")
 
-                st.scatter_chart(
-                    route,
-                    x="local_east_m",
-                    y="local_north_m",
-                    height=350,
-                )
-
-        st.subheader("Recent telemetry")
-
-        st.dataframe(
-            selected_telemetry.tail(
-                int(
-                    dashboard_config[
-                        "maximum_table_rows"
-                    ]
-                )
-            ),
-            width="stretch",
-            hide_index=True,
-        )
-
-
-with detections_tab:
-    if shared_detections.empty:
-        st.warning(
-            "Shared-detection data is unavailable."
-        )
-    else:
-        filter_columns = st.columns(3)
-
-        available_drones = sorted(
-            shared_detections[
-                "drone_id"
-            ].dropna().astype(str).unique()
-        )
-        available_labels = sorted(
-            shared_detections[
-                "class_name"
-            ].dropna().astype(str).unique()
-        )
-
-        selected_drones = (
-            filter_columns[0].multiselect(
-                "Source drones",
-                available_drones,
-                default=available_drones,
-                key="detection_source_drones",
-            )
-        )
-
-        selected_labels = (
-            filter_columns[1].multiselect(
-                "Object classes",
-                available_labels,
-                default=available_labels,
-                key="detection_object_classes",
-            )
-        )
-
-        minimum_confidence = (
-            filter_columns[2].slider(
-                "Minimum confidence",
-                min_value=0.0,
-                max_value=1.0,
-                value=0.25,
-                step=0.05,
-            )
-        )
-
-        filtered_detections = (
-            shared_detections[
-                shared_detections[
-                    "drone_id"
-                ].astype(str).isin(
-                    selected_drones
-                )
-            ]
-        )
-
-        filtered_detections = (
-            filtered_detections[
-                filtered_detections[
-                    "class_name"
-                ].astype(str).isin(
-                    selected_labels
-                )
-            ]
-        )
-
-        confidence = pd.to_numeric(
-            filtered_detections[
-                "confidence"
-            ],
-            errors="coerce",
-        )
-
-        filtered_detections = (
-            filtered_detections[
-                confidence
-                >= minimum_confidence
-            ]
-        )
-
-        detection_columns = st.columns(2)
-
-        with detection_columns[0]:
-            st.subheader(
-                "Detections by object class"
-            )
-            st.bar_chart(
-                filtered_detections[
-                    "class_name"
-                ].value_counts()
-            )
-
-        with detection_columns[1]:
-            st.subheader(
-                "Detections by drone"
-            )
-            st.bar_chart(
-                filtered_detections[
-                    "drone_id"
-                ].value_counts()
-            )
-
-        st.dataframe(
-            filtered_detections.tail(
-                int(
-                    dashboard_config[
-                        "maximum_table_rows"
-                    ]
-                )
-            ),
-            width="stretch",
-            hide_index=True,
-        )
-
-        with st.expander(
-            "Detection-sharing summary"
-        ):
-            st.json(detection_summary)
-
-
-with events_tab:
-    if shared_events.empty:
-        st.warning(
-            "Shared-event data is unavailable."
-        )
-    else:
-        event_filter_columns = st.columns(2)
-
-        available_severities = sorted(
-            shared_events[
-                "severity"
-            ].dropna().astype(str).unique()
-        )
-
-        available_source_drones = sorted(
-            shared_events[
-                "source_drone_id"
-            ].dropna().astype(str).unique()
-        )
-
-        selected_severities = (
-            event_filter_columns[0].multiselect(
-                "Severities",
-                available_severities,
-                default=available_severities,
-                key="event_severities",
-            )
-        )
-
-        selected_event_drones = (
-            event_filter_columns[1].multiselect(
-                "Source drones",
-                available_source_drones,
-                default=available_source_drones,
-                key="event_source_drones",
-            )
-        )
-
-        filtered_events = shared_events[
-            shared_events[
-                "severity"
-            ].astype(str).isin(
-                selected_severities
-            )
-        ]
-
-        filtered_events = filtered_events[
-            filtered_events[
-                "source_drone_id"
-            ].astype(str).isin(
-                selected_event_drones
-            )
-        ]
-
-        event_columns = st.columns(2)
-
-        with event_columns[0]:
-            st.subheader(
-                "Events by severity"
-            )
-            st.bar_chart(
-                filtered_events[
-                    "severity"
-                ].value_counts()
-            )
-
-        with event_columns[1]:
-            st.subheader(
-                "Events by source drone"
-            )
-            st.bar_chart(
-                filtered_events[
-                    "source_drone_id"
-                ].value_counts()
-            )
-
-        st.dataframe(
-            filtered_events.tail(
-                int(
-                    dashboard_config[
-                        "maximum_table_rows"
-                    ]
-                )
-            ),
-            width="stretch",
-            hide_index=True,
-        )
-
-        with st.expander(
-            "Event-sharing summary"
-        ):
-            st.json(event_summary)
-
-        with st.expander(
-            "Swarm event inbox"
-        ):
-            st.dataframe(
-                event_inbox.tail(
-                    int(
-                        dashboard_config[
-                            "maximum_table_rows"
-                        ]
-                    )
-                ),
-                width="stretch",
-                hide_index=True,
-            )
-
-
-with report_tab:
-    if mission_report:
-        st.markdown(mission_report)
-    else:
-        st.warning(
-            "Mission intelligence report is unavailable."
-        )
-
-
-with health_tab:
-    health_records = [
-        file_health(
-            "Mission summary",
-            paths["mission_summary_json"],
-        ),
-        file_health(
-            "Mission report",
-            paths["mission_report_md"],
-        ),
-        file_health(
-            "Zone assignment CSV",
-            paths["zone_assignment_csv"],
-        ),
-        file_health(
-            "Shared detections",
-            paths["shared_detections_csv"],
-        ),
-        file_health(
-            "Shared events",
-            paths["shared_events_csv"],
-        ),
-        file_health(
-            "Event inbox",
-            paths["swarm_event_inbox_csv"],
-        ),
+risk_counts = fused.get("risk_counts", {})
+st.table(
+    [
+        {
+            "overall_risk_level": fused.get("overall_risk_level", "NA"),
+            "high": risk_counts.get("high", 0),
+            "medium": risk_counts.get("medium", 0),
+            "low": risk_counts.get("low", 0),
+            "human_review_required": fused.get("human_in_loop", {}).get("required", "NA"),
+        }
     ]
+)
 
-    for drone in drone_config:
-        health_records.append(
-            file_health(
-                f"{drone['drone_id']} telemetry",
-                drone["telemetry_csv"],
-            )
-        )
+zone_summary = fused.get("zone_summary", {})
+fusion_zone_rows = []
 
-    st.dataframe(
-        pd.DataFrame(
-            health_records
-        ),
-        width="stretch",
-        hide_index=True,
+for zone_name, zone in zone_summary.items():
+    fusion_zone_rows.append(
+        {
+            "zone": zone_name,
+            "assigned_drone": zone.get("assigned_drone"),
+            "role": zone.get("role"),
+            "altitude_m": zone.get("altitude_m"),
+            "detected_threats": zone.get("detected_threats"),
+            "highest_risk": zone.get("highest_risk"),
+        }
     )
 
-    st.caption(
-        f"Dashboard configuration: "
-        f"{CONFIG_PATH.relative_to(PROJECT_ROOT)}"
-    )
+if fusion_zone_rows:
+    st.table(fusion_zone_rows)
+
+st.info(
+    "Human-in-the-loop mode is enabled. "
+    "This project provides battlefield intelligence and operator review support only. "
+    "It does not make autonomous engagement or weapon-control decisions."
+)
+
+st.divider()
+
+st.subheader("📁 Generated Output Files")
+
+output_rows = [
+    {
+        "name": "Part 5 patrol summary",
+        "path": inputs.get("part05_summary"),
+    },
+    {
+        "name": "Part 6 zone assignment",
+        "path": inputs.get("part06_summary"),
+    },
+    {
+        "name": "Part 8 event sharing",
+        "path": inputs.get("part08_summary"),
+    },
+    {
+        "name": "Part 9 fusion summary",
+        "path": inputs.get("part09_summary"),
+    },
+    {
+        "name": "Fused intelligence JSON",
+        "path": inputs.get("part09_fused_intelligence"),
+    },
+    {
+        "name": "Operator threat table CSV",
+        "path": inputs.get("part09_threat_table"),
+    },
+    {
+        "name": "Live state JSON",
+        "path": inputs.get("live_state"),
+    },
+]
+
+st.table(output_rows)
+
+with st.expander("Show raw fused intelligence JSON"):
+    st.json(fused)
+
+with st.expander("Show raw live state JSON"):
+    st.json(live_state)

@@ -1,0 +1,13 @@
+{
+  "dashboard_name": "part10_final_results_dashboard",
+  "port": 8503,
+  "inputs": {
+    "part05_summary": "outputs/reports/part05_realistic_surveillance_patrol_summary.json",
+    "part06_summary": "outputs/reports/part06_zone_assignment_summary.json",
+    "part08_summary": "outputs/reports/part08_swarm_event_sharing_summary.json",
+    "part09_summary": "outputs/reports/part09_battlefield_intelligence_fusion_summary.json",
+    "part09_fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
+    "part09_threat_table": "outputs/intelligence/part09/part09_operator_threat_table.csv",
+    "live_state": "outputs/live/swarm_live_state.json"
+  }
+}

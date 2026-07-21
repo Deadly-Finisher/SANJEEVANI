@@ -1,0 +1,20 @@
+{
+  "part": "part-10",
+  "status": "completed",
+  "result": "PASS",
+  "task": "final results dashboard",
+  "dashboard_file": "dashboard/v1_swarm_results_dashboard.py",
+  "launcher": "simulation/scripts/run_part10_results_dashboard.sh",
+  "url": "http://127.0.0.1:8503",
+  "features": [
+    "mission completion overview",
+    "zone assignment table",
+    "drone mission state",
+    "separation safety table",
+    "event sharing summary",
+    "operator threat table",
+    "fused intelligence summary",
+    "output file index"
+  ],
+  "completed_at_utc": "2026-07-21T23:22:40.061596+00:00"
+}
