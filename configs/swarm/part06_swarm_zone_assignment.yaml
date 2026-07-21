@@ -1,0 +1,64 @@
+mission:
+  name: "part06_swarm_zone_assignment"
+  world: "battlefield_sar_world_v1_realistic"
+  strategy: "divide battlefield into left, center and right surveillance lanes"
+  assignment_method: "static zone allocation with altitude separation"
+zones:
+  zone_left_flank:
+    assigned_drone: "drone_1"
+    model: "x500_mono_cam_1"
+    altitude_m: 12
+    role: "left flank surveillance"
+    priority: "medium"
+    coverage_type: "lawnmower sweep"
+    area_bounds:
+      x_min: -55
+      x_max: -22
+      y_min: -38
+      y_max: 0
+    objectives:
+      - "monitor left-side movement"
+      - "detect people and vehicles"
+      - "observe flank approach routes"
+  zone_center_road:
+    assigned_drone: "drone_2"
+    model: "x500_mono_cam_2"
+    altitude_m: 16
+    role: "center road and asset surveillance"
+    priority: "high"
+    coverage_type: "rectangular search sweep"
+    area_bounds:
+      x_min: -12
+      x_max: 22
+      y_min: -38
+      y_max: 8
+    objectives:
+      - "monitor central road"
+      - "observe vehicles and battlefield assets"
+      - "support main situational awareness"
+  zone_right_overwatch:
+    assigned_drone: "drone_3"
+    model: "x500_mono_cam_3"
+    altitude_m: 20
+    role: "right flank overwatch"
+    priority: "medium"
+    coverage_type: "high-altitude overwatch sweep"
+    area_bounds:
+      x_min: 30
+      x_max: 58
+      y_min: -38
+      y_max: 8
+    objectives:
+      - "monitor right-side movement"
+      - "provide high-altitude overwatch"
+      - "reduce collision risk using altitude separation"
+safety_rules:
+  altitude_separation_enabled: true
+  minimum_altitude_gap_m: 4
+  minimum_3d_separation_m: 6
+  collision_avoidance_status: "planned by static lane and altitude separation"
+  paused_future_scope:
+    - "LiDAR obstacle detection"
+    - "dynamic obstacle avoidance"
+    - "local replanning"
+    - "inter-drone collision avoidance"
