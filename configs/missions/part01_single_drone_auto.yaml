@@ -1,0 +1,53 @@
+launch:
+  launcher: simulation/scripts/launch_submission_single_drone.sh
+  world_name: battlefield_sar_world_v1_realistic
+  model_name: gz_x500_mono_cam
+  model_pose: -20,-35,0.3,0,0,0
+  autostart_id: 4010
+  px4_parameters:
+    CBRK_SUPPLY_CHK: 894281
+    COM_ARM_BAT_MIN: 0
+    COM_RC_IN_MODE: 1
+    SIM_BAT_DRAIN: 86400
+    SIM_BAT_MIN_PCT: 100
+connection:
+  endpoint: udpin:0.0.0.0:14540
+  source_system: 250
+  source_component: 190
+mission:
+  takeoff_altitude_m: 10.0
+  acceptance_radius_m: 3.0
+  force_arm_in_simulation: true
+  command_resend_interval_s: 3.0
+  landing_altitude_threshold_m: 0.8
+  waypoints:
+  - north_m: 15.0
+    east_m: 0.0
+    altitude_m: 10.0
+    hold_s: 2.0
+  - north_m: 15.0
+    east_m: 15.0
+    altitude_m: 10.0
+    hold_s: 2.0
+  - north_m: 0.0
+    east_m: 15.0
+    altitude_m: 10.0
+    hold_s: 2.0
+  land_offset:
+    north_m: 0.0
+    east_m: 0.0
+timeouts:
+  connection_s: 90
+  upload_s: 45
+  arm_s: 40
+  mission_s: 420
+  emergency_land_s: 60
+output:
+  telemetry_csv: outputs/single_drone/part01_telemetry.csv
+  summary_json: outputs/reports/part01_single_drone_summary.json
+  sample_interval_s: 0.5
+  minimum_telemetry_samples: 20
+checkpoint:
+  enabled: true
+  commit_message: 'part-01: stable autonomous single-drone foundation'
+  tag_name: checkpoint-part-01
