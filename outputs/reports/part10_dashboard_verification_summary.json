@@ -1,0 +1,123 @@
+{
+  "part": "part-10",
+  "task": "final dashboard verification",
+  "status": "completed",
+  "result": "PASS",
+  "passed_checks": 22,
+  "failed_checks": 0,
+  "telemetry_rows_verified": 1672,
+  "detection_rows_verified": 377,
+  "checks": [
+    {
+      "name": "dashboard_source_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "dashboard_config_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "dashboard_python_compile",
+      "status": "PASS",
+      "detail": "Python compile successful"
+    },
+    {
+      "name": "dashboard_config_json_valid",
+      "status": "PASS",
+      "detail": "Top-level keys: ['dashboard_name', 'port', 'inputs']"
+    },
+    {
+      "name": "part06_zone_assignment_artifacts_present",
+      "status": "PASS",
+      "detail": "missing=[]"
+    },
+    {
+      "name": "part08_event_sharing_artifacts_present",
+      "status": "PASS",
+      "detail": "missing=[]"
+    },
+    {
+      "name": "part09_intelligence_fusion_artifacts_present",
+      "status": "PASS",
+      "detail": "missing=[]"
+    },
+    {
+      "name": "part11_failure_recovery_artifacts_present",
+      "status": "PASS",
+      "detail": "missing=[]"
+    },
+    {
+      "name": "part12_rag_vlm_hitl_artifacts_present",
+      "status": "PASS",
+      "detail": "missing=[]"
+    },
+    {
+      "name": "dashboard_mentions_streamlit",
+      "status": "PASS",
+      "detail": "streamlit"
+    },
+    {
+      "name": "dashboard_mentions_telemetry",
+      "status": "PASS",
+      "detail": "telemetry"
+    },
+    {
+      "name": "dashboard_mentions_detection",
+      "status": "PASS",
+      "detail": "detection"
+    },
+    {
+      "name": "dashboard_mentions_intelligence",
+      "status": "PASS",
+      "detail": "intelligence"
+    },
+    {
+      "name": "dashboard_mentions_event",
+      "status": "PASS",
+      "detail": "event"
+    },
+    {
+      "name": "dashboard_mentions_failure",
+      "status": "PASS",
+      "detail": "failure"
+    },
+    {
+      "name": "dashboard_mentions_recovery",
+      "status": "PASS",
+      "detail": "recovery"
+    },
+    {
+      "name": "dashboard_mentions_rag",
+      "status": "PASS",
+      "detail": "rag"
+    },
+    {
+      "name": "dashboard_mentions_uncertainty",
+      "status": "PASS",
+      "detail": "uncertainty"
+    },
+    {
+      "name": "dashboard_mentions_human",
+      "status": "PASS",
+      "detail": "human"
+    },
+    {
+      "name": "swarm_telemetry_csv_nonempty",
+      "status": "PASS",
+      "detail": "rows=1672, columns=['timestamp_utc', 'drone_id', 'mission_status', 'current_zone', 'latitude_deg', 'longitude_deg', 'absolute_altitude_m', 'relative_altitude_m', 'local_north_m', 'local_east_m', 'source_telemetry_csv', '_telemetry_time_utc']"
+    },
+    {
+      "name": "telemetry_linked_detections_csv_nonempty",
+      "status": "PASS",
+      "detail": "rows=377, columns=['timestamp', 'frame_id', 'model_name', 'class_id', 'class_name', 'confidence', 'x1', 'y1', 'x2', 'y2', 'drone_id', 'source_detection_csv', '_record_time_utc', '_record_drone_id', 'telemetry_timestamp_utc', 'telemetry_drone_id', 'telemetry_mission_status', 'telemetry_current_zone', 'telemetry_latitude_deg', 'telemetry_longitude_deg', 'telemetry_absolute_altitude_m', 'telemetry_relative_altitude_m', 'telemetry_local_north_m', 'telemetry_local_east_m', 'telemetry_source_telemetry_csv', '_telemetry_time_utc', 'matched_telemetry', 'time_difference_s']"
+    },
+    {
+      "name": "streamlit_dashboard_launch_smoke",
+      "status": "PASS",
+      "detail": "2026-07-22 21:40:20.951 Uvicorn server started on 0.0.0.0:8799\n\n  You can now view your Streamlit app in your browser.\n\n  Local URL: http://localhost:8799\n  Network URL: http://172.18.181.223:8799\n  External URL: http://106.219.74.208:8799\n\n  Stopping..."
+    }
+  ],
+  "completed_at_utc": "2026-07-22T16:10:28.326387+00:00"
+}

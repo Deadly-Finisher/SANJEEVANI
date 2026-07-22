@@ -1,21 +1,23 @@
 {
-  "dashboard_name": "part10_final_results_dashboard",
-  "port": 8503,
-  "inputs": {
-    "part05_summary": "outputs/reports/part05_realistic_surveillance_patrol_summary.json",
-    "part06_summary": "outputs/reports/part06_zone_assignment_summary.json",
-    "part08_summary": "outputs/reports/part08_swarm_event_sharing_summary.json",
-    "part09_summary": "outputs/reports/part09_battlefield_intelligence_fusion_summary.json",
-    "part09_fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
-    "part09_threat_table": "outputs/intelligence/part09/part09_operator_threat_table.csv",
-    "main_comparison": "outputs/reports/main_project_till_now_comparison.json",
-    "live_state": "outputs/live/swarm_live_state.json",
-    "part11_summary": "outputs/reports/part11_failure_recovery_summary.json",
-    "part11_recovery_plan": "outputs/failure_recovery/part11/part11_recovery_plan.json",
-    "part11_recovery_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json",
-    "part12_summary": "outputs/reports/part12_rag_vlm_hitl_summary.json",
-    "part12_final_analysis": "outputs/rag_vlm_hitl/part12/part12_rag_vlm_hitl_final_analysis.json",
-    "part12_uncertainty": "outputs/rag_vlm_hitl/part12/part12_uncertainty_analysis.json",
-    "part12_hitl_packet": "outputs/rag_vlm_hitl/part12/part12_human_review_packet.json"
-  }
+    "dashboard_name": "part10_final_results_dashboard",
+    "port": 8503,
+    "inputs": {
+        "part05_summary": "outputs/reports/part05_realistic_surveillance_patrol_summary.json",
+        "part06_summary": "outputs/reports/part06_zone_assignment_summary.json",
+        "part08_summary": "outputs/reports/part08_swarm_event_sharing_summary.json",
+        "part09_summary": "outputs/reports/part09_battlefield_intelligence_fusion_summary.json",
+        "part09_fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
+        "part09_threat_table": "outputs/intelligence/part09/part09_operator_threat_table.csv",
+        "main_comparison": "outputs/reports/main_project_till_now_comparison.json",
+        "live_state": "outputs/live/swarm_live_state.json",
+        "part11_summary": "outputs/reports/part11_failure_recovery_summary.json",
+        "part11_recovery_plan": "outputs/failure_recovery/part11/part11_recovery_plan.json",
+        "part11_recovery_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json",
+        "part12_summary": "outputs/reports/part12_rag_vlm_hitl_summary.json",
+        "part12_final_analysis": "outputs/rag_vlm_hitl/part12/part12_rag_vlm_hitl_final_analysis.json",
+        "part12_uncertainty": "outputs/rag_vlm_hitl/part12/part12_uncertainty_analysis.json",
+        "part12_hitl_packet": "outputs/rag_vlm_hitl/part12/part12_human_review_packet.json",
+        "swarm_telemetry": "outputs/swarm/v1_three_drone_swarm/merged/swarm_telemetry_combined.csv",
+        "telemetry_linked_detections": "outputs/swarm/v1_three_drone_swarm/merged/swarm_telemetry_linked_detections.csv"
+    }
 }

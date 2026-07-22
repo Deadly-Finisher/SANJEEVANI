@@ -50,6 +50,13 @@ live_state = load_json(ROOT / inputs.get("live_state", ""), {})
 comparison = load_json(ROOT / inputs.get("main_comparison", ""), {})
 threat_table = load_csv(ROOT / inputs.get("part09_threat_table", ""))
 
+swarm_telemetry = load_csv(
+    ROOT / inputs.get("swarm_telemetry", "")
+)
+telemetry_detections = load_csv(
+    ROOT / inputs.get("telemetry_linked_detections", "")
+)
+
 part11 = load_json(ROOT / inputs.get("part11_summary", ""), {})
 part11_plan = load_json(ROOT / inputs.get("part11_recovery_plan", ""), {})
 part11_state = load_json(ROOT / inputs.get("part11_recovery_state", ""), {})
@@ -200,6 +207,97 @@ if drone_rows:
 else:
     st.warning("No drone live-state rows found.")
 
+
+st.divider()
+
+st.subheader("📡 Swarm Telemetry and Detection Evidence")
+
+telemetry_columns = list(swarm_telemetry[0]) if swarm_telemetry else []
+detection_columns = list(telemetry_detections[0]) if telemetry_detections else []
+
+drone_key = next(
+    (
+        key
+        for key in ("drone_id", "drone", "vehicle_id", "vehicle")
+        if key in telemetry_columns
+    ),
+    None,
+)
+
+class_key = next(
+    (
+        key
+        for key in (
+            "class_name",
+            "label",
+            "object_class",
+            "detection_class",
+            "class",
+        )
+        if key in detection_columns
+    ),
+    None,
+)
+
+unique_drones = (
+    len(
+        {
+            row.get(drone_key)
+            for row in swarm_telemetry
+            if row.get(drone_key)
+        }
+    )
+    if drone_key
+    else None
+)
+
+unique_classes = (
+    len(
+        {
+            row.get(class_key)
+            for row in telemetry_detections
+            if row.get(class_key)
+        }
+    )
+    if class_key
+    else None
+)
+
+metric1, metric2, metric3, metric4 = st.columns(4)
+metric1.metric("Telemetry Rows", len(swarm_telemetry))
+metric2.metric("Detection Rows", len(telemetry_detections))
+metric3.metric(
+    "Drones Represented",
+    unique_drones if unique_drones is not None else "N/A",
+)
+metric4.metric(
+    "Detection Classes",
+    unique_classes if unique_classes is not None else "N/A",
+)
+
+if swarm_telemetry:
+    with st.expander("Latest swarm telemetry samples"):
+        st.dataframe(
+            swarm_telemetry[-25:],
+            use_container_width=True,
+        )
+else:
+    st.warning("Combined swarm telemetry artifact not found or empty.")
+
+if telemetry_detections:
+    with st.expander("Latest telemetry-linked detection samples"):
+        st.dataframe(
+            telemetry_detections[-25:],
+            use_container_width=True,
+        )
+else:
+    st.warning("Telemetry-linked detection artifact not found or empty.")
+
+st.caption(
+    "Telemetry and detection data shown here are recorded mission "
+    "evidence. This section does not activate paused safety or "
+    "live-replanning modules."
+)
 
 st.divider()
 
