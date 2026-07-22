@@ -60,7 +60,7 @@ Fuse swarm zone assignments, patrol telemetry, shared drone events and live miss
 - Risk score: 60
 - Confidence: 0.73
 - Source drones: drone_1
-- Position: x=-27.0, y=-34.0, z=1.0
+- Position: x=-0.894, y=-19.066, z=12.261
 - Human review required: True
 
 ### THREAT-002 — truck
@@ -70,7 +70,7 @@ Fuse swarm zone assignments, patrol telemetry, shared drone events and live miss
 - Risk score: 90
 - Confidence: 0.81
 - Source drones: drone_2
-- Position: x=2.0, y=-40.0, z=1.0
+- Position: x=-16.737, y=3.296, z=17.109
 - Human review required: True
 
 ### THREAT-003 — smoke
@@ -80,7 +80,7 @@ Fuse swarm zone assignments, patrol telemetry, shared drone events and live miss
 - Risk score: 90
 - Confidence: 0.64
 - Source drones: drone_2
-- Position: x=-4.0, y=-33.0, z=1.0
+- Position: x=-22.737, y=10.296, z=17.109
 - Human review required: True
 
 ### THREAT-004 — truck
@@ -90,7 +90,7 @@ Fuse swarm zone assignments, patrol telemetry, shared drone events and live miss
 - Risk score: 90
 - Confidence: 0.76
 - Source drones: drone_3
-- Position: x=22.0, y=-37.0, z=1.0
+- Position: x=-10.996, y=-14.31, z=21.629
 - Human review required: True
 
 ## Human-in-the-Loop Note

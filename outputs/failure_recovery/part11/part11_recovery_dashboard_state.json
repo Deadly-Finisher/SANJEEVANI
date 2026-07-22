@@ -3,7 +3,7 @@
   "status": "completed",
   "result": "PASS",
   "dashboard_state_type": "failure_recovery_state",
-  "generated_at_utc": "2026-07-22T00:03:20.114343+00:00",
+  "generated_at_utc": "2026-07-22T00:48:56.509746+00:00",
   "failed_drone": "drone_2",
   "failed_model": "x500_mono_cam_2",
   "failure_type": "communication_loss",
@@ -18,7 +18,7 @@
     {
       "time_s": 0,
       "event": "mission_running",
-      "status": "COMPLETED",
+      "status": "RUNNING",
       "description": "Three-drone surveillance mission is available from previous patrol output."
     },
     {

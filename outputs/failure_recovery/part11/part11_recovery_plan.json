@@ -1,7 +1,7 @@
 {
   "part": "part-11",
   "plan_name": "failure_recovery_plan",
-  "generated_at_utc": "2026-07-22T00:03:20.114249+00:00",
+  "generated_at_utc": "2026-07-22T00:48:56.509494+00:00",
   "failure": {
     "failed_drone": "drone_2",
     "failed_model": "x500_mono_cam_2",

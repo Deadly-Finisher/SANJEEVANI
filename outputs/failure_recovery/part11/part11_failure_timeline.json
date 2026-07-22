@@ -2,7 +2,7 @@
   {
     "time_s": 0,
     "event": "mission_running",
-    "status": "COMPLETED",
+    "status": "RUNNING",
     "description": "Three-drone surveillance mission is available from previous patrol output."
   },
   {

@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-07-22T00:14:58.853744+00:00",
+  "generated_at_utc": "2026-07-22T00:48:56.597441+00:00",
   "uncertainty_status": "CONTROLLED_UNCERTAINTY",
   "max_event_uncertainty": 0.36,
   "human_review_required": true,
   "event_uncertainty": [
     {
-      "event_id": "80efec6d-728d-4e15-aad6-78d82ef7dcfb",
+      "event_id": "81ed7ab8-839b-4167-b4f3-4e1582b9feed",
       "class_name": "person",
       "event_type": "possible human activity",
       "priority": "MEDIUM",
@@ -21,7 +21,7 @@
       "human_review_required": true
     },
     {
-      "event_id": "8d0e479e-0af9-4184-8e07-6ba1a2d0e1ec",
+      "event_id": "cd5c3872-96d2-44ae-8712-4e0e465b2f34",
       "class_name": "truck",
       "event_type": "possible vehicle movement",
       "priority": "HIGH",
@@ -37,7 +37,7 @@
       "human_review_required": true
     },
     {
-      "event_id": "68f9863e-dfe2-4258-bd91-d16508db0b61",
+      "event_id": "28becaa2-0d0c-4aae-988f-de5a2880e878",
       "class_name": "smoke",
       "event_type": "possible fire or battlefield disturbance",
       "priority": "HIGH",
@@ -54,7 +54,7 @@
       "human_review_required": true
     },
     {
-      "event_id": "4a1b4207-7a47-4f22-9562-fffa999f238f",
+      "event_id": "b0547c65-3b73-46ef-a448-b720ae0c8d91",
       "class_name": "truck",
       "event_type": "possible vehicle movement",
       "priority": "HIGH",

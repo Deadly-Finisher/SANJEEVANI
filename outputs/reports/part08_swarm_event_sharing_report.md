@@ -28,7 +28,7 @@ Each drone converts detections into structured events and shares them with the o
 
 - Type: possible human activity
 - Source drones: drone_1
-- Position: x=-27.0, y=-34.0, z=1.0
+- Position: x=-0.894, y=-19.066, z=12.261
 - Confidence: 0.73
 - Fusion status: unique_event
 
@@ -36,7 +36,7 @@ Each drone converts detections into structured events and shares them with the o
 
 - Type: possible vehicle movement
 - Source drones: drone_2
-- Position: x=2.0, y=-40.0, z=1.0
+- Position: x=-16.737, y=3.296, z=17.109
 - Confidence: 0.81
 - Fusion status: unique_event
 
@@ -44,7 +44,7 @@ Each drone converts detections into structured events and shares them with the o
 
 - Type: possible fire or battlefield disturbance
 - Source drones: drone_2
-- Position: x=-4.0, y=-33.0, z=1.0
+- Position: x=-22.737, y=10.296, z=17.109
 - Confidence: 0.64
 - Fusion status: unique_event
 
@@ -52,7 +52,7 @@ Each drone converts detections into structured events and shares them with the o
 
 - Type: possible vehicle movement
 - Source drones: drone_3
-- Position: x=22.0, y=-37.0, z=1.0
+- Position: x=-10.996, y=-14.31, z=21.629
 - Confidence: 0.76
 - Fusion status: unique_event
 

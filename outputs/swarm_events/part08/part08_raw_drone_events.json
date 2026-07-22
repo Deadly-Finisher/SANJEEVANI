@@ -1,7 +1,7 @@
 [
   {
-    "event_id": "100c2c7b-3a2d-499e-a334-177cc46118aa",
-    "timestamp_utc": "2026-07-21T23:16:58.599504+00:00",
+    "event_id": "81ed7ab8-839b-4167-b4f3-4e1582b9feed",
+    "timestamp_utc": "2026-07-22T00:48:56.361977+00:00",
     "source_drone": "drone_1",
     "source_model": "x500_mono_cam_1",
     "source_zone": "LEFT_FLANK_SURVEILLANCE",
@@ -10,17 +10,17 @@
     "event_type": "possible human activity",
     "confidence": 0.73,
     "position": {
-      "x": -27.0,
-      "y": -34.0,
-      "z": 1.0
+      "x": -0.894,
+      "y": -19.066,
+      "z": 12.261
     },
     "priority": "MEDIUM",
     "shared": false,
     "recipients": []
   },
   {
-    "event_id": "8966bbae-6f20-458b-a44f-b87df1b8014f",
-    "timestamp_utc": "2026-07-21T23:16:58.604236+00:00",
+    "event_id": "cd5c3872-96d2-44ae-8712-4e0e465b2f34",
+    "timestamp_utc": "2026-07-22T00:48:56.362020+00:00",
     "source_drone": "drone_2",
     "source_model": "x500_mono_cam_2",
     "source_zone": "CENTER_ROAD_SURVEILLANCE",
@@ -29,17 +29,17 @@
     "event_type": "possible vehicle movement",
     "confidence": 0.81,
     "position": {
-      "x": 2.0,
-      "y": -40.0,
-      "z": 1.0
+      "x": -16.737,
+      "y": 3.296,
+      "z": 17.109
     },
     "priority": "HIGH",
     "shared": false,
     "recipients": []
   },
   {
-    "event_id": "e6db48c6-8a75-4263-b4eb-3913a5bb8541",
-    "timestamp_utc": "2026-07-21T23:16:58.604253+00:00",
+    "event_id": "28becaa2-0d0c-4aae-988f-de5a2880e878",
+    "timestamp_utc": "2026-07-22T00:48:56.362028+00:00",
     "source_drone": "drone_2",
     "source_model": "x500_mono_cam_2",
     "source_zone": "CENTER_ROAD_SURVEILLANCE",
@@ -48,17 +48,17 @@
     "event_type": "possible fire or battlefield disturbance",
     "confidence": 0.64,
     "position": {
-      "x": -4.0,
-      "y": -33.0,
-      "z": 1.0
+      "x": -22.737,
+      "y": 10.296,
+      "z": 17.109
     },
     "priority": "HIGH",
     "shared": false,
     "recipients": []
   },
   {
-    "event_id": "6b341065-300b-4e07-8270-e49f95dbb87b",
-    "timestamp_utc": "2026-07-21T23:16:58.604261+00:00",
+    "event_id": "b0547c65-3b73-46ef-a448-b720ae0c8d91",
+    "timestamp_utc": "2026-07-22T00:48:56.362035+00:00",
     "source_drone": "drone_3",
     "source_model": "x500_mono_cam_3",
     "source_zone": "RIGHT_OVERWATCH_SURVEILLANCE",
@@ -67,9 +67,9 @@
     "event_type": "possible vehicle movement",
     "confidence": 0.76,
     "position": {
-      "x": 22.0,
-      "y": -37.0,
-      "z": 1.0
+      "x": -10.996,
+      "y": -14.31,
+      "z": 21.629
     },
     "priority": "HIGH",
     "shared": false,
