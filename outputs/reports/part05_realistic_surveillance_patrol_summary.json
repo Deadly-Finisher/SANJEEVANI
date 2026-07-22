@@ -2,155 +2,24 @@
   "part": "part-05",
   "status": "completed",
   "result": "PASS",
-  "task": "low-load altitude-separated surveillance patrol",
+  "task": "safe continuous overlapping autonomous surveillance patrol",
   "world": "battlefield_sar_world_v1_realistic",
   "loops": 1,
-  "steps_per_segment": 18,
-  "step_delay_s": 0.45,
-  "drones": {
-    "drone_1": {
-      "model": "x500_mono_cam_1",
-      "zone": "LEFT_FLANK_SURVEILLANCE",
-      "altitude_m": 12.0,
-      "waypoints": [
-        [
-          -30,
-          -38,
-          1.0
-        ],
-        [
-          -30,
-          -38,
-          12.0
-        ],
-        [
-          -48,
-          -25,
-          12.0
-        ],
-        [
-          -48,
-          0,
-          12.0
-        ],
-        [
-          -28,
-          0,
-          12.0
-        ],
-        [
-          -28,
-          -25,
-          12.0
-        ],
-        [
-          -30,
-          -38,
-          12.0
-        ],
-        [
-          -30,
-          -38,
-          1.0
-        ]
-      ]
-    },
-    "drone_2": {
-      "model": "x500_mono_cam_2",
-      "zone": "CENTER_ROAD_SURVEILLANCE",
-      "altitude_m": 16.0,
-      "waypoints": [
-        [
-          0,
-          -38,
-          1.0
-        ],
-        [
-          0,
-          -38,
-          16.0
-        ],
-        [
-          -10,
-          -22,
-          16.0
-        ],
-        [
-          -10,
-          8,
-          16.0
-        ],
-        [
-          14,
-          8,
-          16.0
-        ],
-        [
-          14,
-          -22,
-          16.0
-        ],
-        [
-          0,
-          -38,
-          16.0
-        ],
-        [
-          0,
-          -38,
-          1.0
-        ]
-      ]
-    },
-    "drone_3": {
-      "model": "x500_mono_cam_3",
-      "zone": "RIGHT_OVERWATCH_SURVEILLANCE",
-      "altitude_m": 20.0,
-      "waypoints": [
-        [
-          30,
-          -38,
-          1.0
-        ],
-        [
-          30,
-          -38,
-          20.0
-        ],
-        [
-          36,
-          -22,
-          20.0
-        ],
-        [
-          36,
-          8,
-          20.0
-        ],
-        [
-          58,
-          8,
-          20.0
-        ],
-        [
-          58,
-          -22,
-          20.0
-        ],
-        [
-          30,
-          -38,
-          20.0
-        ],
-        [
-          30,
-          -38,
-          1.0
-        ]
-      ]
-    }
+  "steps_per_leg": 55,
+  "tick_delay_s": 0.45,
+  "total_ticks": 440,
+  "behaviour": [
+    "long-distance route motion",
+    "overlapping search areas",
+    "different route timing per drone",
+    "not fixed formation movement",
+    "lower Gazebo load",
+    "altitude-separated safety"
+  ],
+  "outputs": {
+    "telemetry_csv": "outputs/swarm_missions/part05_surveillance_patrol/part05_safe_continuous_overlapping_surveillance_telemetry.csv",
+    "legacy_telemetry_csv": "outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv",
+    "live_state_json": "outputs/live/swarm_live_state.json"
   },
-  "telemetry_csv": "outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv",
-  "live_state_json": "outputs/live/swarm_live_state.json",
-  "completed_at_utc": "2026-07-22T00:30:40.195344+00:00"
+  "completed_at_utc": "2026-07-22T01:12:46.653975+00:00"
 }

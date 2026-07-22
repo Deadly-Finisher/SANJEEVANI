@@ -1,0 +1,63 @@
+{
+  "mission_name": "part05_safe_continuous_overlapping_surveillance",
+  "world": "battlefield_sar_world_v1_realistic",
+  "mission": {
+    "tick_delay_s": 0.45,
+    "steps_per_leg": 55,
+    "loops": 1,
+    "minimum_3d_separation_m": 6.0
+  },
+  "drones": {
+    "drone_1": {
+      "model": "x500_mono_cam_1",
+      "zone": "LEFT_TO_CENTER_OVERLAP",
+      "base_altitude_m": 13.0,
+      "altitude_wave_m": 0.6,
+      "route": [
+        [-52, -38],
+        [-44, -8],
+        [-18, 10],
+        [6, -14],
+        [-24, -36],
+        [-56, -10],
+        [-36, 12],
+        [8, -32],
+        [-52, -38]
+      ]
+    },
+    "drone_2": {
+      "model": "x500_mono_cam_2",
+      "zone": "CENTER_WIDE_OVERLAP",
+      "base_altitude_m": 17.0,
+      "altitude_wave_m": 0.6,
+      "route": [
+        [0, -40],
+        [22, -16],
+        [-28, 12],
+        [36, 8],
+        [-34, -28],
+        [18, -38],
+        [42, -4],
+        [-12, 14],
+        [0, -40]
+      ]
+    },
+    "drone_3": {
+      "model": "x500_mono_cam_3",
+      "zone": "RIGHT_TO_CENTER_OVERLAP",
+      "base_altitude_m": 21.0,
+      "altitude_wave_m": 0.6,
+      "route": [
+        [56, -38],
+        [38, -6],
+        [10, 12],
+        [-8, -18],
+        [28, -36],
+        [62, -8],
+        [34, 12],
+        [-6, -30],
+        [56, -38]
+      ]
+    }
+  }
+}

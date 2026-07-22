@@ -1,20 +1,21 @@
-# Part 5: Altitude-Separated Three-Drone Surveillance Patrol
+# Part 5: Safe Continuous Overlapping Autonomous Surveillance Patrol
 
 ## Result
 
 PASS
 
-## Patrol Behaviour
+## Behaviour
 
-- Drone 1 covers the left flank at 12m.
-- Drone 2 covers the center route at 16m.
-- Drone 3 covers the right overwatch lane at 20m.
-- The drones follow horizontal surveillance sweep paths, not only vertical motion.
+The drones now move through long overlapping surveillance routes.
 
-## Safety
+They do not move in a fixed formation and do not maintain a fixed distance.
 
-The patrol uses different lanes and different altitudes to reduce collision risk.
+## Safety and Stability
 
-## Dashboard
+This version uses slower sequential Gazebo pose updates to avoid overloading Gazebo.
 
-Live telemetry is written to `outputs/live/swarm_live_state.json`.
+## Output Files
+
+- Summary: `outputs/reports/part05_realistic_surveillance_patrol_summary.json`
+- Telemetry: `outputs/swarm_missions/part05_surveillance_patrol/part05_safe_continuous_overlapping_surveillance_telemetry.csv`
+- Live state: `outputs/live/swarm_live_state.json`

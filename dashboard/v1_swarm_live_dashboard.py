@@ -1,101 +1,72 @@
 from pathlib import Path
 import json
-import time
-
-import requests
 import streamlit as st
-import streamlit.components.v1 as components
 
 
 ROOT = Path.home() / "Programs" / "SWARM_DRONES"
 LIVE_STATE = ROOT / "outputs/live/swarm_live_state.json"
 
-FEEDS = {
-    "drone_1": {
-        "name": "Drone 1",
-        "model": "x500_mono_cam_1",
-        "port": 5011,
-        "url": "http://127.0.0.1:5011/video_feed",
-    },
-    "drone_2": {
-        "name": "Drone 2",
-        "model": "x500_mono_cam_2",
-        "port": 5012,
-        "url": "http://127.0.0.1:5012/video_feed",
-    },
-    "drone_3": {
-        "name": "Drone 3",
-        "model": "x500_mono_cam_3",
-        "port": 5013,
-        "url": "http://127.0.0.1:5013/video_feed",
-    },
-}
-
 st.set_page_config(
-    page_title="V1 Swarm Operator Dashboard",
+    page_title="V1 Swarm Live Operator Dashboard",
     page_icon="🛰️",
     layout="wide",
 )
 
-st.title("🛰️ V1 Three-Drone Swarm Operator Dashboard")
-
-st.sidebar.header("Dashboard Controls")
-st.sidebar.info(
-    "Live video feeds update continuously. "
-    "Telemetry updates when you press refresh, so the page will not jump to the top."
+st.markdown(
+    """
+    <style>
+        .block-container {
+            padding-top: 1rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            max-width: 100% !important;
+        }
+        .feed-card {
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 10px;
+            background: #0f1117;
+            min-height: 470px;
+        }
+        .feed-title {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: white;
+        }
+        .feed-img {
+            width: 100%;
+            height: 390px;
+            object-fit: contain;
+            background: black;
+            border-radius: 10px;
+            border: 1px solid #222;
+        }
+        .feed-url {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 6px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
-if st.sidebar.button("Refresh telemetry now"):
-    st.rerun()
-
-st.sidebar.markdown("---")
-st.sidebar.write("Camera feeds:")
-st.sidebar.write("Drone 1 → 5011")
-st.sidebar.write("Drone 2 → 5012")
-st.sidebar.write("Drone 3 → 5013")
-
-
-
-def check_feed(port: int) -> str:
-    try:
-        r = requests.get(
-            f"http://127.0.0.1:{port}/",
-            timeout=2,
-        )
-        return "READY" if r.status_code == 200 else f"HTTP {r.status_code}"
-    except Exception:
-        return "OFFLINE"
+st.title("🛰️ V1 Swarm Live Operator Dashboard")
+st.caption("Live feeds + mission telemetry + safety information")
 
 
 def load_state() -> dict:
     if not LIVE_STATE.exists():
-        return {
-            "mission": {
-                "status": "WAITING",
-                "phase": "no_live_state_yet",
-                "elapsed_s": 0,
-                "loop": 0,
-                "total_loops": 0,
-                "updated_at_utc": None,
-            },
-            "drones": {},
-            "safety": {},
-            "operator_notes": [
-                "Run the surveillance patrol script to populate live telemetry."
-            ],
-        }
-
+        return {}
     try:
         return json.loads(LIVE_STATE.read_text(encoding="utf-8"))
     except Exception as exc:
         return {
+            "error": str(exc),
             "mission": {
                 "status": "ERROR",
-                "phase": f"state_read_error: {exc}",
-                "elapsed_s": 0,
-                "loop": 0,
-                "total_loops": 0,
-                "updated_at_utc": None,
+                "phase": "live_state_read_failed",
             },
             "drones": {},
             "safety": {},
@@ -103,163 +74,138 @@ def load_state() -> dict:
         }
 
 
-def card(title: str, value: str, sub: str = "") -> None:
-    components.html(
-        f"""
-        <div style="
-            border:1px solid #333;
-            border-radius:12px;
-            padding:14px;
-            background:#111827;
-            color:white;
-            min-height:92px;
-        ">
-            <div style="font-size:13px;color:#9ca3af;">{title}</div>
-            <div style="font-size:26px;font-weight:700;margin-top:6px;">{value}</div>
-            <div style="font-size:12px;color:#9ca3af;margin-top:6px;">{sub}</div>
-        </div>
-        """,
-        height=110,
-    )
-
-
 state = load_state()
 mission = state.get("mission", {})
 drones = state.get("drones", {})
 safety = state.get("safety", {})
 
-cols = st.columns(5)
-with cols[0]:
-    card("Mission Status", str(mission.get("status", "UNKNOWN")))
-with cols[1]:
-    card("Phase", str(mission.get("phase", "UNKNOWN")))
-with cols[2]:
-    card("Elapsed", f"{mission.get('elapsed_s', 0)} s")
-with cols[3]:
-    card("Loop", f"{mission.get('loop', 0)}/{mission.get('total_loops', 0)}")
-with cols[4]:
-    card("Safety", str(safety.get("status", "UNKNOWN")))
+with st.sidebar:
+    st.header("Controls")
+    st.write("Live dashboard: http://127.0.0.1:8502")
+    st.write("Results dashboard: http://127.0.0.1:8503")
+    st.divider()
+    st.write("Drone feeds:")
+    st.write("Drone 1 → 5011")
+    st.write("Drone 2 → 5012")
+    st.write("Drone 3 → 5013")
+    st.divider()
+    if st.button("Refresh telemetry now"):
+        st.rerun()
 
-st.caption(f"Last update UTC: {mission.get('updated_at_utc')}")
+st.subheader("📷 Live Camera Feeds")
 
-st.divider()
+feeds = [
+    {
+        "title": "Drone 1 — x500_mono_cam_1",
+        "url": "http://127.0.0.1:5011/video_feed",
+    },
+    {
+        "title": "Drone 2 — x500_mono_cam_2",
+        "url": "http://127.0.0.1:5012/video_feed",
+    },
+    {
+        "title": "Drone 3 — x500_mono_cam_3",
+        "url": "http://127.0.0.1:5013/video_feed",
+    },
+]
 
-st.subheader("📷 Live YOLO Camera Feeds")
+cols = st.columns(3)
 
-feed_statuses = {}
-
-status_cols = st.columns(3)
-
-for col, (drone_id, feed) in zip(status_cols, FEEDS.items()):
-    status = check_feed(feed["port"])
-    feed_statuses[drone_id] = status
-
+for col, feed in zip(cols, feeds):
     with col:
-        if status == "READY":
-            st.success(f"{feed['name']}: READY")
-        else:
-            st.error(f"{feed['name']}: {status}")
-
-        st.caption(f"{feed['model']} | port {feed['port']}")
-
-feed_cols = st.columns(3)
-
-for col, (drone_id, feed) in zip(feed_cols, FEEDS.items()):
-    with col:
-        st.markdown(f"### {feed['name']}")
-        components.html(
+        st.markdown(
             f"""
-            <div style="
-                border:2px solid #444;
-                border-radius:10px;
-                padding:6px;
-                background:#000;
-                text-align:center;
-            ">
-                <img src="{feed['url']}"
-                     style="
-                        width:100%;
-                        height:320px;
-                        object-fit:contain;
-                        background:black;
-                     " />
+            <div class="feed-card">
+                <div class="feed-title">{feed["title"]}</div>
+                <img class="feed-img" src="{feed["url"]}">
+                <div class="feed-url">{feed["url"]}</div>
             </div>
-            <p style="font-size:12px;">{feed['url']}</p>
             """,
-            height=390,
+            unsafe_allow_html=True,
         )
 
 st.divider()
 
-st.subheader("📡 Drone Telemetry")
+st.subheader("📡 Mission Status")
 
-rows = []
-
-for drone_id, data in drones.items():
-    rows.append(
-        {
-            "drone": drone_id,
-            "model": data.get("model"),
-            "status": data.get("status"),
-            "zone": data.get("zone"),
-            "phase": data.get("phase"),
-            "x": data.get("x"),
-            "y": data.get("y"),
-            "altitude_m": data.get("z"),
-            "assigned_altitude_m": data.get("assigned_altitude_m"),
-            "current_waypoint": data.get("current_waypoint"),
-            "next_waypoint": data.get("next_waypoint"),
-            "yaw_rad": data.get("yaw_rad"),
-            "feed": feed_statuses.get(drone_id),
-        }
-    )
-
-if rows:
-    st.table(rows)
-else:
-    st.warning("No live drone telemetry yet. Start the patrol script.")
-
-st.subheader("🛡️ Swarm Separation Safety")
-
-safety_rows = [
+mission_row = [
     {
-        "minimum_3d_separation_m": safety.get("minimum_3d_separation_m", "NA"),
-        "closest_pair": safety.get("closest_pair", "NA"),
-        "altitude_separation_enabled": safety.get("altitude_separation_enabled", "NA"),
-        "status": safety.get("status", "UNKNOWN"),
+        "status": mission.get("status"),
+        "phase": mission.get("phase"),
+        "tick": mission.get("tick"),
+        "total_ticks": mission.get("total_ticks"),
+        "elapsed_s": mission.get("elapsed_s"),
+        "updated_at_utc": mission.get("updated_at_utc"),
     }
 ]
 
-st.table(safety_rows)
+st.table(mission_row)
 
-pairwise = safety.get("pairwise_distances_m", {})
-if pairwise:
-    st.json(pairwise)
+st.subheader("🛩️ Drone Telemetry")
 
-st.subheader("🗺️ Mission Map Data")
-
-map_rows = []
+drone_rows = []
 
 for drone_id, data in drones.items():
-    map_rows.append(
+    drone_rows.append(
         {
             "drone": drone_id,
+            "model": data.get("model"),
+            "zone": data.get("zone"),
+            "status": data.get("status"),
+            "phase": data.get("phase"),
             "x": data.get("x"),
             "y": data.get("y"),
-            "altitude": data.get("z"),
-            "zone": data.get("zone"),
+            "z": data.get("z"),
+            "target_x": data.get("target_x"),
+            "target_y": data.get("target_y"),
+            "target_z": data.get("target_z"),
+            "assigned_altitude_m": data.get("assigned_altitude_m"),
         }
     )
 
-if map_rows:
-    st.table(map_rows)
+if drone_rows:
+    st.table(drone_rows)
+else:
+    st.warning("No drone telemetry yet. Start the patrol script.")
+
+st.subheader("🛡️ Swarm Safety")
+
+safety_row = [
+    {
+        "status": safety.get("status"),
+        "minimum_3d_separation_m": safety.get("minimum_3d_separation_m"),
+        "closest_pair": safety.get("closest_pair"),
+        "altitude_separation_enabled": safety.get("altitude_separation_enabled"),
+        "continuous_motion_enabled": safety.get("continuous_motion_enabled"),
+        "overlapping_search_enabled": safety.get("overlapping_search_enabled"),
+        "gazebo_safe_low_load_mode": safety.get("gazebo_safe_low_load_mode"),
+    }
+]
+
+st.table(safety_row)
+
+pairwise = safety.get("pairwise_distances_m", {})
+if pairwise:
+    st.markdown("### Pairwise Drone Distances")
+    st.table(
+        [
+            {
+                "pair": key,
+                "distance_m": value,
+            }
+            for key, value in pairwise.items()
+        ]
+    )
 
 st.subheader("🧠 Operator Notes")
 
-for note in state.get("operator_notes", []):
-    st.info(note)
+notes = state.get("operator_notes", [])
+
+if notes:
+    for note in notes:
+        st.info(note)
+else:
+    st.info("No operator notes yet.")
 
 with st.expander("Raw Live State JSON"):
     st.json(state)
-
-
