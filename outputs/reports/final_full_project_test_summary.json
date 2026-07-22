@@ -1,0 +1,41 @@
+{
+  "test_name": "final_full_project_test",
+  "status": "completed",
+  "result": "PASS",
+  "started_at_utc": null,
+  "completed_at_utc": "2026-07-22T00:30:41.069362+00:00",
+  "modules": {
+    "part05_surveillance_patrol": "PASS",
+    "part06_zone_assignment": "PASS",
+    "part08_event_sharing": "PASS",
+    "part09_intelligence_fusion": "PASS",
+    "part11_failure_recovery": "PASS",
+    "part12_rag_vlm_hitl": "PASS"
+  },
+  "runtime_checks": {
+    "drone_1_feed_http": "200",
+    "drone_2_feed_http": "200",
+    "drone_3_feed_http": "200",
+    "live_dashboard_http": "200"
+  },
+  "mission_outputs": {
+    "patrol_telemetry_rows": 126,
+    "raw_events": 4,
+    "shared_events": 4,
+    "deduplicated_events": 4,
+    "overall_risk": "HIGH",
+    "failure_recovery_status": "DEGRADED_BUT_MONITORED",
+    "uncertainty_status": "CONTROLLED_UNCERTAINTY",
+    "human_review_required": true,
+    "final_mission_status": "COMPLETED",
+    "safety_status": "SAFE",
+    "minimum_3d_separation_m": 30.0
+  },
+  "operator_urls": {
+    "live_dashboard": "http://127.0.0.1:8502",
+    "results_dashboard": "http://127.0.0.1:8503",
+    "drone_1_feed": "http://127.0.0.1:5011/video_feed",
+    "drone_2_feed": "http://127.0.0.1:5012/video_feed",
+    "drone_3_feed": "http://127.0.0.1:5013/video_feed"
+  }
+}
