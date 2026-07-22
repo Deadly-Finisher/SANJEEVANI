@@ -12,6 +12,10 @@
     "live_state": "outputs/live/swarm_live_state.json",
     "part11_summary": "outputs/reports/part11_failure_recovery_summary.json",
     "part11_recovery_plan": "outputs/failure_recovery/part11/part11_recovery_plan.json",
-    "part11_recovery_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json"
+    "part11_recovery_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json",
+    "part12_summary": "outputs/reports/part12_rag_vlm_hitl_summary.json",
+    "part12_final_analysis": "outputs/rag_vlm_hitl/part12/part12_rag_vlm_hitl_final_analysis.json",
+    "part12_uncertainty": "outputs/rag_vlm_hitl/part12/part12_uncertainty_analysis.json",
+    "part12_hitl_packet": "outputs/rag_vlm_hitl/part12/part12_human_review_packet.json"
   }
 }

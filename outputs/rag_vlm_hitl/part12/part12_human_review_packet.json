@@ -1,0 +1,18 @@
+{
+  "packet_type": "human_in_loop_review_packet",
+  "generated_at_utc": "2026-07-22T00:14:58.853801+00:00",
+  "review_status": "PENDING_OPERATOR_REVIEW",
+  "human_review_required": true,
+  "system_recommendation": "REQUEST_OPERATOR_REVIEW",
+  "allowed_operator_decisions": [
+    "CONFIRM_INTELLIGENCE",
+    "REJECT_INTELLIGENCE",
+    "REQUEST_MORE_DATA",
+    "MARK_AS_UNCERTAIN"
+  ],
+  "safety_constraints": {
+    "autonomous_engagement": false,
+    "weapon_control": false,
+    "operator_review_only": true
+  }
+}

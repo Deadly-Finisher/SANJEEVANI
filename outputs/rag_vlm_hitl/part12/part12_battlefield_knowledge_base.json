@@ -1,0 +1,32 @@
+[
+  {
+    "id": "KB-001",
+    "title": "Swarm lane separation",
+    "category": "safety",
+    "text": "Separate lanes and altitude bands reduce collision risk in simulated swarm patrols."
+  },
+  {
+    "id": "KB-002",
+    "title": "Swarm event sharing",
+    "category": "communication",
+    "text": "Drone detections are converted into structured events and shared with peer drones and dashboard."
+  },
+  {
+    "id": "KB-003",
+    "title": "Battlefield intelligence fusion",
+    "category": "fusion",
+    "text": "Fusion combines event confidence, source drones, zones, positions and risk into an operator view."
+  },
+  {
+    "id": "KB-004",
+    "title": "Human-in-the-loop safety",
+    "category": "hitl",
+    "text": "Risk-bearing or uncertain intelligence must be reviewed by a human operator."
+  },
+  {
+    "id": "KB-005",
+    "title": "Failure recovery limitation",
+    "category": "recovery",
+    "text": "After drone failure, degraded coverage is reported and neighbouring drones provide partial support."
+  }
+]

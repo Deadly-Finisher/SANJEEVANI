@@ -1,0 +1,10 @@
+{
+  "mission_name": "part12_rag_vlm_hitl_intelligence",
+  "world": "battlefield_sar_world_v1_realistic",
+  "inputs": {
+    "fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json",
+    "deduplicated_events": "outputs/swarm_events/part08/part08_deduplicated_swarm_events.json",
+    "failure_recovery_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json",
+    "zone_assignment": "outputs/reports/part06_zone_assignment_summary.json"
+  }
+}

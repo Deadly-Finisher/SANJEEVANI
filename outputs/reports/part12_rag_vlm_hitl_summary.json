@@ -1,0 +1,22 @@
+{
+  "part": "part-12",
+  "status": "completed",
+  "result": "PASS",
+  "task": "RAG/VLM-style intelligence with uncertainty and human approval",
+  "knowledge_base_items": 5,
+  "retrieved_contexts": 5,
+  "event_count": 4,
+  "uncertainty_status": "CONTROLLED_UNCERTAINTY",
+  "max_event_uncertainty": 0.36,
+  "human_review_required": true,
+  "review_status": "PENDING_OPERATOR_REVIEW",
+  "outputs": {
+    "knowledge_base": "outputs/rag_vlm_hitl/part12/part12_battlefield_knowledge_base.json",
+    "retrieved_context": "outputs/rag_vlm_hitl/part12/part12_retrieved_context.json",
+    "uncertainty": "outputs/rag_vlm_hitl/part12/part12_uncertainty_analysis.json",
+    "final_analysis": "outputs/rag_vlm_hitl/part12/part12_rag_vlm_hitl_final_analysis.json",
+    "hitl_packet": "outputs/rag_vlm_hitl/part12/part12_human_review_packet.json",
+    "report": "outputs/reports/part12_rag_vlm_hitl_report.md"
+  },
+  "completed_at_utc": "2026-07-22T00:14:58.853851+00:00"
+}

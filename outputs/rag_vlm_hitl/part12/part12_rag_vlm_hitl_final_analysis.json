@@ -1,0 +1,42 @@
+{
+  "analysis_type": "RAG_and_VLM_style_text_reasoning",
+  "important_note": "This is a VLM-style reasoning layer over simulated drone events and local RAG context. It does not claim that a real multimodal VLM model was executed.",
+  "overall_explanation": "The swarm produced 4 fused event(s). Overall risk level is HIGH. High-risk events: 3, medium-risk events: 1, low-risk events: 0. Failure recovery reports drone_2 affected by communication_loss, so the mission is treated as DEGRADED_BUT_MONITORED. The final intelligence packet requires human operator review.",
+  "retrieved_context_used": [
+    {
+      "id": "KB-001",
+      "title": "Swarm lane separation",
+      "score": 1.0
+    },
+    {
+      "id": "KB-002",
+      "title": "Swarm event sharing",
+      "score": 0.92
+    },
+    {
+      "id": "KB-003",
+      "title": "Battlefield intelligence fusion",
+      "score": 0.84
+    },
+    {
+      "id": "KB-004",
+      "title": "Human-in-the-loop safety",
+      "score": 0.76
+    },
+    {
+      "id": "KB-005",
+      "title": "Failure recovery limitation",
+      "score": 0.68
+    }
+  ],
+  "uncertainty_summary": {
+    "uncertainty_status": "CONTROLLED_UNCERTAINTY",
+    "max_event_uncertainty": 0.36,
+    "human_review_required": true
+  },
+  "safe_operator_output": {
+    "recommended_action": "review_confirm_or_request_more_data",
+    "autonomous_engagement": false,
+    "weapon_control": false
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "generated_at_utc": "2026-07-22T00:14:58.853744+00:00",
+  "uncertainty_status": "CONTROLLED_UNCERTAINTY",
+  "max_event_uncertainty": 0.36,
+  "human_review_required": true,
+  "event_uncertainty": [
+    {
+      "event_id": "80efec6d-728d-4e15-aad6-78d82ef7dcfb",
+      "class_name": "person",
+      "event_type": "possible human activity",
+      "priority": "MEDIUM",
+      "confidence": 0.73,
+      "uncertainty": 0.27,
+      "source_drones": [
+        "drone_1"
+      ],
+      "reasons": [
+        "single_drone_observation",
+        "degraded_failure_recovery_context"
+      ],
+      "human_review_required": true
+    },
+    {
+      "event_id": "8d0e479e-0af9-4184-8e07-6ba1a2d0e1ec",
+      "class_name": "truck",
+      "event_type": "possible vehicle movement",
+      "priority": "HIGH",
+      "confidence": 0.81,
+      "uncertainty": 0.19,
+      "source_drones": [
+        "drone_2"
+      ],
+      "reasons": [
+        "single_drone_observation",
+        "degraded_failure_recovery_context"
+      ],
+      "human_review_required": true
+    },
+    {
+      "event_id": "68f9863e-dfe2-4258-bd91-d16508db0b61",
+      "class_name": "smoke",
+      "event_type": "possible fire or battlefield disturbance",
+      "priority": "HIGH",
+      "confidence": 0.64,
+      "uncertainty": 0.36,
+      "source_drones": [
+        "drone_2"
+      ],
+      "reasons": [
+        "low_or_medium_confidence",
+        "single_drone_observation",
+        "degraded_failure_recovery_context"
+      ],
+      "human_review_required": true
+    },
+    {
+      "event_id": "4a1b4207-7a47-4f22-9562-fffa999f238f",
+      "class_name": "truck",
+      "event_type": "possible vehicle movement",
+      "priority": "HIGH",
+      "confidence": 0.76,
+      "uncertainty": 0.24,
+      "source_drones": [
+        "drone_3"
+      ],
+      "reasons": [
+        "single_drone_observation",
+        "degraded_failure_recovery_context"
+      ],
+      "human_review_required": true
+    }
+  ]
+}

@@ -54,6 +54,11 @@ part11 = load_json(ROOT / inputs.get("part11_summary", ""), {})
 part11_plan = load_json(ROOT / inputs.get("part11_recovery_plan", ""), {})
 part11_state = load_json(ROOT / inputs.get("part11_recovery_state", ""), {})
 
+part12 = load_json(ROOT / inputs.get("part12_summary", ""), {})
+part12_analysis = load_json(ROOT / inputs.get("part12_final_analysis", ""), {})
+part12_uncertainty = load_json(ROOT / inputs.get("part12_uncertainty", ""), {})
+part12_hitl = load_json(ROOT / inputs.get("part12_hitl_packet", ""), {})
+
 
 st.sidebar.header("Dashboard Links")
 st.sidebar.write("Live dashboard: http://127.0.0.1:8502")
@@ -98,6 +103,12 @@ module_rows = [
         "module": "Failure simulation and swarm recovery",
         "status": part11.get("status", "missing"),
         "result": part11.get("result", "unknown"),
+    },
+    {
+        "part": "Part 12",
+        "module": "RAG/VLM-style intelligence, uncertainty and HITL",
+        "status": part12.get("status", "missing"),
+        "result": part12.get("result", "unknown"),
     },
 ]
 
@@ -333,6 +344,72 @@ if part11:
     )
 else:
     st.warning("Part 11 failure recovery output not found.")
+
+
+
+st.divider()
+
+st.subheader("🧠 Part 12: RAG / VLM-Style Intelligence + Uncertainty + Human Approval")
+
+part12_summary = load_json(
+    ROOT / "outputs/reports/part12_rag_vlm_hitl_summary.json",
+    {}
+)
+part12_analysis = load_json(
+    ROOT / "outputs/rag_vlm_hitl/part12/part12_rag_vlm_hitl_final_analysis.json",
+    {}
+)
+part12_uncertainty = load_json(
+    ROOT / "outputs/rag_vlm_hitl/part12/part12_uncertainty_analysis.json",
+    {}
+)
+part12_hitl = load_json(
+    ROOT / "outputs/rag_vlm_hitl/part12/part12_human_review_packet.json",
+    {}
+)
+
+if part12_summary:
+    st.table(
+        [
+            {
+                "result": part12_summary.get("result"),
+                "uncertainty_status": part12_summary.get("uncertainty_status"),
+                "max_event_uncertainty": part12_summary.get("max_event_uncertainty"),
+                "human_review_required": part12_summary.get("human_review_required"),
+                "review_status": part12_summary.get("review_status"),
+                "retrieved_contexts": part12_summary.get("retrieved_contexts"),
+            }
+        ]
+    )
+
+    st.markdown("### Intelligence Explanation")
+    st.info(part12_analysis.get("overall_explanation", "No analysis found."))
+
+    st.markdown("### Event Uncertainty")
+    event_rows = part12_uncertainty.get("event_uncertainty", [])
+    if event_rows:
+        st.table(event_rows)
+    else:
+        st.warning("No uncertainty rows found.")
+
+    st.markdown("### Human Review Packet")
+    st.table(
+        [
+            {
+                "review_status": part12_hitl.get("review_status"),
+                "system_recommendation": part12_hitl.get("system_recommendation"),
+                "human_review_required": part12_hitl.get("human_review_required"),
+            }
+        ]
+    )
+
+    decisions = part12_hitl.get("allowed_operator_decisions", [])
+    if decisions:
+        st.table([{"allowed_decision": item} for item in decisions])
+
+    st.error("Operator-review only. No autonomous engagement or weapon-control decision.")
+else:
+    st.warning("Part 12 output not found.")
 
 
 st.subheader("📁 Output Files")
