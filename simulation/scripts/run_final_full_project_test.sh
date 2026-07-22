@@ -10,24 +10,21 @@ echo "========================================"
 echo "FINAL FULL PROJECT TEST"
 echo "========================================"
 
-START_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-
 fail() {
     echo
     echo "FINAL TEST FAILED: $1"
     echo
-    echo "===== RESULTS DASHBOARD LOG ====="
-    tail -n 100 /tmp/v1_swarm_logs/results_dashboard.log 2>/dev/null || true
-    echo
     echo "===== LIVE DASHBOARD LOG ====="
-    tail -n 100 /tmp/v1_swarm_logs/live_dashboard.log 2>/dev/null || true
+    tail -n 80 /tmp/v1_swarm_logs/live_dashboard.log 2>/dev/null || true
+    echo
+    echo "===== RESULTS DASHBOARD LOG ====="
+    tail -n 80 /tmp/v1_swarm_logs/results_dashboard.log 2>/dev/null || true
     exit 1
 }
 
 check_http() {
-    local NAME="$1"
-    local URL="$2"
-    local CODE
+    NAME="$1"
+    URL="$2"
 
     CODE="$(curl -s --max-time 5 -o /dev/null -w "%{http_code}" "$URL" || true)"
     echo "$NAME: HTTP $CODE"
@@ -37,9 +34,9 @@ check_http() {
     fi
 }
 
-check_summary_pass() {
-    local NAME="$1"
-    local FILE="$2"
+check_pass() {
+    NAME="$1"
+    FILE="$2"
 
     python - "$NAME" "$FILE" <<'PY'
 import json
@@ -50,12 +47,12 @@ name = sys.argv[1]
 path = Path(sys.argv[2])
 
 if not path.exists():
-    raise SystemExit(f"{name}: missing {path}")
+    raise SystemExit(f"{name}: missing file {path}")
 
 data = json.loads(path.read_text(encoding="utf-8"))
 
 if data.get("result") != "PASS":
-    raise SystemExit(f"{name}: result is not PASS: {data.get('result')}")
+    raise SystemExit(f"{name}: result not PASS -> {data.get('result')}")
 
 print(f"{name}: PASS")
 PY
@@ -97,8 +94,6 @@ nohup setsid bash simulation/scripts/bridge_v1_swarm_cameras.sh \
 > /tmp/v1_swarm_logs/camera_bridge.log \
 2>&1 < /dev/null &
 
-echo $! > /tmp/v1_swarm_camera_bridge.pid
-
 sleep 10
 
 echo
@@ -113,10 +108,8 @@ bash simulation/scripts/manage_v1_three_drone_camera_servers.sh start \
 
 sleep 15
 
-bash simulation/scripts/manage_v1_three_drone_camera_servers.sh || true
-
 echo
-echo "===== 5. VERIFY CAMERA FEEDS BEFORE MISSION ====="
+echo "===== 5. VERIFY CAMERA FEEDS ====="
 check_http "Drone 1 feed" "http://127.0.0.1:5011/"
 check_http "Drone 2 feed" "http://127.0.0.1:5012/"
 check_http "Drone 3 feed" "http://127.0.0.1:5013/"
@@ -132,55 +125,54 @@ nohup setsid streamlit run dashboard/v1_swarm_live_dashboard.py \
 > /tmp/v1_swarm_logs/live_dashboard.log \
 2>&1 < /dev/null &
 
-echo $! > /tmp/v1_swarm_live_dashboard.pid
-
 sleep 8
 
 check_http "Live dashboard" "http://127.0.0.1:8502"
 
 echo
-echo "LIVE DASHBOARD READY BEFORE MISSION:"
+echo "Live dashboard ready before mission:"
 echo "http://127.0.0.1:8502"
 
 echo
-echo "===== 7. RUN PART 5 SURVEILLANCE PATROL ====="
+echo "===== 7. RUN PART 5: SURVEILLANCE PATROL ====="
 python simulation/scripts/run_part05_three_drone_surveillance_patrol.py
 
 echo
-echo "===== 8. RUN PART 6 ZONE ASSIGNMENT ====="
+echo "===== 8. RUN PART 6: ZONE ASSIGNMENT ====="
 python simulation/scripts/run_part06_zone_assignment.py
 
 echo
-echo "===== 9. RUN PART 8 EVENT SHARING ====="
+echo "===== 9. RUN PART 8: EVENT SHARING ====="
 python simulation/scripts/run_part08_swarm_event_sharing.py
 
 echo
-echo "===== 10. RUN PART 9 INTELLIGENCE FUSION ====="
+echo "===== 10. RUN PART 9: INTELLIGENCE FUSION ====="
 python simulation/scripts/run_part09_battlefield_intelligence_fusion.py
 
 echo
-echo "===== 11. RUN PART 11 FAILURE RECOVERY ====="
+echo "===== 11. RUN PART 11: FAILURE RECOVERY ====="
 python simulation/scripts/run_part11_failure_recovery.py
 
 echo
-echo "===== 12. RUN PART 12 RAG / VLM / HITL ====="
+echo "===== 12. RUN PART 12: RAG / VLM / HITL ====="
 python simulation/scripts/run_part12_rag_vlm_hitl_analysis.py
 
 echo
-echo "===== 13. VERIFY MODULE SUMMARIES ====="
-check_summary_pass "Part 5" "outputs/reports/part05_realistic_surveillance_patrol_summary.json"
-check_summary_pass "Part 6" "outputs/reports/part06_zone_assignment_summary.json"
-check_summary_pass "Part 8" "outputs/reports/part08_swarm_event_sharing_summary.json"
-check_summary_pass "Part 9" "outputs/reports/part09_battlefield_intelligence_fusion_summary.json"
-check_summary_pass "Part 11" "outputs/reports/part11_failure_recovery_summary.json"
-check_summary_pass "Part 12" "outputs/reports/part12_rag_vlm_hitl_summary.json"
+echo "===== 13. VERIFY ALL MODULES ====="
+check_pass "Part 5" "outputs/reports/part05_realistic_surveillance_patrol_summary.json"
+check_pass "Part 6" "outputs/reports/part06_zone_assignment_summary.json"
+check_pass "Part 8" "outputs/reports/part08_swarm_event_sharing_summary.json"
+check_pass "Part 9" "outputs/reports/part09_battlefield_intelligence_fusion_summary.json"
+check_pass "Part 11" "outputs/reports/part11_failure_recovery_summary.json"
+check_pass "Part 12" "outputs/reports/part12_rag_vlm_hitl_summary.json"
 
 echo
-echo "===== 14. VERIFY RESULTS DASHBOARD HAS PART 12 SOURCE ====="
-grep -q "Part 12" dashboard/v1_swarm_results_dashboard.py \
-|| fail "Part 12 is missing from results dashboard source"
+echo "===== 14. START RESULTS DASHBOARD AFTER MISSION ====="
+bash simulation/scripts/run_part10_results_dashboard.sh
 
-echo "Dashboard source contains Part 12"
+sleep 5
+
+check_http "Results dashboard" "http://127.0.0.1:8503"
 
 echo
 echo "===== 15. CREATE FINAL TEST SUMMARY ====="
@@ -188,17 +180,15 @@ python - <<'PY'
 from pathlib import Path
 from datetime import datetime, timezone
 import json
-import csv
 import subprocess
 
 root = Path.home() / "Programs" / "SWARM_DRONES"
 
 def load_json(rel):
-    path = root / rel
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads((root / rel).read_text(encoding="utf-8"))
 
 def http_code(url):
-    r = subprocess.run(
+    result = subprocess.run(
         f"curl -s --max-time 5 -o /dev/null -w '%{{http_code}}' {url}",
         shell=True,
         executable="/bin/bash",
@@ -206,9 +196,9 @@ def http_code(url):
         stderr=subprocess.DEVNULL,
         text=True,
     )
-    return r.stdout.strip()
+    return result.stdout.strip()
 
-def csv_count(rel):
+def csv_rows(rel):
     path = root / rel
     if not path.exists():
         return 0
@@ -227,7 +217,6 @@ summary = {
     "test_name": "final_full_project_test",
     "status": "completed",
     "result": "PASS",
-    "started_at_utc": None,
     "completed_at_utc": datetime.now(timezone.utc).isoformat(),
     "modules": {
         "part05_surveillance_patrol": part05.get("result"),
@@ -235,16 +224,17 @@ summary = {
         "part08_event_sharing": part08.get("result"),
         "part09_intelligence_fusion": part09.get("result"),
         "part11_failure_recovery": part11.get("result"),
-        "part12_rag_vlm_hitl": part12.get("result"),
+        "part12_rag_vlm_hitl": part12.get("result")
     },
-    "runtime_checks": {
-        "drone_1_feed_http": http_code("http://127.0.0.1:5011/"),
-        "drone_2_feed_http": http_code("http://127.0.0.1:5012/"),
-        "drone_3_feed_http": http_code("http://127.0.0.1:5013/"),
-        "live_dashboard_http": http_code("http://127.0.0.1:8502/"),
+    "runtime": {
+        "drone_1_feed": http_code("http://127.0.0.1:5011/"),
+        "drone_2_feed": http_code("http://127.0.0.1:5012/"),
+        "drone_3_feed": http_code("http://127.0.0.1:5013/"),
+        "live_dashboard": http_code("http://127.0.0.1:8502/"),
+        "results_dashboard": http_code("http://127.0.0.1:8503/")
     },
     "mission_outputs": {
-        "patrol_telemetry_rows": csv_count("outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv"),
+        "patrol_telemetry_rows": csv_rows("outputs/swarm_missions/part05_surveillance_patrol/part05_altitude_separated_surveillance_telemetry.csv"),
         "raw_events": part08.get("raw_event_count"),
         "shared_events": part08.get("shared_event_count"),
         "deduplicated_events": part08.get("deduplicated_event_count"),
@@ -254,15 +244,15 @@ summary = {
         "human_review_required": part12.get("human_review_required"),
         "final_mission_status": live.get("mission", {}).get("status"),
         "safety_status": live.get("safety", {}).get("status"),
-        "minimum_3d_separation_m": live.get("safety", {}).get("minimum_3d_separation_m"),
+        "minimum_3d_separation_m": live.get("safety", {}).get("minimum_3d_separation_m")
     },
     "operator_urls": {
         "live_dashboard": "http://127.0.0.1:8502",
         "results_dashboard": "http://127.0.0.1:8503",
         "drone_1_feed": "http://127.0.0.1:5011/video_feed",
         "drone_2_feed": "http://127.0.0.1:5012/video_feed",
-        "drone_3_feed": "http://127.0.0.1:5013/video_feed",
-    },
+        "drone_3_feed": "http://127.0.0.1:5013/video_feed"
+    }
 }
 
 out_json = root / "outputs/reports/final_full_project_test_summary.json"
@@ -277,27 +267,19 @@ lines = [
     "",
     "PASS",
     "",
-    "## Modules Tested",
+    "## Modules",
     "",
 ]
 
 for key, value in summary["modules"].items():
     lines.append(f"- {key}: {value}")
 
-lines += [
-    "",
-    "## Runtime Checks",
-    "",
-]
+lines += ["", "## Runtime", ""]
 
-for key, value in summary["runtime_checks"].items():
-    lines.append(f"- {key}: {value}")
+for key, value in summary["runtime"].items():
+    lines.append(f"- {key}: HTTP {value}")
 
-lines += [
-    "",
-    "## Mission Outputs",
-    "",
-]
+lines += ["", "## Mission Outputs", ""]
 
 for key, value in summary["mission_outputs"].items():
     lines.append(f"- {key}: {value}")
@@ -312,17 +294,9 @@ lines += [
 
 out_md.write_text("\n".join(lines), encoding="utf-8")
 
-print("Final test summary:", out_json)
-print("Final test report:", out_md)
+print("Final summary:", out_json)
+print("Final report:", out_md)
 PY
-
-echo
-echo "===== 16. START RESULTS DASHBOARD AFTER FULL TEST ====="
-bash simulation/scripts/run_part10_results_dashboard.sh
-
-sleep 5
-
-check_http "Results dashboard" "http://127.0.0.1:8503"
 
 echo
 echo "========================================"

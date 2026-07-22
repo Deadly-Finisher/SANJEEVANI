@@ -8,8 +8,8 @@
     "phase": "safe_continuous_overlapping_surveillance_complete",
     "tick": 440,
     "total_ticks": 440,
-    "elapsed_s": 1034.35,
-    "updated_at_utc": "2026-07-22T01:12:46.622017+00:00"
+    "elapsed_s": 972.9,
+    "updated_at_utc": "2026-07-22T17:39:18.276102+00:00"
   },
   "feeds": {
     "drone_1": "http://127.0.0.1:5011/video_feed",

@@ -2,8 +2,7 @@
   "test_name": "final_full_project_test",
   "status": "completed",
   "result": "PASS",
-  "started_at_utc": null,
-  "completed_at_utc": "2026-07-22T00:30:41.069362+00:00",
+  "completed_at_utc": "2026-07-22T17:39:30.160666+00:00",
   "modules": {
     "part05_surveillance_patrol": "PASS",
     "part06_zone_assignment": "PASS",
@@ -12,14 +11,15 @@
     "part11_failure_recovery": "PASS",
     "part12_rag_vlm_hitl": "PASS"
   },
-  "runtime_checks": {
-    "drone_1_feed_http": "200",
-    "drone_2_feed_http": "200",
-    "drone_3_feed_http": "200",
-    "live_dashboard_http": "200"
+  "runtime": {
+    "drone_1_feed": "200",
+    "drone_2_feed": "200",
+    "drone_3_feed": "200",
+    "live_dashboard": "200",
+    "results_dashboard": "200"
   },
   "mission_outputs": {
-    "patrol_telemetry_rows": 126,
+    "patrol_telemetry_rows": 440,
     "raw_events": 4,
     "shared_events": 4,
     "deduplicated_events": 4,
@@ -29,7 +29,7 @@
     "human_review_required": true,
     "final_mission_status": "COMPLETED",
     "safety_status": "SAFE",
-    "minimum_3d_separation_m": 30.0
+    "minimum_3d_separation_m": 55.57
   },
   "operator_urls": {
     "live_dashboard": "http://127.0.0.1:8502",

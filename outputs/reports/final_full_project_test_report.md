@@ -4,7 +4,7 @@
 
 PASS
 
-## Modules Tested
+## Modules
 
 - part05_surveillance_patrol: PASS
 - part06_zone_assignment: PASS
@@ -13,16 +13,17 @@ PASS
 - part11_failure_recovery: PASS
 - part12_rag_vlm_hitl: PASS
 
-## Runtime Checks
+## Runtime
 
-- drone_1_feed_http: 200
-- drone_2_feed_http: 200
-- drone_3_feed_http: 200
-- live_dashboard_http: 200
+- drone_1_feed: HTTP 200
+- drone_2_feed: HTTP 200
+- drone_3_feed: HTTP 200
+- live_dashboard: HTTP 200
+- results_dashboard: HTTP 200
 
 ## Mission Outputs
 
-- patrol_telemetry_rows: 126
+- patrol_telemetry_rows: 440
 - raw_events: 4
 - shared_events: 4
 - deduplicated_events: 4
@@ -32,7 +33,7 @@ PASS
 - human_review_required: True
 - final_mission_status: COMPLETED
 - safety_status: SAFE
-- minimum_3d_separation_m: 30.0
+- minimum_3d_separation_m: 55.57
 
 ## Dashboards
 
