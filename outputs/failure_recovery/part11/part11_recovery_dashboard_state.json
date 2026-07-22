@@ -1,0 +1,77 @@
+{
+  "part": "part-11",
+  "status": "completed",
+  "result": "PASS",
+  "dashboard_state_type": "failure_recovery_state",
+  "generated_at_utc": "2026-07-22T00:03:20.114343+00:00",
+  "failed_drone": "drone_2",
+  "failed_model": "x500_mono_cam_2",
+  "failure_type": "communication_loss",
+  "affected_zone": "zone_center_road",
+  "recovery_status": "DEGRADED_BUT_MONITORED",
+  "remaining_drones": [
+    "drone_1",
+    "drone_3"
+  ],
+  "human_approval_required": true,
+  "timeline": [
+    {
+      "time_s": 0,
+      "event": "mission_running",
+      "status": "COMPLETED",
+      "description": "Three-drone surveillance mission is available from previous patrol output."
+    },
+    {
+      "time_s": 90,
+      "event": "failure_detected",
+      "failed_drone": "drone_2",
+      "failure_type": "communication_loss",
+      "severity": "HIGH",
+      "affected_zone": "zone_center_road",
+      "description": "simulated link loss during center-road surveillance"
+    },
+    {
+      "time_s": 95,
+      "event": "operator_alert_generated",
+      "human_approval_required": true,
+      "description": "Operator is alerted before recovery reassignment is accepted."
+    },
+    {
+      "time_s": 100,
+      "event": "recovery_reassignment_started",
+      "remaining_drones": [
+        "drone_1",
+        "drone_3"
+      ],
+      "description": "Remaining drones are assigned partial coverage of the failed center zone."
+    },
+    {
+      "time_s": 120,
+      "event": "degraded_coverage_established",
+      "coverage_status": "DEGRADED_BUT_MONITORED",
+      "description": "Center zone is not fully covered by its original drone, but is monitored by neighbouring drones."
+    }
+  ],
+  "coverage_after_failure": {
+    "zone_left_flank": {
+      "status": "ACTIVE",
+      "primary_drone": "drone_1",
+      "coverage": "normal plus partial center support"
+    },
+    "zone_center_road": {
+      "status": "DEGRADED_BUT_MONITORED",
+      "primary_drone": "drone_2_failed",
+      "supporting_drones": [
+        "drone_1",
+        "drone_3"
+      ],
+      "coverage": "split support from left and right drones"
+    },
+    "zone_right_overwatch": {
+      "status": "ACTIVE",
+      "primary_drone": "drone_3",
+      "coverage": "normal plus partial center support"
+    }
+  },
+  "operator_note": "This is a simulated failure-recovery layer. It validates recovery reasoning and operator alerting. Real-time MAVLink failover and dynamic replanning are future scope."
+}

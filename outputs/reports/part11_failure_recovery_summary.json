@@ -1,0 +1,18 @@
+{
+  "part": "part-11",
+  "status": "completed",
+  "result": "PASS",
+  "task": "failure simulation and swarm recovery",
+  "failed_drone": "drone_2",
+  "failure_type": "communication_loss",
+  "affected_zone": "zone_center_road",
+  "recovery_status": "DEGRADED_BUT_MONITORED",
+  "human_approval_required": true,
+  "outputs": {
+    "timeline": "outputs/failure_recovery/part11/part11_failure_timeline.json",
+    "recovery_plan": "outputs/failure_recovery/part11/part11_recovery_plan.json",
+    "dashboard_state": "outputs/failure_recovery/part11/part11_recovery_dashboard_state.json",
+    "report": "outputs/reports/part11_failure_recovery_report.md"
+  },
+  "completed_at_utc": "2026-07-22T00:03:20.114811+00:00"
+}

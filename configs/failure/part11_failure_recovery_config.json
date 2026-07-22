@@ -1,0 +1,42 @@
+{
+  "mission_name": "part11_failure_simulation_and_swarm_recovery",
+  "world": "battlefield_sar_world_v1_realistic",
+  "inputs": {
+    "live_state": "outputs/live/swarm_live_state.json",
+    "zone_assignment": "outputs/reports/part06_zone_assignment_summary.json",
+    "fused_intelligence": "outputs/intelligence/part09/part09_fused_battlefield_intelligence.json"
+  },
+  "failure_scenario": {
+    "failed_drone": "drone_2",
+    "failed_model": "x500_mono_cam_2",
+    "failure_type": "communication_loss",
+    "affected_zone": "zone_center_road",
+    "failure_time_s": 90,
+    "severity": "HIGH",
+    "reason": "simulated link loss during center-road surveillance"
+  },
+  "recovery_policy": {
+    "mode": "static_reassignment",
+    "operator_alert_required": true,
+    "human_approval_required": true,
+    "remaining_drones": ["drone_1", "drone_3"],
+    "coverage_strategy": {
+      "drone_1": {
+        "new_role": "left flank plus partial center support",
+        "support_zone": "center-left road segment",
+        "altitude_m": 12
+      },
+      "drone_3": {
+        "new_role": "right overwatch plus partial center support",
+        "support_zone": "center-right road segment",
+        "altitude_m": 20
+      }
+    }
+  },
+  "future_scope": [
+    "real-time MAVLink failover",
+    "dynamic replanning",
+    "inter-drone collision-aware reassignment",
+    "LiDAR-based obstacle-aware recovery"
+  ]
+}

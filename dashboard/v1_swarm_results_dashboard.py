@@ -50,6 +50,10 @@ live_state = load_json(ROOT / inputs.get("live_state", ""), {})
 comparison = load_json(ROOT / inputs.get("main_comparison", ""), {})
 threat_table = load_csv(ROOT / inputs.get("part09_threat_table", ""))
 
+part11 = load_json(ROOT / inputs.get("part11_summary", ""), {})
+part11_plan = load_json(ROOT / inputs.get("part11_recovery_plan", ""), {})
+part11_state = load_json(ROOT / inputs.get("part11_recovery_state", ""), {})
+
 
 st.sidebar.header("Dashboard Links")
 st.sidebar.write("Live dashboard: http://127.0.0.1:8502")
@@ -88,6 +92,12 @@ module_rows = [
         "module": "Battlefield intelligence fusion",
         "status": part09.get("status", "missing"),
         "result": part09.get("result", "unknown"),
+    },
+    {
+        "part": "Part 11",
+        "module": "Failure simulation and swarm recovery",
+        "status": part11.get("status", "missing"),
+        "result": part11.get("result", "unknown"),
     },
 ]
 
@@ -272,6 +282,58 @@ st.info(
 
 
 st.divider()
+
+
+st.divider()
+
+st.subheader("🚨 Failure Simulation and Swarm Recovery")
+
+if part11:
+    st.table(
+        [
+            {
+                "failed_drone": part11.get("failed_drone"),
+                "failure_type": part11.get("failure_type"),
+                "affected_zone": part11.get("affected_zone"),
+                "recovery_status": part11.get("recovery_status"),
+                "human_approval_required": part11.get("human_approval_required"),
+                "result": part11.get("result"),
+            }
+        ]
+    )
+
+    coverage = part11_plan.get("coverage_after_failure", {})
+    recovery_rows = []
+
+    for zone_name, zone in coverage.items():
+        recovery_rows.append(
+            {
+                "zone": zone_name,
+                "status": zone.get("status"),
+                "primary_drone": zone.get("primary_drone"),
+                "supporting_drones": ",".join(zone.get("supporting_drones", []))
+                if isinstance(zone.get("supporting_drones"), list)
+                else zone.get("supporting_drones"),
+                "coverage": zone.get("coverage"),
+            }
+        )
+
+    if recovery_rows:
+        st.markdown("### Coverage After Failure")
+        st.table(recovery_rows)
+
+    timeline = part11_state.get("timeline", [])
+    if timeline:
+        st.markdown("### Failure Recovery Timeline")
+        st.table(timeline)
+
+    st.warning(
+        "Part 11 is a simulated failure-recovery reasoning module. "
+        "Real-time MAVLink failover and dynamic replanning are future scope."
+    )
+else:
+    st.warning("Part 11 failure recovery output not found.")
+
 
 st.subheader("📁 Output Files")
 
